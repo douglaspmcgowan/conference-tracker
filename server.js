@@ -8,6 +8,21 @@ const PORT = process.env.PORT || 3010;
 app.get("/health", (req, res) => res.send("ok"));
 app.get("/api/conferences", (req, res) => res.json(data));
 
+app.get("/favicon.svg", (req, res) => {
+  res.set("Content-Type", "image/svg+xml; charset=utf-8");
+  res.set("Cache-Control", "public, max-age=86400");
+  res.send(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">' +
+      '<rect width="32" height="32" rx="6" fill="#0F0F0E"/>' +
+      '<circle cx="16" cy="16" r="9" fill="none" stroke="#2D5BFF" stroke-width="2"/>' +
+      '<line x1="16" y1="5" x2="16" y2="27" stroke="#FAFAF7" stroke-width="1.4" stroke-linecap="round"/>' +
+      '<line x1="5" y1="16" x2="27" y2="16" stroke="#FAFAF7" stroke-width="1.4" stroke-linecap="round"/>' +
+      '<circle cx="16" cy="16" r="2.4" fill="#2D5BFF"/>' +
+    '</svg>'
+  );
+});
+app.get("/favicon.ico", (req, res) => res.redirect(302, "/favicon.svg"));
+
 app.get("/cal.ics", (req, res) => {
   // ?ids=a,b,c restricts the export; otherwise all conferences with deadlines.
   const onlyIds = req.query.ids
@@ -105,8 +120,9 @@ function buildPage() {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Conference Tracker</title>
-<meta name="description" content="Conference deadlines, locations, and submission requirements across HCI, engineering design, AI/ML, visualization, and manufacturing.">
+<title>AI &amp; Design — Conference Tracker</title>
+<meta name="description" content="AI and Engineering Design Conference Tracker — submission deadlines, locations, and requirements across HCI, engineering design, AI/ML, visualization, manufacturing, and cognitive science.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -117,8 +133,18 @@ function buildPage() {
   <header class="masthead">
     <div class="masthead-row">
       <div class="brand">
-        <span class="brand-mark">§</span>
-        <h1 class="brand-title">Conference Tracker</h1>
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+            <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            <line x1="12" y1="3" x2="12" y2="21" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+            <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
+          </svg>
+        </span>
+        <div class="brand-titles">
+          <span class="brand-eyebrow">AI <span class="amp">&amp;</span> Design</span>
+          <h1 class="brand-title">AI <span class="amp">&amp;</span> Engineering Design Conference Tracker</h1>
+        </div>
       </div>
       <div class="masthead-actions">
         <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
@@ -127,7 +153,7 @@ function buildPage() {
         </button>
       </div>
     </div>
-    <p class="masthead-lede">Submission deadlines, locations, and requirements for conferences and journals across HCI, engineering design, AI / ML, visualization, manufacturing, and cognitive science.</p>
+    <p class="masthead-lede">Submission deadlines, locations, and requirements for conferences and journals at the intersection of AI and engineering design — spanning HCI, design science, AI / ML, visualization, manufacturing, and cognitive science.</p>
     <div class="masthead-stats" id="stats" aria-live="polite"></div>
   </header>
 
@@ -321,16 +347,33 @@ code {
 /* ------ Masthead ------ */
 .masthead { max-width: 78rem; margin: 0 auto; padding: clamp(2.4rem, 4.6vw, 3.4rem) 2rem 1.4rem; }
 .masthead-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; padding-bottom: 0.9rem; }
-.brand { display: flex; align-items: flex-start; gap: 0.72rem; min-width: 0; }
+.brand { display: flex; align-items: flex-start; gap: 0.85rem; min-width: 0; }
 .brand-mark {
-  margin-top: 0.28rem;
-  font-family: var(--mono);
-  font-size: 0.74rem;
+  margin-top: 0.18rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex-shrink: 0;
   color: var(--accent);
-  letter-spacing: 0.08em;
-  font-variant-numeric: tabular-nums;
+  background: var(--paper-raised);
+  box-shadow: inset 0 0 0 1px var(--rule);
+  border-radius: 6px;
 }
-.brand-title { font-size: clamp(1.56rem, 2.6vw, 1.9rem); font-weight: 600; letter-spacing: -0.03em; margin: 0; line-height: 1.02; }
+.brand-mark svg { display: block; }
+.brand-titles { min-width: 0; display: flex; flex-direction: column; gap: 0.18rem; }
+.brand-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  line-height: 1;
+}
+.brand-title { font-size: clamp(1.45rem, 2.5vw, 1.8rem); font-weight: 600; letter-spacing: -0.028em; margin: 0; line-height: 1.06; max-width: 24ch; }
+.amp { font-family: "Inter Tight", serif; font-style: italic; font-weight: 500; color: var(--accent); padding: 0 0.04em; }
 .masthead-lede { color: var(--ink-soft); font-size: 1.02rem; margin: 0 0 1.18rem; line-height: 1.66; }
 .masthead-stats {
   display: flex;
@@ -654,6 +697,40 @@ code {
 main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
 .view.hidden { display: none; }
 
+/* ------ Per-view sub-toolbar (mode toggles, density, etc.) ------ */
+.view-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem 1.1rem;
+  flex-wrap: wrap;
+  padding: 0 0 1rem;
+  margin-bottom: 0.95rem;
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.view-toolbar-label { color: var(--ink-faint); margin-right: 0.18rem; }
+.view-toolbar-group { display: inline-flex; align-items: center; gap: 0.32rem; padding: 0.18rem; background: var(--paper-soft); border-radius: 4px; box-shadow: inset 0 0 0 1px var(--rule-soft); }
+.view-toolbar-btn {
+  background: transparent;
+  border: 0;
+  padding: 0.32rem 0.72rem 0.34rem;
+  border-radius: 3px;
+  font: inherit;
+  color: var(--ink-soft);
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  transition: background-color var(--dur-out) var(--ease-out), color var(--dur-out) var(--ease-out);
+}
+.view-toolbar-btn:hover { color: var(--ink); transition-duration: var(--dur-in); }
+.view-toolbar-btn.active { background: var(--paper-raised); color: var(--ink); box-shadow: inset 0 0 0 1px var(--rule); }
+.view-toolbar-spacer { flex: 1 1 auto; }
+.view-toolbar-hint { color: var(--ink-faint); font-style: italic; text-transform: none; letter-spacing: 0.02em; font-family: var(--sans); font-size: 0.78rem; }
+
 /* ------ Timeline ------ */
 .timeline-wrap { position: relative; }
 .timeline-scroll { overflow-x: auto; overflow-y: visible; padding-bottom: 0.35rem; }
@@ -715,6 +792,100 @@ main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
 .legend-mark.notification { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--ink-faint); }
 .legend-mark.conference { width: 0.9rem; height: 0.4rem; border-radius: 2px; background: var(--accent-soft); border: 1px solid var(--accent-line); }
 .legend-mark.estimated { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: transparent; border: 1.5px solid var(--ink-soft); }
+
+/* ------ Timeline calendar mode (month-grid heatmap) ------ */
+.tlcal {
+  display: grid;
+  grid-template-columns: minmax(5rem, max-content) 1fr;
+  gap: 0.18rem 0.85rem;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--sans);
+}
+.tlcal-month {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  padding-right: 0.2rem;
+  font-weight: 500;
+}
+.tlcal-month.current { color: var(--accent); font-weight: 600; }
+.tlcal-month.boundary { color: var(--ink-soft); }
+.tlcal-row {
+  display: grid;
+  grid-template-columns: repeat(31, 1fr);
+  gap: 2px;
+  height: 1.55rem;
+  align-items: stretch;
+}
+.tlcal-cell {
+  position: relative;
+  background: var(--paper-soft);
+  border-radius: 2px;
+  cursor: default;
+  transition: background-color var(--dur-out) var(--ease-out), transform var(--dur-out) var(--ease-out);
+}
+.tlcal-cell.empty { background: transparent; box-shadow: inset 0 0 0 1px var(--rule-soft); opacity: 0.5; }
+.tlcal-cell.weekend { background: var(--paper-deep); opacity: 0.5; }
+.tlcal-cell.today { box-shadow: inset 0 0 0 1.5px var(--accent); background: var(--accent-soft); }
+.tlcal-cell.has-deadline { cursor: pointer; }
+.tlcal-cell.has-deadline:hover { transform: scale(1.18); z-index: 2; transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.tlcal-cell .tlcal-stack {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  border-radius: inherit; overflow: hidden;
+}
+.tlcal-cell .tlcal-stack > i { display: block; flex: 1 1 0; }
+.tlcal-cell .tlcal-count {
+  position: absolute; bottom: 1px; right: 2px;
+  font-family: var(--mono); font-size: 0.55rem; color: #fff; font-weight: 600;
+  text-shadow: 0 0 2px rgba(0,0,0,0.7); line-height: 1;
+}
+.tlcal-axis {
+  display: grid;
+  grid-template-columns: repeat(31, 1fr);
+  gap: 2px;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--ink-faint);
+  text-align: center;
+  padding-bottom: 0.3rem;
+  letter-spacing: 0;
+}
+.tlcal-axis span { line-height: 1; }
+.tlcal-empty-msg { grid-column: 2; color: var(--ink-faint); font-style: italic; padding: 0.4rem 0; font-family: var(--sans); font-size: 0.85rem; text-transform: none; letter-spacing: 0; }
+
+/* ------ Cards: density modes ------ */
+.cards-grid.density-spacious { grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr)); gap: 1.6rem; }
+.cards-grid.density-spacious .card { padding: 1.7rem 1.85rem 1.85rem; gap: 0.85rem; }
+.cards-grid.density-spacious .card-name { font-size: 1.42rem; }
+.cards-grid.density-spacious .card-fullname { font-size: 0.95rem; max-width: 50ch; }
+.cards-grid.density-spacious .card-meta { font-size: 0.92rem; gap: 0.5rem 1.1rem; }
+.cards-grid.density-spacious .card-fit { font-size: 0.96rem; }
+.cards-grid.density-compact { grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 0.95rem; }
+.cards-grid.density-compact .card { padding: 1rem 1.05rem 1.1rem; gap: 0.55rem; }
+.cards-grid.density-compact .card-name { font-size: 1.04rem; }
+.cards-grid.density-compact .card-fullname { font-size: 0.78rem; line-height: 1.42; }
+.cards-grid.density-compact .card-meta { font-size: 0.76rem; gap: 0.22rem 0.7rem; padding-top: 0.5rem; }
+.cards-grid.density-compact .card-meta dt { font-size: 0.62rem; }
+.cards-grid.density-compact .card-fit { font-size: 0.78rem; padding-top: 0.5rem; }
+.cards-grid.density-compact .card-tag { font-size: 0.62rem; padding: 0.16rem 0.42rem; }
+.cards-grid.density-compact .card-actions { padding-top: 0.4rem; gap: 0.5rem; }
+
+/* ------ Map continents overlay ------ */
+.map-continent {
+  fill: var(--paper-deep);
+  stroke: var(--rule);
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+[data-theme="dark"] .map-continent {
+  fill: rgba(233, 226, 210, 0.04);
+  stroke: rgba(233, 226, 210, 0.10);
+}
 
 /* ------ Cards ------ */
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(20.5rem, 1fr)); gap: 1.4rem; align-items: start; }
@@ -1008,6 +1179,31 @@ function getJS() {
     return CITY_GEO[k] || null;
   }
 
+  // ------ Continent outlines (very simplified, lat/lng).
+  // Designed for equirectangular projection. Each polygon is a single ring.
+  // Detail level is intentionally rough — purpose is geographic context, not
+  // cartographic accuracy. Total ~250 points keeps the inline payload small.
+  const CONTINENTS = [
+    // North America (Alaska → continental US → Mexico → Central America → Greenland → back)
+    [[71,-158],[70,-148],[69,-141],[60,-141],[60,-135],[55,-130],[50,-127],[42,-124],[35,-120],[32,-117],[26,-112],[22,-106],[19,-102],[15,-93],[18,-89],[16,-87],[10,-83],[8,-77],[10,-75],[12,-72],[18,-66],[19,-71],[21,-78],[24,-81],[26,-80],[30,-81],[34,-78],[37,-76],[39,-75],[42,-71],[44,-67],[46,-60],[48,-55],[55,-58],[60,-65],[62,-77],[63,-92],[68,-83],[73,-77],[75,-91],[79,-72],[83,-30],[78,-22],[68,-50],[58,-62],[60,-78],[55,-85],[58,-95],[68,-95],[70,-110],[70,-130],[71,-141],[70,-156],[71,-158]],
+    // South America
+    [[12,-72],[10,-65],[8,-60],[5,-52],[1,-49],[-3,-44],[-9,-35],[-15,-39],[-23,-41],[-30,-50],[-38,-58],[-50,-67],[-55,-68],[-54,-72],[-46,-74],[-41,-72],[-30,-71],[-22,-70],[-18,-71],[-10,-79],[-3,-81],[3,-77],[9,-77],[12,-72]],
+    // Europe (very rough; merges British Isles)
+    [[71,28],[70,32],[60,33],[55,38],[45,39],[41,29],[36,28],[37,22],[38,15],[36,14],[37,9],[42,3],[36,-6],[44,-9],[47,-3],[51,-6],[55,-8],[58,-3],[60,5],[63,11],[65,16],[68,15],[71,25],[71,28]],
+    // Africa
+    [[36,-6],[31,-10],[24,-15],[15,-17],[10,-15],[5,-9],[5,-2],[6,3],[5,8],[3,9],[2,15],[-3,12],[-8,13],[-15,12],[-18,12],[-23,14],[-29,17],[-34,18],[-34,21],[-32,28],[-30,32],[-25,35],[-15,40],[-10,40],[-1,42],[8,49],[12,52],[11,46],[12,43],[18,40],[24,37],[31,32],[34,25],[36,15],[35,11],[36,5],[37,2],[37,-1],[36,-6]],
+    // Asia (large; merges Russia + India + China + SE Asia)
+    [[71,28],[78,60],[78,100],[73,130],[71,142],[67,170],[60,170],[55,165],[50,156],[45,148],[42,140],[35,140],[32,131],[26,122],[22,114],[20,109],[10,108],[9,101],[1,103],[6,99],[10,95],[12,93],[16,94],[20,92],[22,89],[20,80],[8,78],[8,76],[15,73],[22,69],[24,60],[27,55],[28,49],[30,40],[37,40],[39,46],[44,50],[47,52],[55,60],[71,28]],
+    // Australia
+    [[-11,142],[-15,145],[-23,152],[-32,153],[-37,150],[-39,146],[-37,140],[-34,138],[-32,133],[-32,125],[-34,116],[-26,113],[-22,114],[-19,121],[-15,128],[-12,131],[-13,135],[-12,141],[-11,142]],
+    // New Zealand (two main islands as a single rough polygon)
+    [[-34,173],[-37,175],[-41,174],[-46,167],[-46,170],[-41,176],[-34,173]],
+    // Madagascar
+    [[-12,49],[-15,50],[-19,49],[-23,45],[-25,45],[-22,43],[-15,46],[-12,49]],
+    // Greenland (simplified)
+    [[83,-30],[78,-22],[70,-22],[60,-43],[60,-49],[68,-53],[75,-58],[83,-30]],
+  ];
+
   const STATUSES = ["", "interested", "drafting", "submitted", "accepted", "rejected"];
   const STATUS_LABEL = {
     "": "—",
@@ -1030,6 +1226,8 @@ function getJS() {
     notes: JSON.parse(localStorage.getItem("ct.notes") || "{}"),
     status: JSON.parse(localStorage.getItem("ct.status") || "{}"),
     sort: "deadline-asc",
+    timelineMode: localStorage.getItem("ct.timelineMode") || "calendar",   // "calendar" | "gantt"
+    cardDensity: localStorage.getItem("ct.cardDensity") || "comfortable",  // "compact" | "comfortable" | "spacious"
   };
 
   // ------ Hash state (sharable URL) ------
@@ -1315,11 +1513,165 @@ function getJS() {
     else renderTable(list);
   }
 
-  // ------ Timeline view ------
+  // ------ Timeline view (dispatcher) ------
   function renderTimeline(list) {
     const el = document.getElementById("view-timeline");
-    if (!list.length) { el.innerHTML = '<div class="timeline-empty">No conferences match the current filters.</div>'; return; }
+    const toolbar =
+      '<div class="view-toolbar">' +
+        '<span class="view-toolbar-label">Timeline</span>' +
+        '<div class="view-toolbar-group" id="tlModeGroup">' +
+          '<button class="view-toolbar-btn ' + (state.timelineMode === "calendar" ? "active" : "") + '" data-mode="calendar">Calendar</button>' +
+          '<button class="view-toolbar-btn ' + (state.timelineMode === "gantt" ? "active" : "") + '" data-mode="gantt">Gantt</button>' +
+        '</div>' +
+        '<span class="view-toolbar-spacer"></span>' +
+        '<span class="view-toolbar-hint">' +
+          (state.timelineMode === "calendar"
+            ? "Each cell is a day. Filled cells have deadlines; hover for details."
+            : "Horizontal bars span deadline → notification → conference dates.") +
+        '</span>' +
+      '</div>';
 
+    if (!list.length) { el.innerHTML = toolbar + '<div class="timeline-empty">No conferences match the current filters.</div>'; bindTlMode(el); return; }
+
+    el.innerHTML = toolbar + '<div id="tlBody"></div>';
+    bindTlMode(el);
+
+    const body = document.getElementById("tlBody");
+    if (state.timelineMode === "calendar") renderTimelineCalendar(body, list);
+    else renderTimelineGantt(body, list);
+  }
+
+  function bindTlMode(el) {
+    el.querySelectorAll("#tlModeGroup [data-mode]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.timelineMode = btn.dataset.mode;
+        localStorage.setItem("ct.timelineMode", state.timelineMode);
+        render();
+      });
+    });
+  }
+
+  // ------ Calendar mode ------
+  // Compact month-grid heatmap. Each row is a month, each cell is a day.
+  // Cells with deadlines are colored by dominant field; hover reveals
+  // conference name + countdown; click opens detail (or first if multiple).
+  function renderTimelineCalendar(el, list) {
+    // Bucket deadlines by YYYY-MM-DD
+    const byDay = new Map();
+    list.forEach(c => {
+      if (!c.deadline) return;
+      const d = parseDate(c.deadline);
+      if (!d) return;
+      const key = c.deadline.slice(0, 10);
+      if (!byDay.has(key)) byDay.set(key, []);
+      byDay.get(key).push(c);
+    });
+
+    // Window: today - 30d → today + 18mo (or further if any deadline pushes it)
+    const minD = new Date(TODAY); minD.setDate(1); minD.setMonth(minD.getMonth() - 1);
+    let maxD = new Date(TODAY); maxD.setMonth(maxD.getMonth() + 18);
+    list.forEach(c => {
+      const d = parseDate(c.deadline);
+      if (d && d > maxD) maxD = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+    });
+
+    if (!byDay.size) {
+      el.innerHTML = '<div class="timeline-empty">No deadlines in the current filter set.</div>';
+      return;
+    }
+
+    // Day-of-month axis (1, 5, 10, …)
+    let axis = '<div class="tlcal-month"></div><div class="tlcal-axis">';
+    for (let d = 1; d <= 31; d++) {
+      axis += '<span>' + (d === 1 || d === 5 || d === 10 || d === 15 || d === 20 || d === 25 || d === 30 ? d : "") + '</span>';
+    }
+    axis += '</div>';
+
+    let rows = "";
+    const cursor = new Date(minD.getFullYear(), minD.getMonth(), 1);
+    const todayKey = TODAY.toISOString().slice(0, 10);
+    while (cursor <= maxD) {
+      const y = cursor.getFullYear(), m = cursor.getMonth();
+      const monthLabel = cursor.toLocaleDateString("en-US", { month: "short", year: "numeric" }).toUpperCase();
+      const isCurrent = (y === TODAY.getFullYear() && m === TODAY.getMonth());
+      const isJan = m === 0;
+      const dim = new Date(y, m + 1, 0).getDate();
+
+      let cells = "";
+      for (let d = 1; d <= 31; d++) {
+        if (d > dim) {
+          cells += '<div class="tlcal-cell empty"></div>';
+          continue;
+        }
+        const dateObj = new Date(y, m, d);
+        const dow = dateObj.getDay();
+        const isWeekend = dow === 0 || dow === 6;
+        const key = y + "-" + String(m + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+        const isToday = (key === todayKey);
+        const dls = byDay.get(key);
+        const cls = ["tlcal-cell"];
+        if (isWeekend && !dls) cls.push("weekend");
+        if (isToday) cls.push("today");
+        if (dls && dls.length) cls.push("has-deadline");
+
+        if (dls && dls.length) {
+          // Stack horizontal stripes per field
+          const stripes = dls.map(c => {
+            const color = (FIELDS[c.fields[0]] || {}).color || "var(--ink-soft)";
+            return '<i style="background:' + color + '"></i>';
+          }).join("");
+          const ids = dls.map(c => c.id).join(",");
+          const dateLabel = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+          const tipLines = dls.map(c => c.name + " " + c.year + (c.confidence === "estimated" ? " (est.)" : "")).join(" / ");
+          const count = dls.length > 1 ? '<span class="tlcal-count">' + dls.length + '</span>' : "";
+          cells += '<div class="' + cls.join(" ") + '" data-ids="' + escapeAttr(ids) + '" data-tip-title="' + escapeAttr(tipLines) + '" data-tip-date="' + escapeAttr(dateLabel) + '" data-day="' + d + '">' +
+            '<div class="tlcal-stack">' + stripes + '</div>' + count +
+          '</div>';
+        } else {
+          cells += '<div class="' + cls.join(" ") + '" data-day="' + d + '"></div>';
+        }
+      }
+      const monthCls = ["tlcal-month"];
+      if (isCurrent) monthCls.push("current");
+      if (isJan) monthCls.push("boundary");
+      rows += '<div class="' + monthCls.join(" ") + '">' + monthLabel + '</div>' +
+              '<div class="tlcal-row">' + cells + '</div>';
+      cursor.setMonth(cursor.getMonth() + 1);
+    }
+
+    el.innerHTML =
+      '<div class="timeline-legend">' +
+        '<span class="legend-item"><span class="legend-mark deadline"></span>Day with paper deadline (color = field)</span>' +
+        '<span class="legend-item"><span class="legend-mark conference"></span>Today</span>' +
+        '<span class="legend-item">Hover a cell for details · click to open</span>' +
+      '</div>' +
+      '<div class="timeline-wrap">' +
+        '<div class="tlcal">' + axis + rows + '</div>' +
+        '<div id="tlTooltip" class="timeline-tooltip"></div>' +
+      '</div>';
+
+    const tooltip = document.getElementById("tlTooltip");
+    const wrap = el.querySelector(".timeline-wrap");
+    el.querySelectorAll(".tlcal-cell.has-deadline").forEach(node => {
+      node.addEventListener("mousemove", (ev) => {
+        const title = node.getAttribute("data-tip-title") || "";
+        const dateStr = node.getAttribute("data-tip-date") || "";
+        tooltip.innerHTML = '<strong>' + escape(title) + '</strong><span class="tt-date">' + escape(dateStr) + '</span>';
+        const wrapBox = wrap.getBoundingClientRect();
+        tooltip.style.left = (ev.clientX - wrapBox.left) + "px";
+        tooltip.style.top = (ev.clientY - wrapBox.top - 6) + "px";
+        tooltip.classList.add("visible");
+      });
+      node.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
+      node.addEventListener("click", () => {
+        const ids = (node.getAttribute("data-ids") || "").split(",").filter(Boolean);
+        if (ids.length) openDetail(ids[0]);
+      });
+    });
+  }
+
+  // ------ Gantt mode (improved: fit-to-viewport + sticky months + tooltips) ------
+  function renderTimelineGantt(el, list) {
     // Sort by next-meaningful date asc
     const rows = list
       .map(c => ({ c, sortDate: parseDate(c.deadline) || parseDate(c.conferenceStart) }))
@@ -1338,13 +1690,16 @@ function getJS() {
     });
 
     const totalDays = Math.max(60, Math.round((maxD - minD) / (1000*60*60*24)));
-    const dayPx = 4.2;       // pixels per day
-    const labelW = 220;      // left label column width
-    const padR = 60;
-    const rowH = 28;
-    const topPad = 56;       // room for month axis
+    // Fit-to-viewport: pick dayPx so the timeline matches the container width
+    // (with sensible min/max so it doesn't get unreadable for very long ranges).
+    const containerW = Math.max(640, (el.parentElement ? el.parentElement.clientWidth : 1100) - 8);
+    const labelW = 180;      // left label column
+    const padR = 30;
+    const rowH = 22;         // tighter rows
+    const topPad = 48;       // room for month axis
+    const dayPx = Math.max(2.4, Math.min(5.2, (containerW - labelW - padR) / totalDays));
     const width = labelW + totalDays * dayPx + padR;
-    const height = topPad + rows.length * rowH + 24;
+    const height = topPad + rows.length * rowH + 18;
 
     const xFor = (d) => labelW + ((d - minD) / (1000*60*60*24)) * dayPx;
 
@@ -1443,9 +1798,15 @@ function getJS() {
     const wrap = el.querySelector(".timeline-wrap");
     el.querySelectorAll("[data-tooltip]").forEach(node => {
       node.addEventListener("mousemove", (ev) => {
-        tooltip.innerHTML = node.getAttribute("data-tooltip").replace(" · ", "<br><span class='tt-date'>").replace(/$/, "</span>");
-        tooltip.style.left = (ev.clientX - wrap.getBoundingClientRect().left + el.querySelector(".timeline-scroll").scrollLeft) + "px";
-        tooltip.style.top = (ev.clientY - wrap.getBoundingClientRect().top - 6) + "px";
+        const raw = node.getAttribute("data-tooltip") || "";
+        const parts = raw.split(" · ");
+        const head = escape(parts[0] || "");
+        const tail = parts.slice(1).map(escape).join(" · ");
+        tooltip.innerHTML = '<strong>' + head + '</strong>' + (tail ? '<span class="tt-date">' + tail + '</span>' : '');
+        const wrapBox = wrap.getBoundingClientRect();
+        const scrollEl = el.querySelector(".timeline-scroll");
+        tooltip.style.left = (ev.clientX - wrapBox.left + (scrollEl ? scrollEl.scrollLeft : 0)) + "px";
+        tooltip.style.top = (ev.clientY - wrapBox.top - 6) + "px";
         tooltip.classList.add("visible");
       });
       node.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
@@ -1464,7 +1825,18 @@ function getJS() {
   // List is pre-sorted by visibleConfs(). No local sort here.
   function renderCards(list) {
     const el = document.getElementById("view-cards");
-    if (!list.length) { el.innerHTML = '<div class="timeline-empty">No conferences match the current filters.</div>'; return; }
+    const toolbar =
+      '<div class="view-toolbar">' +
+        '<span class="view-toolbar-label">Density</span>' +
+        '<div class="view-toolbar-group" id="cardDensityGroup">' +
+          '<button class="view-toolbar-btn ' + (state.cardDensity === "compact" ? "active" : "") + '" data-density="compact">Compact</button>' +
+          '<button class="view-toolbar-btn ' + (state.cardDensity === "comfortable" ? "active" : "") + '" data-density="comfortable">Comfortable</button>' +
+          '<button class="view-toolbar-btn ' + (state.cardDensity === "spacious" ? "active" : "") + '" data-density="spacious">Spacious</button>' +
+        '</div>' +
+        '<span class="view-toolbar-spacer"></span>' +
+        '<span class="view-toolbar-hint">' + list.length + ' conference' + (list.length === 1 ? "" : "s") + ' in view</span>' +
+      '</div>';
+    if (!list.length) { el.innerHTML = toolbar + '<div class="timeline-empty">No conferences match the current filters.</div>'; bindCardDensity(el); return; }
 
     const cardsHtml = list.map(c => {
       const days = daysUntil(parseDate(c.deadline));
@@ -1502,7 +1874,8 @@ function getJS() {
         '</div>' +
       '</article>';
     }).join("");
-    el.innerHTML = '<div class="cards-grid">' + cardsHtml + '</div>';
+    el.innerHTML = toolbar + '<div class="cards-grid density-' + state.cardDensity + '">' + cardsHtml + '</div>';
+    bindCardDensity(el);
 
     el.querySelectorAll(".card").forEach(card => {
       card.addEventListener("click", (e) => {
@@ -1514,6 +1887,16 @@ function getJS() {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
         toggleStar(btn.getAttribute("data-star"));
+      });
+    });
+  }
+
+  function bindCardDensity(el) {
+    el.querySelectorAll("#cardDensityGroup [data-density]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.cardDensity = btn.dataset.density;
+        localStorage.setItem("ct.cardDensity", state.cardDensity);
+        render();
       });
     });
   }
@@ -1615,6 +1998,14 @@ function getJS() {
     let svg = '<svg class="map-svg" viewBox="0 0 ' + W + ' ' + H + '" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="World map of conference locations">';
     // Hairline frame
     svg += '<rect x="' + MX + '" y="' + MY + '" width="' + innerW + '" height="' + innerH + '" fill="none" stroke="var(--rule)" stroke-width="1"/>';
+    // Continent landmasses (simplified outlines, drawn before grid + markers)
+    CONTINENTS.forEach(poly => {
+      const pts = poly.map(([lat, lng]) => {
+        const [x, y] = project(lat, lng);
+        return x.toFixed(1) + "," + y.toFixed(1);
+      }).join(" ");
+      svg += '<polygon class="map-continent" points="' + pts + '"/>';
+    });
     // Equator + tropics
     [-66.5, -23.4, 0, 23.4, 66.5].forEach(lat => {
       const y = project(lat, 0)[1];
@@ -1627,12 +2018,12 @@ function getJS() {
     // Continent labels — minimal, faint
     const labels = [
       ["NORTH AMERICA", 45, -100], ["SOUTH AMERICA", -15, -60],
-      ["EUROPE", 50, 12], ["AFRICA", 5, 22],
+      ["EUROPE", 52, 18], ["AFRICA", 5, 22],
       ["ASIA", 38, 90], ["OCEANIA", -25, 140],
     ];
     labels.forEach(([t, lat, lng]) => {
       const [x, y] = project(lat, lng);
-      svg += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--ink-faint)" letter-spacing="0.1em" opacity="0.55">' + t + '</text>';
+      svg += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--ink-faint)" letter-spacing="0.1em" opacity="0.62">' + t + '</text>';
     });
 
     // Plot city markers

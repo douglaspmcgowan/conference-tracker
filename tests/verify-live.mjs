@@ -28,7 +28,13 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
 
   log("\nMasthead + data");
   const title = await page.title();
-  title === "Conference Tracker" ? ok("title correct") : fail(`title: ${title}`);
+  title === "AI & Design — Conference Tracker" ? ok("title correct") : fail(`title: ${title}`);
+  const eyebrow = await page.locator(".brand-eyebrow").innerText();
+  /AI\s*&\s*Design/i.test(eyebrow) ? ok(`brand eyebrow: ${eyebrow}`) : fail(`eyebrow: ${eyebrow}`);
+  const h1 = await page.locator(".brand-title").innerText();
+  /Engineering Design Conference Tracker/.test(h1) ? ok(`brand title: ${h1.replace(/\s+/g, " ").trim()}`) : fail(`h1: ${h1}`);
+  const faviconRes = await page.request.get(URL.replace(/\/$/, "") + "/favicon.svg");
+  faviconRes.ok() ? ok("favicon.svg served") : fail(`favicon.svg: ${faviconRes.status()}`);
   const stats = await page.locator("#stats").innerText();
   /\d+\s*conferences/i.test(stats) ? ok(`stats: ${stats.replace(/\s+/g, " ").trim()}`) : fail(`stats malformed: ${stats}`);
 
@@ -41,7 +47,31 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
   dataInfo.fields >= 10 ? ok(`${dataInfo.fields} field categories`) : fail(`only ${dataInfo.fields} fields`);
   dataInfo.verified >= 50 ? ok(`${dataInfo.verified} verified-confidence entries`) : fail(`only ${dataInfo.verified} verified`);
 
-  log("\nTimeline view");
+  log("\nTimeline view (calendar mode — default)");
+  // Timeline view restored from localStorage may not start at timeline; click to be sure.
+  await page.click('.view-tab[data-view="timeline"]');
+  await page.waitForTimeout(200);
+  // Default mode is now calendar — make sure the toggle is visible and active.
+  await page.click('#tlModeGroup [data-mode="calendar"]');
+  await page.waitForTimeout(200);
+  const cal = await page.evaluate(() => ({
+    monthRows: document.querySelectorAll(".tlcal-row").length,
+    cells: document.querySelectorAll(".tlcal-cell").length,
+    deadlineCells: document.querySelectorAll(".tlcal-cell.has-deadline").length,
+    todayCells: document.querySelectorAll(".tlcal-cell.today").length,
+    activeMode: document.querySelector("#tlModeGroup .active")?.textContent || "",
+  }));
+  cal.activeMode === "Calendar" ? ok("calendar mode active") : fail(`mode: ${cal.activeMode}`);
+  cal.monthRows >= 12 ? ok(`${cal.monthRows} month rows`) : fail(`only ${cal.monthRows} months`);
+  cal.deadlineCells >= 20 ? ok(`${cal.deadlineCells} deadline cells`) : fail(`only ${cal.deadlineCells} deadline cells`);
+  cal.todayCells === 1 ? ok("today cell highlighted") : fail(`today cells: ${cal.todayCells}`);
+
+  await page.screenshot({ path: path.join(SHOTS, "01a-timeline-calendar.png"), fullPage: false });
+  ok("screenshot: 01a-timeline-calendar.png");
+
+  log("\nTimeline view (gantt mode — toggle)");
+  await page.click('#tlModeGroup [data-mode="gantt"]');
+  await page.waitForTimeout(250);
   const tl = await page.evaluate(() => ({
     rows: document.querySelectorAll(".tl-row").length,
     deadlineMarkers: document.querySelectorAll(".timeline-deadline-marker").length,
@@ -49,16 +79,19 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
     todayLabelExists: Array.from(document.querySelectorAll("text")).some(t => t.textContent === "TODAY"),
     svgExists: !!document.querySelector(".timeline-svg"),
   }));
-  tl.svgExists ? ok("timeline SVG rendered") : fail("no timeline SVG");
+  tl.svgExists ? ok("gantt SVG rendered") : fail("no timeline SVG");
   tl.rows >= 80 ? ok(`${tl.rows} timeline rows`) : fail(`only ${tl.rows} rows`);
   tl.deadlineMarkers >= 50 ? ok(`${tl.deadlineMarkers} deadline markers`) : fail(`only ${tl.deadlineMarkers} markers`);
   tl.confBars >= 50 ? ok(`${tl.confBars} conference bars`) : fail(`only ${tl.confBars} conference bars`);
   tl.todayLabelExists ? ok("TODAY axis label present") : fail("missing TODAY label");
 
-  await page.screenshot({ path: path.join(SHOTS, "01-timeline.png"), fullPage: false });
-  ok("screenshot: 01-timeline.png");
+  await page.screenshot({ path: path.join(SHOTS, "01b-timeline-gantt.png"), fullPage: false });
+  ok("screenshot: 01b-timeline-gantt.png");
+  // Reset to calendar default for the rest of the suite
+  await page.click('#tlModeGroup [data-mode="calendar"]');
+  await page.waitForTimeout(150);
 
-  log("\nCards view");
+  log("\nCards view + density toggle");
   await page.click('.view-tab[data-view="cards"]');
   await page.waitForTimeout(200);
   const cards = await page.evaluate(() => ({
@@ -66,11 +99,21 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
     starButtons: document.querySelectorAll(".star-btn").length,
     cfpLinks: document.querySelectorAll(".card-link").length,
     sampleNames: Array.from(document.querySelectorAll(".card-name")).slice(0, 3).map(n => n.textContent.trim()),
+    hasDensityToggle: !!document.getElementById("cardDensityGroup"),
+    activeDensity: document.querySelector("#cardDensityGroup .active")?.textContent || "",
   }));
   cards.cardCount >= 100 ? ok(`${cards.cardCount} cards rendered`) : fail(`only ${cards.cardCount} cards`);
   cards.starButtons === cards.cardCount ? ok("each card has star button") : fail(`star count mismatch: ${cards.starButtons}/${cards.cardCount}`);
   cards.cfpLinks === cards.cardCount ? ok("each card has CFP link") : fail(`link count mismatch`);
+  cards.hasDensityToggle ? ok(`density toggle visible (active: ${cards.activeDensity})`) : fail("density toggle missing");
   log("    sample:", cards.sampleNames.join(" | "));
+
+  await page.click('#cardDensityGroup [data-density="spacious"]');
+  await page.waitForTimeout(150);
+  const spaciousCls = await page.evaluate(() => document.querySelector(".cards-grid")?.className || "");
+  /density-spacious/.test(spaciousCls) ? ok("spacious density applied") : fail(`grid: ${spaciousCls}`);
+  await page.click('#cardDensityGroup [data-density="comfortable"]');
+  await page.waitForTimeout(150);
 
   await page.screenshot({ path: path.join(SHOTS, "02-cards.png"), fullPage: false });
   ok("screenshot: 02-cards.png");
@@ -137,10 +180,12 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
   const mapInfo = await page.evaluate(() => ({
     svg: !!document.querySelector(".map-svg"),
     markers: document.querySelectorAll(".map-marker").length,
+    continents: document.querySelectorAll(".map-continent").length,
     meta: document.querySelector(".map-meta")?.innerText.replace(/\s+/g, " ").trim() || "",
   }));
   mapInfo.svg ? ok("map SVG rendered") : fail("no map SVG");
   mapInfo.markers >= 50 ? ok(`${mapInfo.markers} city markers`) : fail(`only ${mapInfo.markers} markers`);
+  mapInfo.continents >= 7 ? ok(`${mapInfo.continents} continent outlines drawn`) : fail(`only ${mapInfo.continents} continents`);
   /\d+ with known city/.test(mapInfo.meta) ? ok(`map meta: ${mapInfo.meta.slice(0, 60)}…`) : fail("map meta missing");
   await page.screenshot({ path: path.join(SHOTS, "07-map.png"), fullPage: false });
   ok("screenshot: 07-map.png");
