@@ -1,0 +1,157 @@
+// Playwright end-to-end verification of the live Vercel deploy.
+// Run: node tests/verify-live.mjs [URL]
+import { chromium } from "playwright";
+import fs from "node:fs";
+import path from "node:path";
+
+const URL = process.argv[2] || "https://conference-tracker-rho.vercel.app/";
+const SHOTS = path.resolve("tests/screenshots");
+fs.mkdirSync(SHOTS, { recursive: true });
+
+const errors = [];
+const log = (...a) => console.log(...a);
+const ok = (msg) => log("  ✓", msg);
+const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
+
+(async () => {
+  const browser = await chromium.launch();
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+  const page = await ctx.newPage();
+
+  page.on("pageerror", (e) => fail(`pageerror: ${e.message}`));
+  page.on("console", (m) => { if (m.type() === "error") fail(`console.error: ${m.text()}`); });
+
+  log("\nNavigating to", URL);
+  const res = await page.goto(URL, { waitUntil: "networkidle", timeout: 30000 });
+  if (!res || !res.ok()) fail(`HTTP ${res?.status()}`);
+  else ok(`HTTP ${res.status()}`);
+
+  log("\nMasthead + data");
+  const title = await page.title();
+  title === "Conference Tracker" ? ok("title correct") : fail(`title: ${title}`);
+  const stats = await page.locator("#stats").innerText();
+  /\d+\s*conferences/i.test(stats) ? ok(`stats: ${stats.replace(/\s+/g, " ").trim()}`) : fail(`stats malformed: ${stats}`);
+
+  const dataInfo = await page.evaluate(() => ({
+    confs: window.__DATA__?.conferences?.length || 0,
+    fields: Object.keys(window.__DATA__?.fields || {}).length,
+    verified: window.__DATA__.conferences.filter(c => c.confidence === "verified").length,
+  }));
+  dataInfo.confs >= 100 ? ok(`${dataInfo.confs} conferences loaded`) : fail(`only ${dataInfo.confs} conferences`);
+  dataInfo.fields >= 10 ? ok(`${dataInfo.fields} field categories`) : fail(`only ${dataInfo.fields} fields`);
+  dataInfo.verified >= 50 ? ok(`${dataInfo.verified} verified-confidence entries`) : fail(`only ${dataInfo.verified} verified`);
+
+  log("\nTimeline view");
+  const tl = await page.evaluate(() => ({
+    rows: document.querySelectorAll(".tl-row").length,
+    deadlineMarkers: document.querySelectorAll(".timeline-deadline-marker").length,
+    confBars: document.querySelectorAll(".tl-conf").length,
+    todayLabelExists: Array.from(document.querySelectorAll("text")).some(t => t.textContent === "TODAY"),
+    svgExists: !!document.querySelector(".timeline-svg"),
+  }));
+  tl.svgExists ? ok("timeline SVG rendered") : fail("no timeline SVG");
+  tl.rows >= 80 ? ok(`${tl.rows} timeline rows`) : fail(`only ${tl.rows} rows`);
+  tl.deadlineMarkers >= 50 ? ok(`${tl.deadlineMarkers} deadline markers`) : fail(`only ${tl.deadlineMarkers} markers`);
+  tl.confBars >= 50 ? ok(`${tl.confBars} conference bars`) : fail(`only ${tl.confBars} conference bars`);
+  tl.todayLabelExists ? ok("TODAY axis label present") : fail("missing TODAY label");
+
+  await page.screenshot({ path: path.join(SHOTS, "01-timeline.png"), fullPage: false });
+  ok("screenshot: 01-timeline.png");
+
+  log("\nCards view");
+  await page.click('.view-tab[data-view="cards"]');
+  await page.waitForTimeout(200);
+  const cards = await page.evaluate(() => ({
+    cardCount: document.querySelectorAll(".card").length,
+    starButtons: document.querySelectorAll(".star-btn").length,
+    cfpLinks: document.querySelectorAll(".card-link").length,
+    sampleNames: Array.from(document.querySelectorAll(".card-name")).slice(0, 3).map(n => n.textContent.trim()),
+  }));
+  cards.cardCount >= 100 ? ok(`${cards.cardCount} cards rendered`) : fail(`only ${cards.cardCount} cards`);
+  cards.starButtons === cards.cardCount ? ok("each card has star button") : fail(`star count mismatch: ${cards.starButtons}/${cards.cardCount}`);
+  cards.cfpLinks === cards.cardCount ? ok("each card has CFP link") : fail(`link count mismatch`);
+  log("    sample:", cards.sampleNames.join(" | "));
+
+  await page.screenshot({ path: path.join(SHOTS, "02-cards.png"), fullPage: false });
+  ok("screenshot: 02-cards.png");
+
+  log("\nTable view + sort");
+  await page.click('.view-tab[data-view="table"]');
+  await page.waitForTimeout(200);
+  const tbl1 = await page.evaluate(() => ({
+    rows: document.querySelectorAll("table.confs tbody tr").length,
+    firstRow: document.querySelector("table.confs tbody tr td:nth-child(2)")?.textContent.trim(),
+  }));
+  tbl1.rows >= 100 ? ok(`${tbl1.rows} table rows`) : fail(`only ${tbl1.rows} rows`);
+
+  await page.click('table.confs th[data-sort="name"]');
+  await page.waitForTimeout(150);
+  const tbl2 = await page.evaluate(() => document.querySelector("table.confs tbody tr td:nth-child(2)")?.textContent.trim());
+  tbl1.firstRow !== tbl2 ? ok(`sort by name changed first row: "${tbl1.firstRow}" → "${tbl2}"`) : fail("sort did not change order");
+
+  await page.screenshot({ path: path.join(SHOTS, "03-table.png"), fullPage: false });
+  ok("screenshot: 03-table.png");
+
+  log("\nFiltering");
+  await page.click('.view-tab[data-view="cards"]');
+  await page.waitForTimeout(150);
+  const beforeFilter = await page.locator(".card").count();
+  await page.click('#fieldChips .chip[data-field="HCI"]');
+  await page.waitForTimeout(200);
+  const afterFilter = await page.locator(".card").count();
+  afterFilter > 0 && afterFilter < beforeFilter ? ok(`HCI filter narrowed cards: ${beforeFilter} → ${afterFilter}`) : fail(`filter broken: ${beforeFilter} → ${afterFilter}`);
+  await page.click('#fieldChips .chip[data-field="HCI"]');
+  await page.waitForTimeout(200);
+
+  log("\nSearch");
+  await page.fill("#searchInput", "neurips");
+  await page.waitForTimeout(250);
+  const searchResults = await page.locator(".card").count();
+  searchResults > 0 ? ok(`search 'neurips' returned ${searchResults} cards`) : fail("search returned 0");
+  await page.fill("#searchInput", "");
+  await page.waitForTimeout(200);
+
+  log("\nModal detail");
+  await page.click(".card");
+  await page.waitForTimeout(200);
+  const modalOpen = await page.evaluate(() => !document.getElementById("detailModal").classList.contains("hidden"));
+  modalOpen ? ok("modal opens on card click") : fail("modal did not open");
+  const modalText = await page.locator("#modalBody").innerText();
+  /Schedule|Where|Submission/i.test(modalText) ? ok("modal has Schedule / Where / Submission sections") : fail("modal missing sections");
+  await page.screenshot({ path: path.join(SHOTS, "04-modal.png"), fullPage: false });
+  ok("screenshot: 04-modal.png");
+  await page.keyboard.press("Escape");
+  await page.waitForTimeout(150);
+
+  log("\nDark mode");
+  await page.click("#themeBtn");
+  await page.waitForTimeout(200);
+  const darkOn = await page.evaluate(() => document.documentElement.getAttribute("data-theme") === "dark");
+  darkOn ? ok("dark mode toggled") : fail("dark mode did not toggle");
+  await page.screenshot({ path: path.join(SHOTS, "05-dark.png"), fullPage: false });
+  ok("screenshot: 05-dark.png");
+
+  log("\nMobile viewport");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.click("#themeBtn"); // back to light
+  await page.waitForTimeout(150);
+  await page.click('.view-tab[data-view="cards"]');
+  await page.waitForTimeout(200);
+  const mobileCards = await page.locator(".card").count();
+  mobileCards > 0 ? ok(`mobile renders ${mobileCards} cards`) : fail("mobile broken");
+  await page.screenshot({ path: path.join(SHOTS, "06-mobile.png"), fullPage: false });
+  ok("screenshot: 06-mobile.png");
+
+  await browser.close();
+
+  log("\n" + "=".repeat(60));
+  if (errors.length === 0) {
+    log("ALL CHECKS PASSED ✓");
+    log(`Screenshots in: ${SHOTS}`);
+    process.exit(0);
+  } else {
+    log(`${errors.length} FAILURES:`);
+    errors.forEach(e => log("  -", e));
+    process.exit(1);
+  }
+})().catch(e => { console.error("Test runner error:", e); process.exit(2); });
