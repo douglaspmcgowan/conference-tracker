@@ -131,6 +131,68 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
   await page.screenshot({ path: path.join(SHOTS, "05-dark.png"), fullPage: false });
   ok("screenshot: 05-dark.png");
 
+  log("\nMap view");
+  await page.click('.view-tab[data-view="map"]');
+  await page.waitForTimeout(300);
+  const mapInfo = await page.evaluate(() => ({
+    svg: !!document.querySelector(".map-svg"),
+    markers: document.querySelectorAll(".map-marker").length,
+    meta: document.querySelector(".map-meta")?.innerText.replace(/\s+/g, " ").trim() || "",
+  }));
+  mapInfo.svg ? ok("map SVG rendered") : fail("no map SVG");
+  mapInfo.markers >= 50 ? ok(`${mapInfo.markers} city markers`) : fail(`only ${mapInfo.markers} markers`);
+  /\d+ with known city/.test(mapInfo.meta) ? ok(`map meta: ${mapInfo.meta.slice(0, 60)}…`) : fail("map meta missing");
+  await page.screenshot({ path: path.join(SHOTS, "07-map.png"), fullPage: false });
+  ok("screenshot: 07-map.png");
+
+  log("\nJournal tier filter");
+  await page.click('.view-tab[data-view="cards"]');
+  await page.waitForTimeout(150);
+  await page.click('#tierChips .chip[data-tier="journal"]');
+  await page.waitForTimeout(200);
+  const journalCards = await page.locator(".card").count();
+  journalCards > 0 && journalCards < 30 ? ok(`journal tier filtered to ${journalCards}`) : fail(`journal filter wrong: ${journalCards}`);
+  await page.click('#tierChips .chip[data-tier="all"]');
+  await page.waitForTimeout(200);
+
+  log("\nSort dropdown");
+  await page.selectOption("#sortSelect", "name-asc");
+  await page.waitForTimeout(200);
+  const firstByName = await page.locator(".card-name").first().innerText();
+  /^A/.test(firstByName.trim()) ? ok(`sort name-asc puts A* first: ${firstByName.replace(/\s+/g, " ").trim()}`) : fail(`sort wrong: ${firstByName}`);
+
+  log("\nURL hash state");
+  const hash = await page.evaluate(() => location.hash);
+  /sort=name-asc/.test(hash) ? ok(`hash reflects sort: ${hash}`) : fail(`hash missing sort: ${hash}`);
+
+  log("\niCal export");
+  const icsRes = await page.request.get(URL.replace(/\/$/, "") + "/cal.ics");
+  const icsOk = icsRes.ok();
+  const icsText = await icsRes.text();
+  icsOk && icsText.startsWith("BEGIN:VCALENDAR") ? ok("/cal.ics returns valid VCALENDAR") : fail(`cal.ics broken: ${icsRes.status()}`);
+  /BEGIN:VEVENT[\s\S]+UID:.+@conference-tracker[\s\S]+END:VEVENT/.test(icsText) ? ok("contains VEVENT entries") : fail("no VEVENT in ics");
+
+  log("\nNotes + status (modal)");
+  await page.selectOption("#sortSelect", "deadline-asc");
+  await page.waitForTimeout(150);
+  await page.click(".card");
+  await page.waitForTimeout(150);
+  const hasStatus = await page.locator("#modal-status").count();
+  const hasNotes = await page.locator("#modal-notes").count();
+  hasStatus === 1 ? ok("modal has status select") : fail("no status select");
+  hasNotes === 1 ? ok("modal has notes textarea") : fail("no notes textarea");
+  await page.selectOption("#modal-status", "drafting");
+  await page.fill("#modal-notes", "Test draft note");
+  await page.waitForTimeout(400);
+  const persisted = await page.evaluate(() => ({
+    status: JSON.parse(localStorage.getItem("ct.status") || "{}"),
+    notes: JSON.parse(localStorage.getItem("ct.notes") || "{}"),
+  }));
+  Object.values(persisted.status).includes("drafting") ? ok("status persists to localStorage") : fail("status not saved");
+  Object.values(persisted.notes).includes("Test draft note") ? ok("notes persist to localStorage") : fail("notes not saved");
+  await page.keyboard.press("Escape");
+  await page.waitForTimeout(150);
+
   log("\nMobile viewport");
   await page.setViewportSize({ width: 390, height: 844 });
   await page.click("#themeBtn"); // back to light
@@ -139,8 +201,8 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
   await page.waitForTimeout(200);
   const mobileCards = await page.locator(".card").count();
   mobileCards > 0 ? ok(`mobile renders ${mobileCards} cards`) : fail("mobile broken");
-  await page.screenshot({ path: path.join(SHOTS, "06-mobile.png"), fullPage: false });
-  ok("screenshot: 06-mobile.png");
+  await page.screenshot({ path: path.join(SHOTS, "08-mobile.png"), fullPage: false });
+  ok("screenshot: 08-mobile.png");
 
   await browser.close();
 

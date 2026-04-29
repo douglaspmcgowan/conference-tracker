@@ -29,27 +29,89 @@ for (const f of files) {
   }
 }
 
+// Explicit tag → canonical field. Only tags in this map are recognized.
+// Anything unrecognized returns null and is dropped — the entry keeps whichever
+// fields DID match. This prevents the old fallback from polluting cards
+// with "Knowledge & Information" alongside an already-correct primary tag.
 const fieldMap = {
-  "HCI": "HCI", "AI for Design": "AI for Design", "ML": "ML", "AI/ML": "ML",
-  "NLP": "NLP", "CV": "CV",
-  "Engineering Design": "Engineering Design", "Manufacturing": "Manufacturing",
-  "Visualization": "Visualization", "Cognitive Science": "Cognitive Science",
-  "Robotics": "Robotics", "HRI": "HCI", "Graphics": "Graphics",
+  // HCI cluster
+  "HCI": "HCI", "Human-Computer Interaction": "HCI",
+  "HRI": "HCI", "interaction": "HCI", "UIST": "HCI", "UI": "HCI",
+  "CSCW": "HCI", "Collaboration": "HCI", "tangible": "HCI",
+  // AI for Design cluster
+  "AI for Design": "AI for Design", "AI for design": "AI for Design",
+  "AI for CAD": "AI for Design", "Generative Design": "AI for Design",
+  "Mixed-initiative": "AI for Design",
+  // ML cluster
+  "ML": "ML", "Machine Learning": "ML", "AI": "ML", "AI/ML": "ML",
+  "Deep Learning": "ML", "Foundation Models": "ML", "Agents": "ML",
+  "Datasets": "ML", "Datasets & Benchmarks": "ML",
+  // NLP cluster
+  "NLP": "NLP", "Natural Language Processing": "NLP",
+  "Computational Linguistics": "NLP", "LLM": "NLP",
+  // CV cluster
+  "CV": "CV", "Computer Vision": "CV", "Vision": "CV",
+  // Engineering Design cluster
+  "Engineering Design": "Engineering Design", "Design Science": "Engineering Design",
+  "Design Theory": "Engineering Design", "Design Methodology": "Engineering Design",
+  "DfM": "Engineering Design", "DfAM": "Engineering Design",
+  "Mechanical Design": "Engineering Design", "Product Design": "Engineering Design",
+  "Design Cognition": "Engineering Design",
+  // Manufacturing cluster
+  "Manufacturing": "Manufacturing", "Additive Manufacturing": "Manufacturing",
+  "AM": "Manufacturing", "3D Printing": "Manufacturing",
+  // Visualization cluster
+  "Visualization": "Visualization", "InfoVis": "Visualization", "SciVis": "Visualization",
+  "VAST": "Visualization", "Data Visualization": "Visualization",
+  // Cognitive Science cluster
+  "Cognitive Science": "Cognitive Science", "CogSci": "Cognitive Science",
+  "Psychology": "Cognitive Science",
+  // Robotics cluster
+  "Robotics": "Robotics", "Autonomy": "Robotics",
+  // Graphics cluster
+  "Graphics": "Graphics", "Computer Graphics": "Graphics", "3D": "Graphics",
+  "Geometry": "Graphics", "Rendering": "Graphics",
+  // Knowledge & Information cluster — ONLY when explicit
   "Knowledge & Information": "Knowledge & Information",
-  "Affective": "Affective", "Health": "Health", "Datasets": "ML",
+  "Knowledge Graphs": "Knowledge & Information",
+  "Information Retrieval": "Knowledge & Information",
+  "Digital Libraries": "Knowledge & Information",
+  "Hypertext": "Knowledge & Information",
+  "Web": "Knowledge & Information",
+  // Affective / Health
+  "Affective": "Affective", "Affective Computing": "Affective",
+  "Health": "Health", "Wellbeing": "Health", "Wearables": "Health",
+  "BCI": "Health",
 };
-const canon = (f) => fieldMap[f] || (
-  /HCI|UIST|interaction/i.test(f) ? "HCI" :
-  /visual/i.test(f) ? "Visualization" :
-  /manuf|additive/i.test(f) ? "Manufacturing" :
-  /design/i.test(f) ? "Engineering Design" :
-  /cogn|psych/i.test(f) ? "Cognitive Science" :
-  /robot/i.test(f) ? "Robotics" :
-  /NLP/i.test(f) ? "NLP" :
-  /graph|3D/i.test(f) ? "Graphics" :
-  /ML|learning|AI/i.test(f) ? "ML" :
-  "Knowledge & Information"
-);
+
+// Strict canon: returns null for unknown tags. Heuristic patterns kick in
+// only after the explicit map misses, and only return a non-null value if
+// the input clearly matches a known cluster.
+const canon = (raw) => {
+  if (!raw || typeof raw !== "string") return null;
+  const f = raw.trim();
+  if (fieldMap[f]) return fieldMap[f];
+  // case-insensitive map lookup
+  const lower = f.toLowerCase();
+  for (const k of Object.keys(fieldMap)) {
+    if (k.toLowerCase() === lower) return fieldMap[k];
+  }
+  // narrow heuristics — strict enough that random tags don't slip through
+  if (/^(HCI|UIST|interaction|HRI)$/i.test(f)) return "HCI";
+  if (/visualization|infovis|scivis/i.test(f)) return "Visualization";
+  if (/manufactur|additive/i.test(f)) return "Manufacturing";
+  if (/^design|engineering design|design (science|theory|methodology|cogn)/i.test(f)) return "Engineering Design";
+  if (/cognitive|psycholog/i.test(f)) return "Cognitive Science";
+  if (/robotic/i.test(f)) return "Robotics";
+  if (/^NLP|natural language/i.test(f)) return "NLP";
+  if (/^(CV|computer vision)$/i.test(f)) return "CV";
+  if (/(graphics|rendering|geometry)/i.test(f)) return "Graphics";
+  if (/^(ML|machine learning|deep learning|foundation model)/i.test(f)) return "ML";
+  if (/affective/i.test(f)) return "Affective";
+  if (/wellbeing|wearable|health|BCI/i.test(f)) return "Health";
+  if (/knowledge|hypertext|digital librar|^web$/i.test(f)) return "Knowledge & Information";
+  return null;
+};
 
 const normDate = (s) => {
   if (!s || ["TBA", "TBD", "rolling", "null"].includes(s) || typeof s !== "string") return null;
@@ -71,8 +133,19 @@ const normTier = (t) => {
 };
 
 const cleaned = all.map((c) => {
+  // Drop nulls (unrecognized) — keep only canonical tags. Only fall back
+  // to a generic bucket if NOTHING in the original list matched.
   const fset = [...new Set((c.fields || []).map(canon).filter(Boolean))];
-  if (!fset.length) fset.push("Knowledge & Information");
+  if (!fset.length) {
+    // Last-ditch heuristic against the conference name itself.
+    const blob = (c.name + " " + (c.fullName || "")).toLowerCase();
+    if (/chi|uist|hci|cscw|iui/.test(blob)) fset.push("HCI");
+    else if (/idetc|design|asme/.test(blob)) fset.push("Engineering Design");
+    else if (/neurips|icml|iclr|aaai|ijcai/.test(blob)) fset.push("ML");
+    else if (/vis|vast|eurovis/.test(blob)) fset.push("Visualization");
+    else if (/cogsci|psychon/.test(blob)) fset.push("Cognitive Science");
+    else fset.push("Knowledge & Information");
+  }
   return {
     id: c.id,
     name: c.name,
@@ -122,11 +195,14 @@ const fields = {
   "Health":                  { color: "#C84D4D", label: "Health" },
 };
 
-const header = `// Generated ${new Date().toISOString().slice(0, 10)} by scripts/refresh-data.js\n\n`;
+const generated = new Date().toISOString();
+const header = `// Generated ${generated.slice(0, 10)} by scripts/refresh-data.js\n\n`;
 fs.writeFileSync(
   "./data/conferences.js",
   header +
-    "module.exports = {\n  fields: " +
+    "module.exports = {\n  generated: " +
+    JSON.stringify(generated) +
+    ",\n\n  fields: " +
     JSON.stringify(fields, null, 2) +
     ",\n\n  conferences: " +
     JSON.stringify(cleaned, null, 2) +

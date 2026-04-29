@@ -8,10 +8,95 @@ const PORT = process.env.PORT || 3010;
 app.get("/health", (req, res) => res.send("ok"));
 app.get("/api/conferences", (req, res) => res.json(data));
 
+app.get("/cal.ics", (req, res) => {
+  // ?ids=a,b,c restricts the export; otherwise all conferences with deadlines.
+  const onlyIds = req.query.ids
+    ? new Set(String(req.query.ids).split(",").map((s) => s.trim()).filter(Boolean))
+    : null;
+  res.set("Content-Type", "text/calendar; charset=utf-8");
+  res.set("Content-Disposition", 'attachment; filename="conferences.ics"');
+  res.send(buildICS(onlyIds));
+});
+
 app.get("*", (req, res) => {
   res.set("Content-Type", "text/html; charset=utf-8");
   res.send(buildPage());
 });
+
+// ------ iCalendar export (RFC 5545) ------
+function buildICS(onlyIds) {
+  const dtstamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const events = [];
+  for (const c of data.conferences) {
+    if (onlyIds && !onlyIds.has(c.id)) continue;
+    if (c.deadline) {
+      events.push(icsEvent({
+        uid: `${c.id}-deadline@conference-tracker`,
+        summary: `${c.name} ${c.year} — paper deadline`,
+        description: [c.fullName, c.fit, "Format: " + (c.format || "—"), "CFP: " + c.link]
+          .filter(Boolean).join("\n"),
+        url: c.link,
+        date: c.deadline,
+        dtstamp,
+      }));
+    }
+    if (c.abstractDeadline) {
+      events.push(icsEvent({
+        uid: `${c.id}-abstract@conference-tracker`,
+        summary: `${c.name} ${c.year} — abstract due`,
+        description: c.fullName,
+        url: c.link,
+        date: c.abstractDeadline,
+        dtstamp,
+      }));
+    }
+    if (c.conferenceStart) {
+      events.push(icsEvent({
+        uid: `${c.id}-conference@conference-tracker`,
+        summary: `${c.name} ${c.year} (conference)`,
+        description: [c.fullName, "Where: " + ((c.location && c.location.city) || "TBA")].join("\n"),
+        url: c.link,
+        date: c.conferenceStart,
+        dateEnd: c.conferenceEnd || c.conferenceStart,
+        dtstamp,
+      }));
+    }
+  }
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//conference-tracker//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "X-WR-CALNAME:Conference deadlines",
+    "X-WR-CALDESC:Submission deadlines and conference dates from conference-tracker.",
+    ...events,
+    "END:VCALENDAR",
+  ].join("\r\n");
+}
+function icsEvent({ uid, summary, description, url, date, dateEnd, dtstamp }) {
+  const fmt = (d) => d.replace(/-/g, "");
+  const lines = [
+    "BEGIN:VEVENT",
+    "UID:" + uid,
+    "DTSTAMP:" + dtstamp,
+    "DTSTART;VALUE=DATE:" + fmt(date),
+  ];
+  if (dateEnd) {
+    // iCal DTEND on a DATE event is exclusive — add one day.
+    const next = new Date(dateEnd + "T00:00:00");
+    next.setDate(next.getDate() + 1);
+    lines.push("DTEND;VALUE=DATE:" + fmt(next.toISOString().slice(0, 10)));
+  }
+  lines.push("SUMMARY:" + icsEscape(summary));
+  if (description) lines.push("DESCRIPTION:" + icsEscape(description));
+  if (url) lines.push("URL:" + url);
+  lines.push("END:VEVENT");
+  return lines.join("\r\n");
+}
+function icsEscape(s) {
+  return String(s).replace(/[\\;,]/g, (c) => "\\" + c).replace(/\n/g, "\\n");
+}
 
 function buildPage() {
   const dataJson = JSON.stringify(data);
@@ -51,6 +136,10 @@ function buildPage() {
       <button class="view-tab active" data-view="timeline" role="tab" aria-selected="true">Timeline</button>
       <button class="view-tab" data-view="cards" role="tab" aria-selected="false">Cards</button>
       <button class="view-tab" data-view="table" role="tab" aria-selected="false">Table</button>
+      <button class="view-tab" data-view="map" role="tab" aria-selected="false">Map</button>
+      <span class="viewbar-spacer"></span>
+      <a class="viewbar-action" href="/cal.ics" download="conferences.ics" title="Download all deadlines as iCal">.ics</a>
+      <button class="viewbar-action" id="submitConfBtn" title="Suggest a missing conference">+ suggest</button>
     </div>
   </nav>
 
@@ -68,7 +157,18 @@ function buildPage() {
         <button class="chip" data-tier="A">A</button>
         <button class="chip" data-tier="B">B</button>
         <button class="chip" data-tier="industry">Industry</button>
+        <button class="chip" data-tier="journal">Journal</button>
       </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Sort</span>
+      <select class="select" id="sortSelect">
+        <option value="deadline-asc">Deadline ↑</option>
+        <option value="deadline-desc">Deadline ↓</option>
+        <option value="conference-asc">Conf date ↑</option>
+        <option value="name-asc">Name A→Z</option>
+        <option value="tier-asc">Tier (A* first)</option>
+      </select>
     </div>
     <div class="filter-group">
       <span class="filter-label">Window</span>
@@ -95,6 +195,7 @@ function buildPage() {
     <section id="view-timeline" class="view"></section>
     <section id="view-cards" class="view hidden"></section>
     <section id="view-table" class="view hidden"></section>
+    <section id="view-map" class="view hidden"></section>
   </main>
 
   <div id="detailModal" class="modal hidden" aria-hidden="true" aria-modal="true" role="dialog">
@@ -108,9 +209,9 @@ function buildPage() {
   <footer class="colophon">
     <span class="colophon-bit">Inter Tight · JetBrains Mono</span>
     <span class="colophon-sep">/</span>
-    <span class="colophon-bit">Data verified ${new Date().toISOString().slice(0,10)}</span>
+    <span class="colophon-bit">Data refreshed ${(data.generated || new Date().toISOString()).slice(0,10)}</span>
     <span class="colophon-sep">/</span>
-    <span class="colophon-bit">Single accent · hairlines · grain</span>
+    <span class="colophon-bit"><a class="colophon-link" href="https://github.com/douglaspmcgowan/conference-tracker" target="_blank" rel="noopener">github.com/douglaspmcgowan/conference-tracker</a></span>
   </footer>
 
 <script>window.__DATA__ = ${dataJson};</script>
@@ -317,6 +418,172 @@ code {
 }
 .view-tab:hover { color: var(--ink-soft); opacity: 1; transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
 .view-tab.active { color: var(--ink); opacity: 1; border-bottom-color: var(--accent); }
+
+.viewbar-spacer { flex: 1 1 auto; min-width: 0.5rem; }
+.viewbar-action {
+  flex: 0 0 auto;
+  align-self: center;
+  margin: 0.4rem 0;
+  padding: 0.32rem 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color var(--dur-out) var(--ease-out), border-color var(--dur-out) var(--ease-out);
+}
+.viewbar-action:hover { color: var(--ink); border-color: var(--ink-soft); transition-duration: var(--dur-in); }
+
+/* ------ Select (sort + status) ------ */
+.select {
+  font-family: var(--sans);
+  font-size: 0.84rem;
+  color: var(--ink);
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.34rem 1.6rem 0.34rem 0.7rem;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='currentColor' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.55rem center;
+  background-size: 0.6rem;
+  transition: border-color var(--dur-out) var(--ease-out), background var(--dur-out) var(--ease-out);
+}
+.select:hover { border-color: var(--ink-soft); transition-duration: var(--dur-in); }
+.select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ------ Status pill (per-conf state) ------ */
+.status-pill {
+  display: inline-flex; align-items: center;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.12rem 0.42rem;
+  border-radius: 2px;
+  background: var(--paper-deep);
+  color: var(--ink-soft);
+  font-weight: 500;
+  margin-left: 0.35rem;
+}
+.status-pill.status-interested { background: var(--accent-soft); color: var(--accent); }
+.status-pill.status-drafting   { background: var(--warn-soft);   color: var(--warn); }
+.status-pill.status-submitted  { background: rgba(45, 91, 255, 0.18); color: var(--accent); }
+.status-pill.status-accepted   { background: rgba(47, 107, 63, 0.16); color: var(--good, #2F6B3F); }
+.status-pill.status-rejected   { background: var(--urgent-soft); color: var(--urgent); }
+
+.note-mark {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+  margin-left: 0.25rem;
+  cursor: default;
+}
+
+/* ------ Colophon link ------ */
+.colophon-link {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-out) var(--ease-out), border-color var(--dur-out) var(--ease-out);
+}
+.colophon-link:hover { color: var(--ink); border-color: var(--ink-soft); transition-duration: var(--dur-in); }
+
+/* ------ Map view ------ */
+.map-wrap { position: relative; }
+.map-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.4rem;
+  padding: 0.4rem 0 1.1rem;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--rule-soft);
+  margin-bottom: 1.1rem;
+}
+.map-meta strong {
+  font-family: var(--sans);
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  margin-right: 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+.map-meta .map-hint { color: var(--ink-faint); font-style: italic; text-transform: none; letter-spacing: 0.02em; }
+.map-svg-wrap { position: relative; }
+.map-svg { display: block; max-width: 100%; height: auto; }
+.map-marker { cursor: pointer; transition: transform var(--dur-out) var(--ease-out); transform-box: fill-box; transform-origin: center; }
+.map-marker:hover { transition-duration: var(--dur-in); }
+.map-marker:hover circle:nth-child(1) { fill-opacity: 0.20; }
+.map-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.45rem 0.7rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  transform: translate(-50%, calc(-100% - 6px));
+  opacity: 0;
+  transition: opacity 140ms ease;
+  white-space: nowrap;
+  font-family: var(--sans);
+}
+.map-tooltip.visible { opacity: 1; }
+
+/* ------ Modal tracking (status + notes) ------ */
+.modal-tracking { display: flex; flex-direction: column; gap: 0.85rem; }
+.tracking-row {
+  display: flex; align-items: center; gap: 0.85rem;
+  font-size: 0.92rem;
+}
+.tracking-row-stack { flex-direction: column; align-items: stretch; gap: 0.4rem; }
+.tracking-label {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  width: 5.5rem;
+  flex-shrink: 0;
+}
+.tracking-row-stack .tracking-label { width: auto; }
+.notes-area {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.7rem 0.85rem;
+  resize: vertical;
+  min-height: 5rem;
+  transition: border-color var(--dur-out) var(--ease-out), background var(--dur-out) var(--ease-out);
+}
+.notes-area:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-color: transparent; background: var(--paper); }
+.notes-area::placeholder { color: var(--ink-faint); }
+
+.modal-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.1rem; }
+.modal-link-btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--rule);
+}
+.modal-link-btn-secondary:hover { background: var(--paper-soft); color: var(--ink); border-color: var(--ink-soft); }
 
 /* ------ Filters ------ */
 .filters { max-width: 78rem; margin: 0 auto; padding: 1.15rem 2rem 1.45rem; display: flex; gap: 1.25rem 2rem; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--rule); }
@@ -662,6 +929,95 @@ function getJS() {
   const FIELDS = DATA.fields;
   const TODAY = new Date(); TODAY.setHours(0,0,0,0);
 
+  // ------ City geocoding (lat, lng). Hand-curated for the cities the data uses. ------
+  const CITY_GEO = {
+    "Aix-en-Provence|France": [43.5297, 5.4474],
+    "Austin|USA": [30.2672, -97.7431],
+    "Bangkok|Thailand": [13.7563, 100.5018],
+    "Barcelona|Spain": [41.3851, 2.1734],
+    "Beijing|China": [39.9042, 116.4074],
+    "Boston|USA": [42.3601, -71.0589],
+    "Bremen|Germany": [53.0793, 8.8017],
+    "Cagliari|Italy": [39.2238, 9.1217],
+    "Cavtat|Croatia": [42.5808, 18.2168],
+    "Charlotte|USA": [35.2271, -80.8431],
+    "Dallas|USA": [32.7767, -96.7970],
+    "Denver|USA": [39.7392, -104.9903],
+    "Detroit|USA": [42.3314, -83.0458],
+    "Dubai|UAE": [25.2048, 55.2708],
+    "Dublin|Ireland": [53.3498, -6.2603],
+    "Edinburgh|Scotland": [55.9533, -3.1883], "Edinburgh|UK": [55.9533, -3.1883],
+    "El Segundo|USA": [33.9192, -118.4165],
+    "Foz do Iguaçu|Brazil": [-25.5469, -54.5882],
+    "Frankfurt|Germany": [50.1109, 8.6821],
+    "Gothenburg|Sweden": [57.7089, 11.9746],
+    "Graz|Austria": [47.0707, 15.4395],
+    "Helsinki|Finland": [60.1699, 24.9384],
+    "Houston|USA": [29.7604, -95.3698],
+    "Istanbul|Türkiye": [41.0082, 28.9784], "Istanbul|Turkey": [41.0082, 28.9784],
+    "Jeju|South Korea": [33.4996, 126.5312],
+    "Kuala Lumpur|Malaysia": [3.1390, 101.6869],
+    "Lancaster|UK": [54.0466, -2.8007],
+    "Lieusaint|France": [48.6275, 2.5489],
+    "Limassol|Cyprus": [34.7071, 33.0226],
+    "Linz|Austria": [48.3069, 14.2858],
+    "Lisbon|Portugal": [38.7223, -9.1393],
+    "Ljubljana|Slovenia": [46.0569, 14.5058],
+    "London|UK": [51.5074, -0.1278],
+    "Los Angeles|USA": [34.0522, -118.2437],
+    "Malmö|Sweden": [55.6050, 13.0038],
+    "Melbourne|Australia": [-37.8136, 144.9631],
+    "Milan|Italy": [45.4642, 9.1900],
+    "Montreal|Canada": [45.5017, -73.5673], "Montréal|Canada": [45.5017, -73.5673],
+    "Naples/Capri|Italy": [40.8518, 14.2681], "Napoli|Italy": [40.8518, 14.2681],
+    "New York|USA": [40.7128, -74.0060],
+    "Nottingham|UK": [52.9548, -1.1581],
+    "Orlando|USA": [28.5383, -81.3792],
+    "Paderborn|Germany": [51.7189, 8.7575],
+    "Paris|France": [48.8566, 2.3522],
+    "Patras|Greece": [38.2466, 21.7346],
+    "Philadelphia|USA": [39.9526, -75.1652],
+    "Pittsburgh|USA": [40.4406, -79.9959],
+    "Puebla|Mexico": [19.0414, -98.2063],
+    "Reno|USA": [39.5296, -119.8138],
+    "Rio de Janeiro|Brazil": [-22.9068, -43.1729],
+    "Rome|Italy": [41.9028, 12.4964],
+    "Salt Lake City|USA": [40.7608, -111.8910],
+    "San Diego|USA": [32.7157, -117.1611],
+    "San Francisco|USA": [37.7749, -122.4194],
+    "Santa Clara|USA": [37.3541, -121.9552],
+    "Shanghai|China": [31.2304, 121.4737],
+    "Shenyang|China": [41.8057, 123.4315],
+    "Singapore|Singapore": [1.3521, 103.8198],
+    "State College|USA": [40.7934, -77.8600],
+    "Swansea|UK": [51.6214, -3.9436],
+    "Sydney|Australia": [-33.8688, 151.2093],
+    "Tampere|Finland": [61.4978, 23.7610],
+    "Tokyo|Japan": [35.6762, 139.6503],
+    "Toronto|Canada": [43.6532, -79.3832],
+    "Tucson|USA": [32.2226, -110.9747],
+    "Turin|Italy": [45.0703, 7.6869],
+    "Vaasa|Finland": [63.0951, 21.6165],
+    "Wellington|New Zealand": [-41.2865, 174.7762],
+    "York|UK": [53.9600, -1.0873],
+    "Yokohama|Japan": [35.4437, 139.6380],
+  };
+  function geo(c) {
+    if (!c.location || !c.location.city) return null;
+    const k = c.location.city + "|" + (c.location.country || "");
+    return CITY_GEO[k] || null;
+  }
+
+  const STATUSES = ["", "interested", "drafting", "submitted", "accepted", "rejected"];
+  const STATUS_LABEL = {
+    "": "—",
+    "interested": "interested",
+    "drafting": "drafting",
+    "submitted": "submitted",
+    "accepted": "accepted",
+    "rejected": "rejected",
+  };
+
   // ------ State ------
   const state = {
     view: localStorage.getItem("ct.view") || "timeline",
@@ -671,9 +1027,37 @@ function getJS() {
     search: "",
     starredOnly: false,
     starred: new Set(JSON.parse(localStorage.getItem("ct.starred") || "[]")),
-    sort: "deadline",
-    sortDir: 1,
+    notes: JSON.parse(localStorage.getItem("ct.notes") || "{}"),
+    status: JSON.parse(localStorage.getItem("ct.status") || "{}"),
+    sort: "deadline-asc",
   };
+
+  // ------ Hash state (sharable URL) ------
+  // URL hash format: #f=HCI,ML&t=A*&w=90&q=neurips&s=1&sort=deadline-asc
+  function readHash() {
+    const h = location.hash.slice(1);
+    if (!h) return;
+    const params = new URLSearchParams(h);
+    if (params.has("f")) state.fields = new Set(params.get("f").split(",").filter(Boolean));
+    if (params.has("t")) state.tier = params.get("t");
+    if (params.has("w")) state.window = params.get("w");
+    if (params.has("q")) state.search = params.get("q").toLowerCase();
+    if (params.has("s")) state.starredOnly = params.get("s") === "1";
+    if (params.has("sort")) state.sort = params.get("sort");
+    if (params.has("v")) state.view = params.get("v");
+  }
+  function writeHash() {
+    const params = new URLSearchParams();
+    if (state.fields.size) params.set("f", [...state.fields].join(","));
+    if (state.tier !== "all") params.set("t", state.tier);
+    if (state.window !== "all") params.set("w", state.window);
+    if (state.search) params.set("q", state.search);
+    if (state.starredOnly) params.set("s", "1");
+    if (state.sort !== "deadline-asc") params.set("sort", state.sort);
+    const hash = params.toString();
+    history.replaceState(null, "", hash ? "#" + hash : location.pathname);
+  }
+  readHash();
 
   // ------ Theme ------
   const themeBtn = document.getElementById("themeBtn");
@@ -691,7 +1075,7 @@ function getJS() {
   const fieldChipsEl = document.getElementById("fieldChips");
   Object.entries(FIELDS).forEach(([key, f]) => {
     const btn = document.createElement("button");
-    btn.className = "chip";
+    btn.className = "chip" + (state.fields.has(key) ? " active" : "");
     btn.dataset.field = key;
     btn.style.setProperty("--field-color", f.color);
     btn.innerHTML = '<span class="chip-dot" style="background:' + f.color + '"></span>' + f.label;
@@ -699,43 +1083,73 @@ function getJS() {
       if (state.fields.has(key)) state.fields.delete(key);
       else state.fields.add(key);
       btn.classList.toggle("active", state.fields.has(key));
-      render();
+      writeHash(); render();
     });
     fieldChipsEl.appendChild(btn);
   });
 
   // ------ Tier chips ------
   document.querySelectorAll("#tierChips .chip").forEach(b => {
-    if (b.dataset.tier === "all") b.classList.add("active");
+    b.classList.toggle("active", b.dataset.tier === state.tier);
     b.addEventListener("click", () => {
       state.tier = b.dataset.tier;
       document.querySelectorAll("#tierChips .chip").forEach(x => x.classList.toggle("active", x === b));
-      render();
+      writeHash(); render();
     });
   });
 
   // ------ Window chips ------
   document.querySelectorAll("#windowChips .chip").forEach(b => {
+    b.classList.toggle("active", b.dataset.window === state.window);
     b.addEventListener("click", () => {
       state.window = b.dataset.window;
       document.querySelectorAll("#windowChips .chip").forEach(x => x.classList.toggle("active", x === b));
-      render();
+      writeHash(); render();
     });
   });
 
+  // ------ Sort dropdown ------
+  const sortSel = document.getElementById("sortSelect");
+  if (sortSel) {
+    sortSel.value = state.sort;
+    sortSel.addEventListener("change", () => {
+      state.sort = sortSel.value;
+      writeHash(); render();
+    });
+  }
+
   // ------ Search ------
   const searchEl = document.getElementById("searchInput");
+  if (state.search) searchEl.value = state.search;
   let searchTimer;
   searchEl.addEventListener("input", () => {
     clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => { state.search = searchEl.value.trim().toLowerCase(); render(); }, 140);
+    searchTimer = setTimeout(() => {
+      state.search = searchEl.value.trim().toLowerCase();
+      writeHash(); render();
+    }, 140);
   });
 
   // ------ Starred toggle ------
-  document.getElementById("starredOnly").addEventListener("change", (e) => {
+  const starredOnlyEl = document.getElementById("starredOnly");
+  starredOnlyEl.checked = !!state.starredOnly;
+  starredOnlyEl.addEventListener("change", (e) => {
     state.starredOnly = e.target.checked;
-    render();
+    writeHash(); render();
   });
+
+  // ------ Submit a conference (opens prefilled GitHub issue in new tab) ------
+  const submitBtn = document.getElementById("submitConfBtn");
+  if (submitBtn) {
+    submitBtn.addEventListener("click", () => {
+      const tmpl = "Conference name (acronym + full):\\n\\nField(s):\\n\\nTier (A* / A / B / industry / journal):\\n\\nDeadline (YYYY-MM-DD):\\nNotification (YYYY-MM-DD):\\nConference dates (YYYY-MM-DD to YYYY-MM-DD):\\n\\nLocation (city, country):\\n\\nFormat / page limit / blind:\\n\\nCFP link:\\n\\nWhy it fits Doug's research (1 line):\\n\\nSources (≥2 URLs):\\n";
+      const url = "https://github.com/douglaspmcgowan/conference-tracker/issues/new?title=" +
+        encodeURIComponent("Suggest conference: ") +
+        "&body=" + encodeURIComponent(tmpl.replace(/\\\\n/g, "\\n")) +
+        "&labels=conference-suggestion";
+      window.open(url, "_blank", "noopener");
+    });
+  }
 
   // ------ View tabs ------
   document.querySelectorAll(".view-tab").forEach(t => {
@@ -754,7 +1168,17 @@ function getJS() {
     });
   });
   document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
-  document.getElementById("view-" + state.view).classList.remove("hidden");
+  const initialViewEl = document.getElementById("view-" + state.view);
+  if (initialViewEl) {
+    initialViewEl.classList.remove("hidden");
+  } else {
+    state.view = "timeline";
+    document.getElementById("view-timeline").classList.remove("hidden");
+  }
+  document.querySelectorAll(".view-tab").forEach(t => {
+    t.classList.toggle("active", t.dataset.view === state.view);
+    t.setAttribute("aria-selected", t.dataset.view === state.view ? "true" : "false");
+  });
 
   // ------ Filtering ------
   function nextDate(c) {
@@ -772,7 +1196,7 @@ function getJS() {
     return Math.round((date - TODAY) / (1000 * 60 * 60 * 24));
   }
   function visibleConfs() {
-    return CONFS.filter(c => {
+    const list = CONFS.filter(c => {
       if (state.fields.size && !c.fields.some(f => state.fields.has(f))) return false;
       if (state.tier !== "all" && c.tier !== state.tier) return false;
       if (state.starredOnly && !state.starred.has(c.id)) return false;
@@ -789,6 +1213,45 @@ function getJS() {
       }
       return true;
     });
+    return sortConfs(list);
+  }
+
+  function sortConfs(list) {
+    const TIER_ORDER = { "A*": 0, "A": 1, "B": 2, "industry": 3, "journal": 4 };
+    const FAR = new Date(8640000000000000);
+    const sortKey = state.sort || "deadline-asc";
+    const out = list.slice();
+    out.sort((a, b) => {
+      switch (sortKey) {
+        case "deadline-desc": {
+          const da = parseDate(a.deadline) || FAR;
+          const db = parseDate(b.deadline) || FAR;
+          return db - da;
+        }
+        case "conference-asc": {
+          const da = parseDate(a.conferenceStart) || FAR;
+          const db = parseDate(b.conferenceStart) || FAR;
+          return da - db;
+        }
+        case "name-asc":
+          return a.name.localeCompare(b.name) || (a.year || 0) - (b.year || 0);
+        case "tier-asc": {
+          const ta = TIER_ORDER[a.tier] ?? 99;
+          const tb = TIER_ORDER[b.tier] ?? 99;
+          if (ta !== tb) return ta - tb;
+          const da = parseDate(a.deadline) || FAR;
+          const db = parseDate(b.deadline) || FAR;
+          return da - db;
+        }
+        case "deadline-asc":
+        default: {
+          const da = parseDate(a.deadline) || parseDate(a.conferenceStart) || FAR;
+          const db = parseDate(b.deadline) || parseDate(b.conferenceStart) || FAR;
+          return da - db;
+        }
+      }
+    });
+    return out;
   }
 
   function fmtDate(s) {
@@ -848,6 +1311,7 @@ function getJS() {
     const list = visibleConfs();
     if (state.view === "timeline") renderTimeline(list);
     else if (state.view === "cards") renderCards(list);
+    else if (state.view === "map") renderMap(list);
     else renderTable(list);
   }
 
@@ -997,19 +1461,12 @@ function getJS() {
   }
 
   // ------ Cards view ------
+  // List is pre-sorted by visibleConfs(). No local sort here.
   function renderCards(list) {
     const el = document.getElementById("view-cards");
     if (!list.length) { el.innerHTML = '<div class="timeline-empty">No conferences match the current filters.</div>'; return; }
 
-    const sorted = list.slice().sort((a,b) => {
-      const da = parseDate(a.deadline) || parseDate(a.conferenceStart);
-      const db = parseDate(b.deadline) || parseDate(b.conferenceStart);
-      if (!da && !db) return 0;
-      if (!da) return 1; if (!db) return -1;
-      return da - db;
-    });
-
-    const cardsHtml = sorted.map(c => {
+    const cardsHtml = list.map(c => {
       const days = daysUntil(parseDate(c.deadline));
       const cdCls = countdownClass(days);
       const cdTxt = c.deadline ? countdownText(days) : "no deadline";
@@ -1019,6 +1476,8 @@ function getJS() {
       }).join("");
       const tierClass = c.tier === "A*" ? "tier-a-star" : "tier-" + c.tier;
       const isStarred = state.starred.has(c.id);
+      const status = state.status[c.id] || "";
+      const noteCount = (state.notes[c.id] || "").length;
 
       return '<article class="card" data-id="' + c.id + '">' +
         '<div class="card-row">' +
@@ -1036,6 +1495,8 @@ function getJS() {
         (c.fit ? '<p class="card-fit">' + escape(c.fit) + '</p>' : '') +
         '<div class="card-actions">' +
           '<a class="card-link" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">CFP ↗</a>' +
+          (status ? '<span class="status-pill status-' + status + '">' + escape(STATUS_LABEL[status] || status) + '</span>' : '') +
+          (noteCount ? '<span class="note-mark" title="You\\'ve added notes">⊝</span>' : '') +
           (c.confidence === "estimated" ? '<span class="confidence-mark estimated">est.</span>' : '') +
           '<button class="star-btn ' + (isStarred ? "starred" : "") + '" data-star="' + c.id + '" aria-label="Star" title="Star">★</button>' +
         '</div>' +
@@ -1058,31 +1519,28 @@ function getJS() {
   }
 
   // ------ Table view ------
+  // List is pre-sorted by visibleConfs(). Column-header clicks remap state.sort
+  // to one of the central keys, then trigger render() — which re-sorts globally.
   function renderTable(list) {
     const el = document.getElementById("view-table");
     if (!list.length) { el.innerHTML = '<div class="timeline-empty">No conferences match the current filters.</div>'; return; }
-
-    const sortKey = state.sort;
-    const dir = state.sortDir;
-    const sorted = list.slice().sort((a,b) => {
-      let va, vb;
-      if (sortKey === "deadline") { va = parseDate(a.deadline) || new Date(8640000000000000); vb = parseDate(b.deadline) || new Date(8640000000000000); }
-      else if (sortKey === "name") { va = a.name; vb = b.name; }
-      else if (sortKey === "tier") { va = a.tier || ""; vb = b.tier || ""; }
-      else if (sortKey === "field") { va = (a.fields[0]||""); vb = (b.fields[0]||""); }
-      else if (sortKey === "loc") { va = (a.location?.country||"") + (a.location?.city||""); vb = (b.location?.country||"") + (b.location?.city||""); }
-      else { va = a[sortKey]; vb = b[sortKey]; }
-      if (va < vb) return -1 * dir; if (va > vb) return dir; return 0;
-    });
-
-    const rows = sorted.map(c => {
+    const colSortMap = {
+      name: "name-asc",
+      tier: "tier-asc",
+      deadline: "deadline-asc",
+      conferenceStart: "conference-asc",
+    };
+    const rows = list.map(c => {
       const days = daysUntil(parseDate(c.deadline));
       const cdCls = countdownClass(days);
       const cdTxt = c.deadline ? countdownText(days) : "—";
       const isStarred = state.starred.has(c.id);
+      const status = state.status[c.id] || "";
       return '<tr data-id="' + c.id + '">' +
         '<td><button class="star-btn ' + (isStarred ? "starred" : "") + '" data-star="' + c.id + '" aria-label="Star">★</button></td>' +
-        '<td><strong>' + escape(c.name) + '</strong> <span style="color:var(--ink-faint);font-family:var(--mono);font-size:0.78rem;">′' + String(c.year).slice(-2) + '</span></td>' +
+        '<td><strong>' + escape(c.name) + '</strong> <span style="color:var(--ink-faint);font-family:var(--mono);font-size:0.78rem;font-variant-numeric:tabular-nums">′' + String(c.year).slice(-2) + '</span>' +
+          (status ? ' <span class="status-pill status-' + status + '">' + escape(STATUS_LABEL[status] || status) + '</span>' : '') +
+        '</td>' +
         '<td>' + (c.fields||[]).map(f => '<span class="card-tag" style="background:' + ((FIELDS[f]||{}).color||"#888") + ';margin-right:3px">' + escape((FIELDS[f]||{}).label || f) + '</span>').join("") + '</td>' +
         '<td>' + escape(c.tier || "—") + '</td>' +
         '<td class="num">' + fmtDate(c.deadline) + ' <span class="card-countdown ' + cdCls + '" style="font-size:0.7rem">' + cdTxt + '</span></td>' +
@@ -1096,11 +1554,11 @@ function getJS() {
       '<thead><tr>' +
         '<th></th>' +
         '<th data-sort="name">Conf</th>' +
-        '<th data-sort="field">Field</th>' +
+        '<th>Field</th>' +
         '<th data-sort="tier">Tier</th>' +
         '<th data-sort="deadline">Deadline</th>' +
         '<th data-sort="conferenceStart">Conference</th>' +
-        '<th data-sort="loc">Where</th>' +
+        '<th>Where</th>' +
         '<th></th>' +
       '</tr></thead>' +
       '<tbody>' + rows + '</tbody>' +
@@ -1108,10 +1566,14 @@ function getJS() {
 
     el.querySelectorAll("th[data-sort]").forEach(th => {
       th.addEventListener("click", () => {
-        const k = th.dataset.sort;
-        if (state.sort === k) state.sortDir = -state.sortDir;
-        else { state.sort = k; state.sortDir = 1; }
-        render();
+        const target = colSortMap[th.dataset.sort];
+        if (target) {
+          // Toggle asc/desc for deadline; everything else just sets the key.
+          if (target === "deadline-asc" && state.sort === "deadline-asc") state.sort = "deadline-desc";
+          else state.sort = target;
+          if (sortSel) sortSel.value = state.sort;
+          writeHash(); render();
+        }
       });
     });
     el.querySelectorAll("tbody tr").forEach(tr => {
@@ -1125,11 +1587,124 @@ function getJS() {
     });
   }
 
-  // ------ Star ------
+  // ------ Map view ------
+  // Equirectangular projection. Hairline rectangle, no decorative continents.
+  // Conferences without a known city are bucketed at the bottom as "no location".
+  function renderMap(list) {
+    const el = document.getElementById("view-map");
+    if (!list.length) { el.innerHTML = '<div class="timeline-empty">No conferences match the current filters.</div>'; return; }
+
+    const W = 1120, H = 560, MX = 30, MY = 30;
+    const innerW = W - 2 * MX, innerH = H - 2 * MY;
+    const project = (lat, lng) => [
+      MX + ((lng + 180) / 360) * innerW,
+      MY + ((90 - lat) / 180) * innerH,
+    ];
+
+    // Group conferences by city to cluster overlapping markers.
+    const byCity = new Map();
+    const noLoc = [];
+    for (const c of list) {
+      const g = geo(c);
+      if (!g) { noLoc.push(c); continue; }
+      const k = c.location.city + "|" + (c.location.country || "");
+      if (!byCity.has(k)) byCity.set(k, { city: c.location.city, country: c.location.country, lat: g[0], lng: g[1], confs: [] });
+      byCity.get(k).confs.push(c);
+    }
+
+    let svg = '<svg class="map-svg" viewBox="0 0 ' + W + ' ' + H + '" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="World map of conference locations">';
+    // Hairline frame
+    svg += '<rect x="' + MX + '" y="' + MY + '" width="' + innerW + '" height="' + innerH + '" fill="none" stroke="var(--rule)" stroke-width="1"/>';
+    // Equator + tropics
+    [-66.5, -23.4, 0, 23.4, 66.5].forEach(lat => {
+      const y = project(lat, 0)[1];
+      const dash = lat === 0 ? "" : 'stroke-dasharray="2 4"';
+      svg += '<line x1="' + MX + '" y1="' + y + '" x2="' + (W-MX) + '" y2="' + y + '" stroke="var(--rule-soft)" stroke-width="1" ' + dash + '/>';
+    });
+    // Prime meridian
+    const pmX = project(0, 0)[0];
+    svg += '<line x1="' + pmX + '" y1="' + MY + '" x2="' + pmX + '" y2="' + (H-MY) + '" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="2 4"/>';
+    // Continent labels — minimal, faint
+    const labels = [
+      ["NORTH AMERICA", 45, -100], ["SOUTH AMERICA", -15, -60],
+      ["EUROPE", 50, 12], ["AFRICA", 5, 22],
+      ["ASIA", 38, 90], ["OCEANIA", -25, 140],
+    ];
+    labels.forEach(([t, lat, lng]) => {
+      const [x, y] = project(lat, lng);
+      svg += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--ink-faint)" letter-spacing="0.1em" opacity="0.55">' + t + '</text>';
+    });
+
+    // Plot city markers
+    [...byCity.values()].forEach((cluster) => {
+      const [x, y] = project(cluster.lat, cluster.lng);
+      const n = cluster.confs.length;
+      const r = Math.min(11, 4 + Math.sqrt(n) * 1.6);
+      // Dominant field color
+      const fieldCount = {};
+      cluster.confs.forEach(cf => (cf.fields || []).forEach(f => { fieldCount[f] = (fieldCount[f] || 0) + 1; }));
+      const dominantField = Object.entries(fieldCount).sort((a,b) => b[1]-a[1])[0]?.[0];
+      const color = (FIELDS[dominantField] || {}).color || "var(--ink-soft)";
+      const ids = cluster.confs.map(c => c.id).join(",");
+      const tooltip = cluster.city + (cluster.country ? ", " + cluster.country : "") + " · " + n + (n === 1 ? " conference" : " conferences");
+      svg += '<g class="map-marker" data-ids="' + escapeAttr(ids) + '" data-tooltip="' + escapeAttr(tooltip) + '">' +
+        '<circle cx="' + x + '" cy="' + y + '" r="' + (r + 4) + '" fill="' + color + '" fill-opacity="0.10"/>' +
+        '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + color + '" fill-opacity="0.78" stroke="var(--paper)" stroke-width="1.5"/>' +
+        (n > 1 ? '<text x="' + x + '" y="' + (y + 3.5) + '" text-anchor="middle" font-family="var(--mono)" font-size="9" font-weight="600" fill="#fff">' + n + '</text>' : '') +
+      '</g>';
+    });
+
+    svg += '</svg>';
+
+    const knownCount = [...byCity.values()].reduce((a, c) => a + c.confs.length, 0);
+    el.innerHTML =
+      '<div class="map-wrap">' +
+        '<div class="map-meta">' +
+          '<span><strong>' + knownCount + '</strong> with known city</span>' +
+          (noLoc.length ? '<span><strong>' + noLoc.length + '</strong> TBA / virtual</span>' : '') +
+          '<span class="map-hint">Click a marker for details · circle area scales with count</span>' +
+        '</div>' +
+        '<div class="map-svg-wrap">' + svg + '</div>' +
+        '<div class="map-tooltip" id="mapTooltip"></div>' +
+      '</div>';
+
+    const tooltip = document.getElementById("mapTooltip");
+    el.querySelectorAll(".map-marker").forEach(g => {
+      g.addEventListener("mousemove", (ev) => {
+        tooltip.textContent = g.getAttribute("data-tooltip");
+        const wrap = el.querySelector(".map-svg-wrap").getBoundingClientRect();
+        tooltip.style.left = (ev.clientX - wrap.left) + "px";
+        tooltip.style.top = (ev.clientY - wrap.top - 12) + "px";
+        tooltip.classList.add("visible");
+      });
+      g.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
+      g.addEventListener("click", () => {
+        const ids = (g.getAttribute("data-ids") || "").split(",");
+        if (ids.length === 1) openDetail(ids[0]);
+        else {
+          // Multiple at one city: open the first; user can iterate.
+          openDetail(ids[0]);
+        }
+      });
+    });
+  }
+
+  // ------ Star / Notes / Status ------
   function toggleStar(id) {
     if (state.starred.has(id)) state.starred.delete(id);
     else state.starred.add(id);
     localStorage.setItem("ct.starred", JSON.stringify([...state.starred]));
+    render();
+  }
+  function setNote(id, text) {
+    if (text) state.notes[id] = text;
+    else delete state.notes[id];
+    localStorage.setItem("ct.notes", JSON.stringify(state.notes));
+  }
+  function setStatus(id, status) {
+    if (status) state.status[id] = status;
+    else delete state.status[id];
+    localStorage.setItem("ct.status", JSON.stringify(state.status));
     render();
   }
 
@@ -1144,8 +1719,15 @@ function getJS() {
       const meta = FIELDS[f] || { color: "#888", label: f };
       return '<span class="card-tag" style="background:' + meta.color + '">' + escape(meta.label) + '</span>';
     }).join(" ");
+    const status = state.status[c.id] || "";
+    const notes = state.notes[c.id] || "";
+    const statusOpts = STATUSES.map(s =>
+      '<option value="' + s + '"' + (s === status ? ' selected' : '') + '>' + escape(STATUS_LABEL[s] || s) + '</option>'
+    ).join("");
+    const calIcs = "/cal.ics?ids=" + encodeURIComponent(c.id);
+
     modalBody.innerHTML =
-      '<h2 class="modal-name">' + escape(c.name) + ' <span style="color:var(--ink-faint);font-family:var(--mono);font-size:1rem;font-weight:400;">&prime;' + String(c.year).slice(-2) + '</span></h2>' +
+      '<h2 class="modal-name">' + escape(c.name) + ' <span style="color:var(--ink-faint);font-family:var(--mono);font-size:1rem;font-weight:400;font-variant-numeric:tabular-nums">&prime;' + String(c.year).slice(-2) + '</span></h2>' +
       '<p class="modal-fullname">' + escape(c.fullName) + '</p>' +
       '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center">' + tags +
         ' <span class="card-tier" style="font-family:var(--mono)">' + escape(c.tier) + '</span>' +
@@ -1167,7 +1749,31 @@ function getJS() {
         (c.acceptanceRate != null ? '<dt>Accept rate</dt><dd>' + Math.round(c.acceptanceRate * 100) + '%</dd>' : '') +
       '</dl></div>' +
       (c.fit ? '<div class="modal-section"><h3>Fit for you</h3><p style="margin:0;color:var(--ink-soft);font-style:italic;line-height:1.55">' + escape(c.fit) + '</p></div>' : '') +
-      '<a class="modal-link-btn" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener">Open call for papers ↗</a>';
+      '<div class="modal-section"><h3>Your tracking</h3>' +
+        '<div class="modal-tracking">' +
+          '<label class="tracking-row"><span class="tracking-label">Status</span>' +
+            '<select class="select" id="modal-status">' + statusOpts + '</select>' +
+          '</label>' +
+          '<label class="tracking-row tracking-row-stack"><span class="tracking-label">Notes</span>' +
+            '<textarea class="notes-area" id="modal-notes" rows="3" placeholder="Draft progress, co-authors, blockers…">' + escape(notes) + '</textarea>' +
+          '</label>' +
+        '</div>' +
+      '</div>' +
+      '<div class="modal-actions">' +
+        '<a class="modal-link-btn" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener">Open CFP ↗</a>' +
+        '<a class="modal-link-btn modal-link-btn-secondary" href="' + escapeAttr(calIcs) + '" download="' + escape(c.id) + '.ics">+ Calendar (.ics)</a>' +
+      '</div>';
+
+    const statusEl = document.getElementById("modal-status");
+    if (statusEl) statusEl.addEventListener("change", () => setStatus(c.id, statusEl.value));
+    const notesEl = document.getElementById("modal-notes");
+    if (notesEl) {
+      let nt;
+      notesEl.addEventListener("input", () => {
+        clearTimeout(nt);
+        nt = setTimeout(() => setNote(c.id, notesEl.value), 300);
+      });
+    }
     modal.classList.remove("hidden");
     modal.setAttribute("aria-hidden", "false");
   }
