@@ -762,16 +762,22 @@ main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
 }
 .timeline-deadline-marker:hover { r: 7; transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
 .timeline-tooltip {
-  position: absolute; pointer-events: none; background: var(--ink); color: var(--paper);
-  padding: 0.68rem 0.85rem 0.72rem; border-radius: 6px; font-size: 0.8rem; line-height: 1.4;
-  box-shadow: 0 14px 28px rgba(15, 15, 14, 0.16); max-width: 20rem; transform: translate(-50%, calc(-100% - 8px));
+  position: absolute; pointer-events: none;
+  background: var(--paper-raised); color: var(--ink);
+  border: 1px solid var(--rule);
+  padding: 0.6rem 0.82rem 0.65rem; border-radius: 7px; font-size: 0.82rem; line-height: 1.45;
+  box-shadow: 0 4px 16px rgba(15, 15, 14, 0.10), 0 1px 3px rgba(15, 15, 14, 0.06);
+  max-width: 22rem; transform: translate(-50%, calc(-100% - 10px));
   white-space: normal; opacity: 0; transition: opacity var(--dur-out) var(--ease-out);
   font-family: var(--sans);
 }
-[data-theme="dark"] .timeline-tooltip { background: rgba(12, 10, 8, 0.94); box-shadow: 0 16px 28px rgba(0, 0, 0, 0.36); }
+[data-theme="dark"] .timeline-tooltip {
+  background: var(--paper-raised);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28), 0 1px 4px rgba(0, 0, 0, 0.18);
+}
 .timeline-tooltip.visible { opacity: 1; }
-.timeline-tooltip strong { color: var(--paper); font-weight: 600; }
-.timeline-tooltip .tt-date { font-family: var(--mono); font-size: 0.78rem; opacity: 0.85; margin-top: 0.25rem; display: block; }
+.timeline-tooltip strong { color: var(--ink); font-weight: 600; }
+.timeline-tooltip .tt-date { font-family: var(--mono); font-size: 0.76rem; color: var(--ink-soft); margin-top: 0.22rem; display: block; }
 
 .timeline-legend {
   display: flex;
@@ -787,10 +793,23 @@ main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
   text-transform: uppercase;
 }
 .legend-item { display: inline-flex; align-items: center; gap: 0.42rem; white-space: nowrap; }
-.legend-mark { display: inline-block; }
+.legend-mark { display: inline-block; flex-shrink: 0; }
 .legend-mark.deadline { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--ink); }
 .legend-mark.notification { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--ink-faint); }
 .legend-mark.conference { width: 0.9rem; height: 0.4rem; border-radius: 2px; background: var(--accent-soft); border: 1px solid var(--accent-line); }
+.legend-mark.cal-deadline {
+  width: 0.9rem; height: 0.72rem; border-radius: 2px; overflow: hidden;
+  background: linear-gradient(to bottom, #5B6BBF 0%, #5B6BBF 34%, #B8753B 34%, #B8753B 67%, #2F8A6E 67%, #2F8A6E 100%);
+}
+.legend-mark.today-mark {
+  width: 0.9rem; height: 0.72rem; border-radius: 2px; position: relative;
+  background: rgba(45, 91, 255, 0.16);
+}
+.legend-mark.today-mark::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+[data-theme="dark"] .legend-mark.today-mark { background: rgba(122, 156, 255, 0.18); }
 .legend-mark.estimated { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: transparent; border: 1.5px solid var(--ink-soft); }
 
 /* ------ Timeline calendar mode (month-grid heatmap) ------ */
@@ -830,9 +849,23 @@ main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
 }
 .tlcal-cell.empty { background: transparent; box-shadow: inset 0 0 0 1px var(--rule-soft); opacity: 0.5; }
 .tlcal-cell.weekend { background: var(--paper-deep); opacity: 0.5; }
-.tlcal-cell.today { box-shadow: inset 0 0 0 1.5px var(--accent); background: var(--accent-soft); }
+.tlcal-cell.today {
+  z-index: 1;
+  background: rgba(45, 91, 255, 0.16);
+}
+.tlcal-cell.today::after {
+  content: "";
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 2px var(--accent);
+  z-index: 3;
+}
+[data-theme="dark"] .tlcal-cell.today { background: rgba(122, 156, 255, 0.18); }
 .tlcal-cell.has-deadline { cursor: pointer; }
-.tlcal-cell.has-deadline:hover { transform: scale(1.18); z-index: 2; transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.tlcal-cell.has-deadline:hover {
+  transform: scale(1.22); z-index: 2;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.16);
+  transition-duration: var(--dur-in); transition-timing-function: var(--ease-in);
+}
 .tlcal-cell .tlcal-stack {
   position: absolute; inset: 0; display: flex; flex-direction: column;
   border-radius: inherit; overflow: hidden;
@@ -840,8 +873,9 @@ main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
 .tlcal-cell .tlcal-stack > i { display: block; flex: 1 1 0; }
 .tlcal-cell .tlcal-count {
   position: absolute; bottom: 1px; right: 2px;
-  font-family: var(--mono); font-size: 0.55rem; color: #fff; font-weight: 600;
-  text-shadow: 0 0 2px rgba(0,0,0,0.7); line-height: 1;
+  font-family: var(--mono); font-size: 0.6rem; color: #fff; font-weight: 700;
+  background: rgba(0,0,0,0.38); border-radius: 2px; padding: 0 2px;
+  line-height: 1.35; letter-spacing: 0; z-index: 2;
 }
 .tlcal-axis {
   display: grid;
@@ -1641,9 +1675,9 @@ function getJS() {
 
     el.innerHTML =
       '<div class="timeline-legend">' +
-        '<span class="legend-item"><span class="legend-mark deadline"></span>Day with paper deadline (color = field)</span>' +
-        '<span class="legend-item"><span class="legend-mark conference"></span>Today</span>' +
-        '<span class="legend-item">Hover a cell for details · click to open</span>' +
+        '<span class="legend-item"><span class="legend-mark cal-deadline"></span>Paper deadline (stripe = field)</span>' +
+        '<span class="legend-item"><span class="legend-mark today-mark"></span>Today</span>' +
+        '<span class="legend-item">Hover to preview · click to open</span>' +
       '</div>' +
       '<div class="timeline-wrap">' +
         '<div class="tlcal">' + axis + rows + '</div>' +
