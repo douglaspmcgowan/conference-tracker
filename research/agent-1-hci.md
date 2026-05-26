@@ -30,15 +30,15 @@ Notes on conventions:
 
 - **Field:** HCI (primary)
 - **Tier:** A\*
-- **Deadline:** 2026-09-XX (estimated; abstract early Sept, paper mid-Sept based on prior cycles)
-- **Notification:** 2026-12 (R1), 2027-01–02 (R2 final, estimated)
+- **Deadline:** 2026-09-10 (paper only; **no abstract deadline**; submission site opens 2026-07-30)
+- **Revise-and-resubmit:** resubmission 2026-12-03; final notification 2026-12-17
 - **Conference:** 2027-05-10 to 2027-05-14
-- **Location:** Pittsburgh, PA, USA
-- **Format:** PDF, double-anonymous, ACM single-column, length proportional to contribution
+- **Location:** Pittsburgh, PA, USA (David L. Lawrence Convention Center)
+- **Format:** PDF, double-anonymous, ACM single-column; 5,000–8,000 words encouraged
 - **Acceptance:** ~25% (historical)
-- **Link:** https://sigchi.org/events/chi-2027/
+- **Link:** https://chi2027.acm.org/authors/papers/
 - **Fit:** Doug's primary fall 2026 target. Generative tools, mixed-initiative systems, design support, knowledge interfaces, AI-assisted authoring, malleable workspaces all sit core to CHI.
-- **Source:** [sigchi.org/events/chi-2027](https://sigchi.org/events/chi-2027/), [CHI Steering Committee](https://chi.acm.org/)
+- **Source:** [chi2027.acm.org/authors/papers](https://chi2027.acm.org/authors/papers/), [sigchi.org/events/chi-2027](https://sigchi.org/events/chi-2027/) — deadline confirmed via official CFP page (2× sources)
 
 ## UIST 2026
 
@@ -72,15 +72,15 @@ Notes on conventions:
 
 - **Field:** HCI, CSCW, social computing
 - **Tier:** A
-- **Deadline:** Rolling submissions starting early 2026 (May 13, 2025 was last fixed deadline before rolling); January 13, 2026 was R&R resubmission
-- **Notification:** Two-round process; ~3 months turnaround per round
+- **Deadline:** 2025-05-13 (single deadline; **CLOSED**). CSCW piloted a rolling experiment but full rolling doesn't launch until after CSCW 2026.
+- **Notification:** ~Early 2026
 - **Conference:** 2026-10-10 to 2026-10-14
 - **Location:** Salt Lake City, UT, USA
 - **Format:** PDF, double-anonymous, PACMHCI (single-column ACM); published in PACM HCI journal then invited to present
 - **Acceptance:** ~25–30% (varies by cycle, historical PACMHCI CSCW track)
 - **Link:** https://cscw.acm.org/2026/papers.html
-- **Fit:** If Doug's tacit-knowledge work has a collaboration / sensemaking / group-cognition angle, CSCW is ideal. Rolling model means low-risk submission whenever ready.
-- **Source:** [cscw.acm.org/2026](https://cscw.acm.org/2026/), [cscw.acm.org/rolling.html](https://cscw.acm.org/rolling.html)
+- **Fit:** Closed for 2026. Rolling model for CSCW 2027+ is expected; watch for next CFP if Doug's work has collaboration / sensemaking angle.
+- **Source:** [cscw.acm.org/2026](https://cscw.acm.org/2026/), [ACM CSCW on X](https://x.com/ACM_CSCW/status/1890040212988080610) — single deadline May 13, 2025 confirmed
 
 ## IUI 2026
 
@@ -100,15 +100,15 @@ Notes on conventions:
 
 - **Field:** HCI x AI, intelligent user interfaces
 - **Tier:** A
-- **Deadline:** 2026-10-XX (estimated; abstract early Oct, paper mid-Oct based on prior cycles)
-- **Notification:** 2026-12 (estimated)
+- **Abstract deadline:** 2026-08-13; **Paper deadline:** 2026-08-20
+- **Notification:** ~November 2026 (estimated)
 - **Conference:** 2027-02-08 to 2027-02-11
 - **Location:** Helsinki, Finland
-- **Format:** PDF, anonymous, ACM single-column, full + short paper tracks
+- **Format:** PDF, double-anonymous, ACM template, full (12 pp) + short (6 pp) tracks
 - **Acceptance:** ~25–30% (historical)
 - **Link:** https://iui.acm.org/2027/
 - **Fit:** Strong fit for Doug's mixed-initiative / human-AI design tool work; LLM-augmented engineering design papers land here naturally.
-- **Source:** [iui.acm.org/2027](https://iui.acm.org/2027/), [sigchi.org/events/iui-2027](https://sigchi.org/events/iui-2027/)
+- **Source:** [iui.acm.org/2027](https://iui.acm.org/2027/) (official CFP), [getpaperpilot.com/deadlines/iui-2027](https://www.getpaperpilot.com/deadlines/iui-2027.html) — deadline confirmed via 2 sources
 
 ## DIS 2026
 
@@ -196,17 +196,17 @@ Notes on conventions:
 
 ## HCOMP 2026
 
-- **Field:** Human computation, crowdsourcing, AI annotation
+- **Field:** Human computation, crowdsourcing, AI annotation; co-located with ACM Collective Intelligence 2026
 - **Tier:** B (community-strong)
-- **Deadline:** 2026-06-XX (estimated; HCOMP typically opens June, deadline late July)
+- **Abstract deadline:** 2026-06-01; **Paper deadline:** 2026-06-08
 - **Notification:** ~August 2026 (estimated)
-- **Conference:** 2026-10/11 (estimated, fall)
-- **Location:** TBD (typically co-located with AAAI region)
-- **Format:** PDF, AAAI two-column, anonymous; full + works-in-progress
+- **Conference:** 2026-09-27 to 2026-09-30
+- **Location:** Virginia Tech Institute for Advanced Computing, near Washington, DC, USA
+- **Format:** PDF, AAAI two-column, anonymous; full + works-in-progress; conference now named "ACM Conference on Human-AI Complementarity and Alignment"
 - **Acceptance:** ~25–30%
-- **Link:** https://aaai.org/conference/hcomp/
-- **Fit:** Solid for tacit-knowledge mining, crowd-AI workflows, evaluation of LLMs as annotators / knowledge sources.
-- **Source:** [aaai.org/conference/hcomp](https://aaai.org/conference/hcomp/), [humancomputation.com](https://www.humancomputation.com/)
+- **Link:** https://www.humancomputation.com/2026/
+- **Fit:** Solid for tacit-knowledge mining, crowd-AI workflows, evaluation of LLMs as annotators / knowledge sources. **Abstract due June 1 — upcoming!**
+- **Source:** [humancomputation.com/2026](https://www.humancomputation.com/2026/), [SIGWEB announcement](https://www.sigweb.org/conferences/upcoming/88-hcomp-2026-call-for-participation) — deadline confirmed via 2 sources
 
 ## IEEE VIS 2026
 
@@ -214,7 +214,7 @@ Notes on conventions:
 - **Tier:** A
 - **Deadline:** 2026-03-21 (abstract), 2026-03-31 (paper) — PASSED for full papers
 - **Notification:** ~July 2026
-- **Conference:** 2026-11 (Boston, MA, USA — TVCG special issue)
+- **Conference:** 2026-11-09 to 2026-11-13 (Boston, MA, USA — Westin Copley Place; TVCG special issue)
 - **Location:** Boston, MA, USA (Westin Copley Place)
 - **Format:** PDF, double-anonymous, IEEE TVCG format; full + short paper tracks
 - **Acceptance:** ~25%
@@ -492,29 +492,30 @@ Notes on conventions:
 
 - **Field:** Machine learning, with workshops on AI+HCI
 - **Tier:** A\* (main); workshops vary
-- **Deadline:** Main paper ~2026-05; workshop proposals ~July; workshop papers ~September (estimated from prior years)
-- **Notification:** Main: ~late September; Workshops: ~October
-- **Conference:** 2026-12 (estimated)
-- **Location:** TBD (multiple satellite locations)
-- **Format:** PDF, NeurIPS format, double-anonymous (main); workshops vary
-- **Acceptance:** Main ~25%; workshops 30–50%
-- **Link:** https://neurips.cc/Conferences/2026
-- **Fit:** Workshop submissions on Human-AI Alignment, AI+HCI, Cognition+AI are realistic targets and reach ML audiences.
-- **Source:** [neurips.cc](https://neurips.cc/Conferences/2026), [hc-air.github.io/hcair26](https://hc-air.github.io/hcair26/)
+- **Abstract deadline:** 2026-05-04 (AoE) — PASSED; **Paper deadline:** 2026-05-06 (AoE) — PASSED
+- **Workshop proposals:** 2026-06-06 (AoE); workshop CFPs ~late Aug / early Sept
+- **Notification:** Main: 2026-09-24; Workshops: ~October
+- **Conference:** 2026-12-06 to 2026-12-12
+- **Location:** Sydney, Australia (ICC Sydney); satellites in Atlanta (Dec 8-13) and Paris (Dec 9-13)
+- **Format:** NeurIPS LaTeX, 9-page main, double-anonymous (main); workshops vary
+- **Acceptance:** ~24.5% (main); workshops 30–50%
+- **Link:** https://neurips.cc/Conferences/2026/CallForPapers
+- **Fit:** Main track missed; workshop submissions on Human-AI Alignment, AI+HCI, Cognition+AI are realistic targets. ML4PS, AI for Science, Agent4Science workshops co-located.
+- **Source:** [neurips.cc/Conferences/2026/CallForPapers](https://neurips.cc/Conferences/2026/CallForPapers), [neurips.cc/Conferences/2026/Dates](https://neurips.cc/Conferences/2026/Dates) — deadlines confirmed via official site
 
 ## ICML 2026 (AI&HCI workshop)
 
 - **Field:** ML, with AI&HCI workshop
 - **Tier:** A\* (main); workshop B
-- **Deadline:** Workshop CFPs typically ~April–May 2026 (post-conference workshop call recently issued)
-- **Notification:** Workshop ~June 2026
-- **Conference:** 2026-07 (estimated)
-- **Location:** TBD
-- **Format:** PDF, ICML format, varies by workshop
-- **Acceptance:** Workshop ~40%
-- **Link:** https://icml.cc/Conferences/2026/CallForWorkshops, https://sites.google.com/view/aihci
-- **Fit:** AI&HCI workshop is the right venue for Doug's mixed-initiative LLM-design papers in an ML community.
-- **Source:** [icml.cc/Conferences/2026/CallForWorkshops](https://icml.cc/Conferences/2026/CallForWorkshops), [sites.google.com/view/aihci](https://sites.google.com/view/aihci)
+- **Main paper deadline:** 2026-01-29 — PASSED; workshop CFPs ongoing
+- **Notification:** Main ~2026-05-01; workshops ~June 2026
+- **Conference:** 2026-07-06 to 2026-07-11
+- **Location:** Seoul, South Korea (Coex Convention Center)
+- **Format:** ICML LaTeX, 8 pages main, double-blind; workshops vary
+- **Acceptance:** Main ~26.9%; workshop ~40%
+- **Link:** https://icml.cc/Conferences/2026/CallForPapers
+- **Fit:** Main track closed; AI&HCI workshop is the right venue for Doug's mixed-initiative LLM-design papers in an ML community.
+- **Source:** [icml.cc/Conferences/2026/CallForPapers](https://icml.cc/Conferences/2026/CallForPapers) — deadline confirmed via official site
 
 ## ACL 2026 / EMNLP 2026 (NLP-HCI)
 
@@ -604,18 +605,19 @@ Notes on conventions:
       "year": 2027,
       "fields": ["HCI"],
       "tier": "A*",
-      "deadline": "2026-09-11",
-      "notification": "2026-12-15",
+      "abstractDeadline": null,
+      "deadline": "2026-09-10",
+      "notification": "2026-12-17",
       "conferenceStart": "2027-05-10",
       "conferenceEnd": "2027-05-14",
       "location": { "city": "Pittsburgh", "country": "USA" },
-      "format": "PDF, double-anonymous, ACM single-column",
-      "pageLimit": "no fixed limit (typ. 5-12k words)",
+      "format": "PDF, double-anonymous, ACM single-column; 5,000–8,000 words encouraged; no abstract deadline; R&R resubmission 2026-12-03",
+      "pageLimit": "no fixed limit (5k-8k words encouraged)",
       "acceptanceRate": 0.25,
       "blind": "double",
-      "link": "https://sigchi.org/events/chi-2027/",
+      "link": "https://chi2027.acm.org/authors/papers/",
       "fit": "Primary fall 2026 target. Generative tools, mixed-initiative, design support, knowledge interfaces, malleable workspaces.",
-      "confidence": "estimated"
+      "confidence": "verified"
     },
     {
       "id": "uist-2026",
@@ -664,8 +666,8 @@ Notes on conventions:
       "year": 2026,
       "fields": ["HCI", "CSCW"],
       "tier": "A",
-      "deadline": "rolling",
-      "notification": "rolling (~3 mo)",
+      "deadline": "2025-05-13",
+      "notification": "2026-03-15",
       "conferenceStart": "2026-10-10",
       "conferenceEnd": "2026-10-14",
       "location": { "city": "Salt Lake City", "country": "USA" },
@@ -674,7 +676,7 @@ Notes on conventions:
       "acceptanceRate": 0.27,
       "blind": "double",
       "link": "https://cscw.acm.org/2026/papers.html",
-      "fit": "Group cognition, sensemaking, collaboration angle on tacit-knowledge work.",
+      "fit": "Closed for 2026 (single deadline was 2025-05-13). Group cognition, sensemaking, collaboration angle — watch for CSCW 2027 rolling model.",
       "confidence": "verified"
     },
     {
@@ -704,18 +706,19 @@ Notes on conventions:
       "year": 2027,
       "fields": ["HCI", "AI"],
       "tier": "A",
-      "deadline": "2026-10-10",
-      "notification": "2026-12-15",
+      "abstractDeadline": "2026-08-13",
+      "deadline": "2026-08-20",
+      "notification": "2026-11-15",
       "conferenceStart": "2027-02-08",
       "conferenceEnd": "2027-02-11",
       "location": { "city": "Helsinki", "country": "Finland" },
-      "format": "PDF, anonymous, ACM single-column",
-      "pageLimit": "long+short tracks",
+      "format": "PDF, double-anonymous, ACM template; 12 pages full / 6 pages short",
+      "pageLimit": "12 full / 6 short",
       "acceptanceRate": 0.28,
-      "blind": "anonymous",
+      "blind": "double",
       "link": "https://iui.acm.org/2027/",
       "fit": "Strong fit: mixed-initiative, human-AI design tools, LLM-augmented engineering design.",
-      "confidence": "estimated"
+      "confidence": "verified"
     },
     {
       "id": "dis-2026",
@@ -806,9 +809,9 @@ Notes on conventions:
       "tier": "B",
       "deadline": "2026-09-15",
       "notification": "2026-12-01",
-      "conferenceStart": "2027-01-15",
-      "conferenceEnd": "2027-01-18",
-      "location": { "city": "TBD", "country": "USA" },
+      "conferenceStart": "2027-01-10",
+      "conferenceEnd": "2027-01-13",
+      "location": { "city": "St Simons Island", "country": "USA" },
       "format": "PDF, anonymous, PACMHCI single-column",
       "pageLimit": "n/a",
       "acceptanceRate": 0.27,
@@ -840,34 +843,35 @@ Notes on conventions:
     {
       "id": "hcomp-2026",
       "name": "HCOMP",
-      "fullName": "AAAI Conference on Human Computation and Crowdsourcing",
+      "fullName": "ACM Conference on Human-AI Complementarity and Alignment (formerly HCOMP)",
       "year": 2026,
       "fields": ["HCI", "AI", "crowdsourcing"],
       "tier": "B",
-      "deadline": "2026-07-15",
-      "notification": "2026-08-30",
-      "conferenceStart": "2026-10-15",
-      "conferenceEnd": "2026-10-18",
-      "location": { "city": "TBD", "country": "TBD" },
-      "format": "PDF, AAAI two-column, anonymous",
+      "abstractDeadline": "2026-06-01",
+      "deadline": "2026-06-08",
+      "notification": "2026-08-01",
+      "conferenceStart": "2026-09-27",
+      "conferenceEnd": "2026-09-30",
+      "location": { "city": "Washington DC area", "country": "USA" },
+      "format": "PDF, AAAI two-column, anonymous; co-located with ACM Collective Intelligence 2026",
       "pageLimit": "n/a",
       "acceptanceRate": 0.27,
       "blind": "anonymous",
-      "link": "https://aaai.org/conference/hcomp/",
-      "fit": "Tacit-knowledge mining, crowd-AI workflows, LLMs as annotators.",
-      "confidence": "estimated"
+      "link": "https://www.humancomputation.com/2026/",
+      "fit": "Tacit-knowledge mining, crowd-AI workflows, LLMs as annotators. Abstract due June 1 — upcoming!",
+      "confidence": "verified"
     },
     {
       "id": "ieeevis-2026",
       "name": "IEEE VIS",
       "fullName": "IEEE Visualization and Visual Analytics",
       "year": 2026,
-      "fields": ["viz", "HCI"],
+      "fields": ["Visualization", "HCI"],
       "tier": "A",
       "deadline": "2026-03-31",
       "notification": "2026-07-01",
-      "conferenceStart": "2026-11-01",
-      "conferenceEnd": "2026-11-06",
+      "conferenceStart": "2026-11-09",
+      "conferenceEnd": "2026-11-13",
       "location": { "city": "Boston", "country": "USA" },
       "format": "PDF, double-anonymous, IEEE TVCG",
       "pageLimit": "n/a",
@@ -1244,6 +1248,7 @@ Notes on conventions:
       "year": 2027,
       "fields": ["AI"],
       "tier": "A*",
+      "abstractDeadline": "2026-07-25",
       "deadline": "2026-08-01",
       "notification": "2026-11-03",
       "conferenceStart": "2027-02-16",
@@ -1253,9 +1258,9 @@ Notes on conventions:
       "pageLimit": "8+refs",
       "acceptanceRate": 0.2,
       "blind": "double",
-      "link": "https://aaai.org/conference/aaai/",
-      "fit": "Lower priority; AI-systems framing.",
-      "confidence": "verified"
+      "link": "https://aaai.org/conference/aaai/aaai-27/",
+      "fit": "Lower priority; AI-systems framing. Official deadline not yet announced as of 2026-05-26.",
+      "confidence": "likely"
     },
     {
       "id": "neurips-2026",
@@ -1264,18 +1269,19 @@ Notes on conventions:
       "year": 2026,
       "fields": ["ML", "AI"],
       "tier": "A*",
-      "deadline": "2026-05-15",
-      "notification": "2026-09-25",
-      "conferenceStart": "2026-12-08",
-      "conferenceEnd": "2026-12-13",
-      "location": { "city": "TBD", "country": "TBD" },
-      "format": "PDF, NeurIPS double-anonymous (main); workshops vary",
-      "pageLimit": "n/a",
-      "acceptanceRate": 0.25,
+      "abstractDeadline": "2026-05-04",
+      "deadline": "2026-05-06",
+      "notification": "2026-09-24",
+      "conferenceStart": "2026-12-06",
+      "conferenceEnd": "2026-12-12",
+      "location": { "city": "Sydney", "country": "Australia" },
+      "format": "NeurIPS LaTeX, 9-page main, double-anonymous; workshops vary; satellites Atlanta + Paris",
+      "pageLimit": "9",
+      "acceptanceRate": 0.245,
       "blind": "double",
-      "link": "https://neurips.cc/Conferences/2026",
-      "fit": "Workshop submissions on Human-AI Alignment, AI+HCI realistic.",
-      "confidence": "estimated"
+      "link": "https://neurips.cc/Conferences/2026/CallForPapers",
+      "fit": "Main track missed (deadline 2026-05-06). Workshop submissions on Human-AI Alignment, AI+HCI realistic (~Sept deadline).",
+      "confidence": "verified"
     },
     {
       "id": "icml-2026",
@@ -1284,18 +1290,19 @@ Notes on conventions:
       "year": 2026,
       "fields": ["ML", "AI"],
       "tier": "A*",
-      "deadline": "2026-05-01",
-      "notification": "2026-06-15",
-      "conferenceStart": "2026-07-19",
-      "conferenceEnd": "2026-07-24",
-      "location": { "city": "TBD", "country": "TBD" },
-      "format": "PDF, double-anonymous; workshops vary",
-      "pageLimit": "n/a",
-      "acceptanceRate": 0.27,
+      "abstractDeadline": "2026-01-24",
+      "deadline": "2026-01-29",
+      "notification": "2026-05-01",
+      "conferenceStart": "2026-07-06",
+      "conferenceEnd": "2026-07-11",
+      "location": { "city": "Seoul", "country": "South Korea" },
+      "format": "ICML LaTeX, 8 pages main, double-blind; workshops vary",
+      "pageLimit": "8",
+      "acceptanceRate": 0.269,
       "blind": "double",
-      "link": "https://icml.cc/Conferences/2026/CallForWorkshops",
-      "fit": "AI&HCI workshop = right venue for mixed-initiative LLM-design papers in ML community.",
-      "confidence": "estimated"
+      "link": "https://icml.cc/Conferences/2026/CallForPapers",
+      "fit": "Main track missed (deadline 2026-01-29). AI&HCI workshop is the right venue for mixed-initiative LLM-design papers.",
+      "confidence": "verified"
     },
     {
       "id": "emnlp-2026",
@@ -1305,10 +1312,10 @@ Notes on conventions:
       "fields": ["NLP", "AI"],
       "tier": "A*",
       "deadline": "2026-05-25",
-      "notification": "2026-07-30",
-      "conferenceStart": "2026-10-22",
-      "conferenceEnd": "2026-10-26",
-      "location": { "city": "TBD", "country": "Hungary" },
+      "notification": "2026-08-20",
+      "conferenceStart": "2026-10-24",
+      "conferenceEnd": "2026-10-29",
+      "location": { "city": "Budapest", "country": "Hungary" },
       "format": "PDF, ACL ARR anonymous",
       "pageLimit": "8 long / 4 short",
       "acceptanceRate": 0.25,

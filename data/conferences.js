@@ -1,7 +1,7 @@
-// Generated 2026-04-29 by scripts/refresh-data.js
+// Generated 2026-05-26 by scripts/refresh-data.js
 
 module.exports = {
-  generated: "2026-04-29T04:54:37.740Z",
+  generated: "2026-05-26T14:19:52.180Z",
 
   fields: {
   "HCI": {
@@ -63,6 +63,32 @@ module.exports = {
 },
 
   conferences: [
+  {
+    "id": "cscw-2026",
+    "name": "CSCW",
+    "fullName": "ACM Conference on Computer-Supported Cooperative Work and Social Computing",
+    "year": 2026,
+    "fields": [
+      "HCI"
+    ],
+    "tier": "A",
+    "abstractDeadline": null,
+    "deadline": "2025-05-13",
+    "notification": "2026-03-15",
+    "conferenceStart": "2026-10-10",
+    "conferenceEnd": "2026-10-14",
+    "location": {
+      "city": "Salt Lake City",
+      "country": "USA"
+    },
+    "format": "PDF, double-anonymous, PACMHCI single-column",
+    "pageLimit": "length proportional to contribution",
+    "acceptanceRate": 0.27,
+    "blind": "double",
+    "link": "https://cscw.acm.org/2026/papers.html",
+    "fit": "Closed for 2026 (single deadline was 2025-05-13). Group cognition, sensemaking, collaboration angle — watch for CSCW 2027 rolling model.",
+    "confidence": "verified"
+  },
   {
     "id": "wacv-2026",
     "name": "WACV",
@@ -353,6 +379,32 @@ module.exports = {
     "blind": "anonymous",
     "link": "https://dis.acm.org/2026/papers/",
     "fit": "Closed. Reference only.",
+    "confidence": "verified"
+  },
+  {
+    "id": "icml-2026",
+    "name": "ICML",
+    "fullName": "International Conference on Machine Learning",
+    "year": 2026,
+    "fields": [
+      "ML"
+    ],
+    "tier": "A*",
+    "abstractDeadline": "2026-01-24",
+    "deadline": "2026-01-29",
+    "notification": "2026-05-01",
+    "conferenceStart": "2026-07-06",
+    "conferenceEnd": "2026-07-11",
+    "location": {
+      "city": "Seoul",
+      "country": "South Korea"
+    },
+    "format": "ICML LaTeX, 8 pages main, double-blind; workshops vary",
+    "pageLimit": "8",
+    "acceptanceRate": 0.269,
+    "blind": "double",
+    "link": "https://icml.cc/Conferences/2026/CallForPapers",
+    "fit": "Main track missed (deadline 2026-01-29). AI&HCI workshop is the right venue for mixed-initiative LLM-design papers.",
     "confidence": "verified"
   },
   {
@@ -809,14 +861,15 @@ module.exports = {
     "fullName": "IEEE Visualization and Visual Analytics",
     "year": 2026,
     "fields": [
+      "Visualization",
       "HCI"
     ],
     "tier": "A",
     "abstractDeadline": null,
     "deadline": "2026-03-31",
     "notification": "2026-07-01",
-    "conferenceStart": "2026-11-01",
-    "conferenceEnd": "2026-11-06",
+    "conferenceStart": "2026-11-09",
+    "conferenceEnd": "2026-11-13",
     "location": {
       "city": "Boston",
       "country": "USA"
@@ -841,11 +894,11 @@ module.exports = {
     "abstractDeadline": null,
     "deadline": "2026-03-31",
     "notification": "2026-06-15",
-    "conferenceStart": "2026-11-08",
+    "conferenceStart": "2026-11-09",
     "conferenceEnd": "2026-11-13",
     "location": {
-      "city": "Melbourne",
-      "country": "Australia"
+      "city": "Boston",
+      "country": "USA"
     },
     "format": "IEEE VGTC TVCG template, double-blind, archival, 10 pages full / 4 pages short",
     "pageLimit": "10",
@@ -1146,32 +1199,6 @@ module.exports = {
     "confidence": "estimated"
   },
   {
-    "id": "icml-2026",
-    "name": "ICML",
-    "fullName": "International Conference on Machine Learning",
-    "year": 2026,
-    "fields": [
-      "ML"
-    ],
-    "tier": "A*",
-    "abstractDeadline": null,
-    "deadline": "2026-05-01",
-    "notification": "2026-06-15",
-    "conferenceStart": "2026-07-19",
-    "conferenceEnd": "2026-07-24",
-    "location": {
-      "city": "TBD",
-      "country": "TBD"
-    },
-    "format": "PDF, double-anonymous; workshops vary",
-    "pageLimit": "n/a",
-    "acceptanceRate": 0.27,
-    "blind": "double",
-    "link": "https://icml.cc/Conferences/2026/CallForWorkshops",
-    "fit": "AI&HCI workshop = right venue for mixed-initiative LLM-design papers in ML community.",
-    "confidence": "estimated"
-  },
-  {
     "id": "dsm-2026",
     "name": "DSM",
     "fullName": "28th International Dependency & Structure Modelling Conference",
@@ -1222,6 +1249,32 @@ module.exports = {
     "blind": "double",
     "link": "https://www.ubicomp.org/",
     "fit": "Strong — Psych Battery as wearable/peripheral display. Next deadline May 1",
+    "confidence": "verified"
+  },
+  {
+    "id": "neurips-2026",
+    "name": "NeurIPS",
+    "fullName": "Conference on Neural Information Processing Systems",
+    "year": 2026,
+    "fields": [
+      "ML"
+    ],
+    "tier": "A*",
+    "abstractDeadline": "2026-05-04",
+    "deadline": "2026-05-06",
+    "notification": "2026-09-24",
+    "conferenceStart": "2026-12-06",
+    "conferenceEnd": "2026-12-12",
+    "location": {
+      "city": "Sydney",
+      "country": "Australia"
+    },
+    "format": "NeurIPS LaTeX, 9-page main, double-anonymous; workshops vary; satellites Atlanta + Paris",
+    "pageLimit": "9",
+    "acceptanceRate": 0.245,
+    "blind": "double",
+    "link": "https://neurips.cc/Conferences/2026/CallForPapers",
+    "fit": "Main track missed (deadline 2026-05-06). Workshop submissions on Human-AI Alignment, AI+HCI realistic (~Sept deadline).",
     "confidence": "verified"
   },
   {
@@ -1412,32 +1465,6 @@ module.exports = {
     "confidence": "estimated"
   },
   {
-    "id": "neurips-2026",
-    "name": "NeurIPS",
-    "fullName": "Conference on Neural Information Processing Systems",
-    "year": 2026,
-    "fields": [
-      "ML"
-    ],
-    "tier": "A*",
-    "abstractDeadline": null,
-    "deadline": "2026-05-15",
-    "notification": "2026-09-25",
-    "conferenceStart": "2026-12-08",
-    "conferenceEnd": "2026-12-13",
-    "location": {
-      "city": "TBD",
-      "country": "TBD"
-    },
-    "format": "PDF, NeurIPS double-anonymous (main); workshops vary",
-    "pageLimit": "n/a",
-    "acceptanceRate": 0.25,
-    "blind": "double",
-    "link": "https://neurips.cc/Conferences/2026",
-    "fit": "Workshop submissions on Human-AI Alignment, AI+HCI realistic.",
-    "confidence": "estimated"
-  },
-  {
     "id": "cikm-2026",
     "name": "CIKM",
     "fullName": "ACM Conference on Information and Knowledge Management",
@@ -1501,11 +1528,11 @@ module.exports = {
     "tier": "A*",
     "abstractDeadline": null,
     "deadline": "2026-05-25",
-    "notification": "2026-07-30",
-    "conferenceStart": "2026-10-22",
-    "conferenceEnd": "2026-10-26",
+    "notification": "2026-08-20",
+    "conferenceStart": "2026-10-24",
+    "conferenceEnd": "2026-10-29",
     "location": {
-      "city": "TBD",
+      "city": "Budapest",
       "country": "Hungary"
     },
     "format": "PDF, ACL ARR anonymous",
@@ -1593,6 +1620,33 @@ module.exports = {
     "blind": "double",
     "link": "https://ht.acm.org/ht2026/",
     "fit": "STRONGEST FIT — DfM knowledge graphs and AI-in-design field maps are textbook Hypertext content",
+    "confidence": "verified"
+  },
+  {
+    "id": "hcomp-2026",
+    "name": "HCOMP",
+    "fullName": "ACM Conference on Human-AI Complementarity and Alignment (formerly HCOMP)",
+    "year": 2026,
+    "fields": [
+      "HCI",
+      "ML"
+    ],
+    "tier": "B",
+    "abstractDeadline": "2026-06-01",
+    "deadline": "2026-06-08",
+    "notification": "2026-08-01",
+    "conferenceStart": "2026-09-27",
+    "conferenceEnd": "2026-09-30",
+    "location": {
+      "city": "Washington DC area",
+      "country": "USA"
+    },
+    "format": "PDF, AAAI two-column, anonymous; co-located with ACM Collective Intelligence 2026",
+    "pageLimit": "n/a",
+    "acceptanceRate": 0.27,
+    "blind": "anonymous",
+    "link": "https://www.humancomputation.com/2026/",
+    "fit": "Tacit-knowledge mining, crowd-AI workflows, LLMs as annotators. Abstract due June 1 — upcoming!",
     "confidence": "verified"
   },
   {
@@ -1918,33 +1972,6 @@ module.exports = {
     "confidence": "verified"
   },
   {
-    "id": "hcomp-2026",
-    "name": "HCOMP",
-    "fullName": "AAAI Conference on Human Computation and Crowdsourcing",
-    "year": 2026,
-    "fields": [
-      "HCI",
-      "ML"
-    ],
-    "tier": "B",
-    "abstractDeadline": null,
-    "deadline": "2026-07-15",
-    "notification": "2026-08-30",
-    "conferenceStart": "2026-10-15",
-    "conferenceEnd": "2026-10-18",
-    "location": {
-      "city": "TBD",
-      "country": "TBD"
-    },
-    "format": "PDF, AAAI two-column, anonymous",
-    "pageLimit": "n/a",
-    "acceptanceRate": 0.27,
-    "blind": "anonymous",
-    "link": "https://aaai.org/conference/hcomp/",
-    "fit": "Tacit-knowledge mining, crowd-AI workflows, LLMs as annotators.",
-    "confidence": "estimated"
-  },
-  {
     "id": "spsp-2027",
     "name": "SPSP",
     "fullName": "Society for Personality and Social Psychology Annual Convention",
@@ -1995,6 +2022,32 @@ module.exports = {
     "link": "https://www.iss.acm.org/2026/",
     "fit": "Round 2 viable for surface/spatial design tools.",
     "confidence": "verified"
+  },
+  {
+    "id": "aaai-2027",
+    "name": "AAAI",
+    "fullName": "AAAI Conference on Artificial Intelligence",
+    "year": 2027,
+    "fields": [
+      "ML"
+    ],
+    "tier": "A*",
+    "abstractDeadline": "2026-07-25",
+    "deadline": "2026-08-01",
+    "notification": "2026-11-03",
+    "conferenceStart": "2027-02-16",
+    "conferenceEnd": "2027-02-23",
+    "location": {
+      "city": "Montréal",
+      "country": "Canada"
+    },
+    "format": "PDF, AAAI two-column, double-anonymous",
+    "pageLimit": "8+refs",
+    "acceptanceRate": 0.2,
+    "blind": "double",
+    "link": "https://aaai.org/conference/aaai/aaai-27/",
+    "fit": "Lower priority; AI-systems framing. Official deadline not yet announced as of 2026-05-26.",
+    "confidence": "likely"
   },
   {
     "id": "tei-2027",
@@ -2049,32 +2102,6 @@ module.exports = {
     "confidence": "estimated"
   },
   {
-    "id": "aaai-2027",
-    "name": "AAAI",
-    "fullName": "AAAI Conference on Artificial Intelligence",
-    "year": 2027,
-    "fields": [
-      "ML"
-    ],
-    "tier": "A*",
-    "abstractDeadline": null,
-    "deadline": "2026-08-01",
-    "notification": "2026-11-03",
-    "conferenceStart": "2027-02-16",
-    "conferenceEnd": "2027-02-23",
-    "location": {
-      "city": "Montréal",
-      "country": "Canada"
-    },
-    "format": "PDF, AAAI two-column, double-anonymous",
-    "pageLimit": "8+refs",
-    "acceptanceRate": 0.2,
-    "blind": "double",
-    "link": "https://aaai.org/conference/aaai/",
-    "fit": "Lower priority; AI-systems framing.",
-    "confidence": "verified"
-  },
-  {
     "id": "norddesign-2026",
     "name": "NordDesign",
     "fullName": "NordDesign 2026 (Nordic biennial)",
@@ -2099,6 +2126,33 @@ module.exports = {
     "blind": "single",
     "link": "https://events.tuni.fi/norddesign2026/",
     "fit": "Comfortable secondary venue; Nordic eng-design community is methods-friendly",
+    "confidence": "verified"
+  },
+  {
+    "id": "iui-2027",
+    "name": "IUI",
+    "fullName": "ACM Conference on Intelligent User Interfaces",
+    "year": 2027,
+    "fields": [
+      "HCI",
+      "ML"
+    ],
+    "tier": "A",
+    "abstractDeadline": "2026-08-13",
+    "deadline": "2026-08-20",
+    "notification": "2026-11-15",
+    "conferenceStart": "2027-02-08",
+    "conferenceEnd": "2027-02-11",
+    "location": {
+      "city": "Helsinki",
+      "country": "Finland"
+    },
+    "format": "PDF, double-anonymous, ACM template; 12 pages full / 6 pages short",
+    "pageLimit": "12 full / 6 short",
+    "acceptanceRate": 0.28,
+    "blind": "double",
+    "link": "https://iui.acm.org/2027/",
+    "fit": "Strong fit: mixed-initiative, human-AI design tools, LLM-augmented engineering design.",
     "confidence": "verified"
   },
   {
@@ -2191,21 +2245,21 @@ module.exports = {
     ],
     "tier": "A*",
     "abstractDeadline": null,
-    "deadline": "2026-09-11",
-    "notification": "2026-12-15",
+    "deadline": "2026-09-10",
+    "notification": "2026-12-17",
     "conferenceStart": "2027-05-10",
     "conferenceEnd": "2027-05-14",
     "location": {
       "city": "Pittsburgh",
       "country": "USA"
     },
-    "format": "PDF, double-anonymous, ACM single-column",
-    "pageLimit": "no fixed limit (typ. 5-12k words)",
+    "format": "PDF, double-anonymous, ACM single-column; 5,000–8,000 words encouraged; no abstract deadline; R&R resubmission 2026-12-03",
+    "pageLimit": "no fixed limit (5k-8k words encouraged)",
     "acceptanceRate": 0.25,
     "blind": "double",
-    "link": "https://sigchi.org/events/chi-2027/",
+    "link": "https://chi2027.acm.org/authors/papers/",
     "fit": "Primary fall 2026 target. Generative tools, mixed-initiative, design support, knowledge interfaces, malleable workspaces.",
-    "confidence": "estimated"
+    "confidence": "verified"
   },
   {
     "id": "group-2027",
@@ -2219,10 +2273,10 @@ module.exports = {
     "abstractDeadline": null,
     "deadline": "2026-09-15",
     "notification": "2026-12-01",
-    "conferenceStart": "2027-01-15",
-    "conferenceEnd": "2027-01-18",
+    "conferenceStart": "2027-01-10",
+    "conferenceEnd": "2027-01-13",
     "location": {
-      "city": "TBD",
+      "city": "St Simons Island",
       "country": "USA"
     },
     "format": "PDF, anonymous, PACMHCI single-column",
@@ -2465,59 +2519,6 @@ module.exports = {
     "blind": "double",
     "link": "http://ieeevr.org/2027/",
     "fit": "Lower priority unless spatial/VR malleable workspaces.",
-    "confidence": "estimated"
-  },
-  {
-    "id": "cscw-2026",
-    "name": "CSCW",
-    "fullName": "ACM Conference on Computer-Supported Cooperative Work and Social Computing",
-    "year": 2026,
-    "fields": [
-      "HCI"
-    ],
-    "tier": "A",
-    "abstractDeadline": null,
-    "deadline": null,
-    "notification": null,
-    "conferenceStart": "2026-10-10",
-    "conferenceEnd": "2026-10-14",
-    "location": {
-      "city": "Salt Lake City",
-      "country": "USA"
-    },
-    "format": "PDF, double-anonymous, PACMHCI single-column",
-    "pageLimit": "length proportional to contribution",
-    "acceptanceRate": 0.27,
-    "blind": "double",
-    "link": "https://cscw.acm.org/2026/papers.html",
-    "fit": "Group cognition, sensemaking, collaboration angle on tacit-knowledge work.",
-    "confidence": "verified"
-  },
-  {
-    "id": "iui-2027",
-    "name": "IUI",
-    "fullName": "ACM Conference on Intelligent User Interfaces",
-    "year": 2027,
-    "fields": [
-      "HCI",
-      "ML"
-    ],
-    "tier": "A",
-    "abstractDeadline": null,
-    "deadline": "2026-10-10",
-    "notification": "2026-12-15",
-    "conferenceStart": "2027-02-08",
-    "conferenceEnd": "2027-02-11",
-    "location": {
-      "city": "Helsinki",
-      "country": "Finland"
-    },
-    "format": "PDF, anonymous, ACM single-column",
-    "pageLimit": "long+short tracks",
-    "acceptanceRate": 0.28,
-    "blind": "anonymous",
-    "link": "https://iui.acm.org/2027/",
-    "fit": "Strong fit: mixed-initiative, human-AI design tools, LLM-augmented engineering design.",
     "confidence": "estimated"
   },
   {

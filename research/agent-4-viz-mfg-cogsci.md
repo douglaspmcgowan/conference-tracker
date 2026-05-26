@@ -23,11 +23,12 @@ Note on confidence:
 - **Abstract deadline:** 2026-03-21 (PASSED)
 - **Paper deadline:** 2026-03-31 (PASSED)
 - **Short papers:** ~July 2026 (TBA)
-- **Conference:** 2026-11-08 to 2026-11-13
-- **Location:** Melbourne, Australia
+- **Conference:** 2026-11-09 to 2026-11-13
+- **Location:** Boston, MA, USA (Westin Copley Place, Back Bay)
 - **Format:** IEEE VGTC TVCG template, double-blind, archival, 10 pages + refs (full); 4 pages + refs (short)
 - **Acceptance rate:** ~25–27% historically
 - **Link:** https://ieeevis.org/year/2026/info/call-participation/call-for-participation/
+- **Source:** [ieeevis.org/year/2026/destination](https://ieeevis.org/year/2026/destination/) confirms Boston; [showsbee.com](https://www.showsbee.com/fairs/95505-IEEE-VISWeek-2026.html) confirms Nov 9-13.
 - **Fit for Doug:** Strong — Psych Battery as ambient display, knowledge-graph viz of DfM literature, AI-in-design field maps. Consider short papers track (Jul deadline) for Psych Battery prelim work.
 
 ### EuroVis 2026
@@ -567,10 +568,10 @@ Note on confidence:
       "fields": ["Visualization", "Visual Analytics", "Sensemaking"],
       "tier": "A*",
       "deadline": "2026-03-31",
-      "notification": "2026-06-XX",
-      "conferenceStart": "2026-11-08",
+      "notification": "2026-06-15",
+      "conferenceStart": "2026-11-09",
       "conferenceEnd": "2026-11-13",
-      "location": { "city": "Melbourne", "country": "Australia" },
+      "location": { "city": "Boston", "country": "USA" },
       "format": "IEEE VGTC TVCG template, double-blind, archival, 10 pages full / 4 pages short",
       "pageLimit": "10",
       "acceptanceRate": 0.26,
