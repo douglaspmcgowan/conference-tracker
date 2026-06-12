@@ -64,12 +64,13 @@ Note on confidence:
 - **Full name:** ACM Conference on Intelligent User Interfaces
 - **Fields:** HCI, AI, Visualization
 - **Tier:** A
-- **Deadline:** TBA (historically ~Oct prior year for full papers)
+- **Abstract deadline:** 2026-08-13; **Paper deadline:** 2026-08-20
 - **Conference:** 2027-02-08 to 2027-02-11
 - **Location:** Helsinki, Finland
 - **Format:** ACM template, double-blind, 12 pages full / 6 pages short, archival
 - **Acceptance rate:** ~25–30%
 - **Link:** https://iui.acm.org/2027/
+- **Source:** [iui.acm.org/2027](https://iui.acm.org/2027/), [getpaperpilot.com/deadlines/iui-2027](https://www.getpaperpilot.com/deadlines/iui-2027.html) — deadlines confirmed Aug 13/20 via 2 sources (2026-06-12 refresh)
 - **Fit for Doug:** Strong — AI-in-design field maps fit explicitly; Psych Battery as adaptive interface.
 
 ### CHI 2026
@@ -626,7 +627,8 @@ Note on confidence:
       "year": 2027,
       "fields": ["HCI", "AI", "Visualization"],
       "tier": "A",
-      "deadline": "2026-10-XX",
+      "abstractDeadline": "2026-08-13",
+      "deadline": "2026-08-20",
       "conferenceStart": "2027-02-08",
       "conferenceEnd": "2027-02-11",
       "location": { "city": "Helsinki", "country": "Finland" },
@@ -636,7 +638,7 @@ Note on confidence:
       "blind": "double",
       "link": "https://iui.acm.org/2027/",
       "fit": "AI-in-design field maps fit explicitly; Psych Battery as adaptive interface",
-      "confidence": "likely"
+      "confidence": "verified"
     },
     {
       "id": "chi-2026",

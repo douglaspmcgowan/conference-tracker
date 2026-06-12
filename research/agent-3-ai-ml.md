@@ -107,15 +107,16 @@ Confidence legend: **verified** = official site confirms; **likely** = ≥2 seco
 
 - **Field:** AI broadly (ML, KR, NLP, agents, multimodal)
 - **Tier:** A\*
-- **Abstract reg:** 2026-07-25
-- **Paper deadline:** 2026-08-01 (23:59, AoE)
+- **Abstract reg:** 2026-07-21 (AoE)
+- **Paper deadline:** 2026-07-28 (AoE)
 - **Rebuttal:** 2026-10-02 → 2026-10-08
 - **Notification:** 2026-11-03
 - **Conference:** 2027-02-16 → 2027-02-23
 - **Location:** Montréal, Québec, Canada
 - **Format:** AAAI 2-column, 7 pages content + 2 pages refs (typical); double-blind; some tracks allow longer
 - **Acceptance:** ~17.6% (AAAI 2025 main track: 4,167 / 23,680)
-- **Link:** https://aaai.org/conference/aaai/aaai-27/ (preliminary)
+- **Link:** https://aaai.org/conference/aaai/aaai-27/
+- **Source:** [aaai.org/conference/aaai/aaai-27](https://aaai.org/conference/aaai/aaai-27/), [getpaperpilot.com/deadlines/aaai-2027](https://www.getpaperpilot.com/deadlines/aaai-2027.html) — confirmed July 21/28 via 2 sources (2026-06-12 refresh)
 - **Fit:** Main track for KG/agent/LLM-for-design methods; AAAI also has special tracks (AI-for-Social-Impact, EAI) that fit applied work
 
 ---
@@ -140,15 +141,15 @@ Confidence legend: **verified** = official site confirms; **likely** = ≥2 seco
 
 - **Field:** ML + statistics
 - **Tier:** A
-- **Abstract reg:** 2026-09-XX (estimated; 2026 was Sept 25, 2025)
-- **Paper deadline:** 2026-10-XX (estimated; 2026 was Oct 2, 2025)
-- **Notification:** 2027-01-XX
-- **Conference:** 2027-05-16 → 2027-05-21
-- **Location:** Toronto, Canada
+- **Abstract/paper deadline:** 2027-01-15 (AoE)
+- **Notification:** 2027-02-XX (estimated ~6 weeks post-deadline)
+- **Conference:** 2027-04-26 → 2027-04-28
+- **Location:** Paris, France
 - **Format:** AISTATS LaTeX, 8 pages + refs; double-blind
 - **Acceptance:** ~30% historically
-- **Link:** http://aistats.org/ (2027 CFP not yet posted)
-- **Fit:** Statistical-learning angle; weaker fit unless probabilistic-modeling component is central
+- **Link:** http://aistats.org/
+- **Source:** [submitforge.com/event/aistats-2027](https://submitforge.com/event/aistats-2027), [trybibby.com conference deadlines](https://trybibby.com/conference-deadlines) — Paris dates and Jan 15 deadline confirmed via 2 sources (2026-06-12 refresh)
+- **Fit:** Statistical-learning angle; weaker fit unless probabilistic-modeling component is central. Note: location changed from Toronto (2026) to Paris (2027).
 
 ---
 
@@ -371,9 +372,11 @@ Confidence legend: **verified** = official site confirms; **likely** = ≥2 seco
 
 - **WSDM 2026 paper deadline:** 2025-08-14 (PASSED)
 - **WSDM 2026 conference:** 2026-02-22 → 2026-02-26 (Boise, Idaho)
-- **WSDM 2027 deadline:** ~2026-08 (estimated)
+- **WSDM 2027 paper deadline:** 2026-08-24 (AoE)
+- **WSDM 2027 conference:** 2027-02-15 → 2027-02-19
 - **Tier:** A
-- **Link:** https://wsdm-conference.org/2026/
+- **Link:** https://wsdm-conference.org/2027/
+- **Source:** [wsdm-conference.org/2027](https://wsdm-conference.org/2027/), [aideadlines.org/conference/?id=wsdm27](http://aideadlines.org/conference/?id=wsdm27) — August 24 deadline confirmed via 2 sources (2026-06-12 refresh)
 - **Fit:** Retrieval-heavy work; tacit-knowledge retrieval angle plausible for WSDM 2027
 
 ---
@@ -407,9 +410,11 @@ Confidence legend: **verified** = official site confirms; **likely** = ≥2 seco
 - **Field:** Robotics & Automation
 - **Tier:** A
 - **ICRA 2026 paper deadline:** 2025-09 (PASSED); conference 2026-06-01 → 2026-06-05 (Vienna)
-- **ICRA 2027 paper deadline:** ~2026-09 (estimated)
+- **ICRA 2027 paper deadline:** ~2026-09-15 (estimated, based on Sept 15 pattern from prior years)
+- **ICRA 2027 conference:** 2027-05-24 → 2027-05-28, Seoul, South Korea
 - **Acceptance:** ~45%
-- **Link:** https://2026.ieee-icra.org/
+- **Link:** https://2027.ieee-icra.org/
+- **Source:** [2027.ieee-icra.org](https://2027.ieee-icra.org/), [ieee-ras.org ICRA 2027](https://www.ieee-ras.org/event/2027-ieee-international-conference-on-robotics-and-automation-icra-64212/) — conference location confirmed (2026-06-12 refresh)
 
 ## IROS 2026
 
@@ -678,8 +683,8 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2027,
       "fields": ["AI", "ML", "KR", "NLP", "agents"],
       "tier": "A*",
-      "abstractDeadline": "2026-07-25",
-      "deadline": "2026-08-01",
+      "abstractDeadline": "2026-07-21",
+      "deadline": "2026-07-28",
       "rebuttal": "2026-10-02 to 2026-10-08",
       "notification": "2026-11-03",
       "conferenceStart": "2027-02-16",
@@ -689,9 +694,9 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "pageLimit": "7+2",
       "acceptanceRate": 0.176,
       "blind": "double",
-      "link": "https://aaai.org/conference/aaai/",
+      "link": "https://aaai.org/conference/aaai/aaai-27/",
       "fit": "Main track for KG/agent/LLM design methods",
-      "confidence": "likely"
+      "confidence": "verified"
     },
     {
       "id": "ijcai-2026",
@@ -721,19 +726,19 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2027,
       "fields": ["ML", "statistics"],
       "tier": "A",
-      "abstractDeadline": "2026-09-XX",
-      "deadline": "2026-10-XX",
-      "notification": "2027-01-XX",
-      "conferenceStart": "2027-05-16",
-      "conferenceEnd": "2027-05-21",
-      "location": { "city": "Toronto", "country": "Canada" },
+      "abstractDeadline": "2027-01-15",
+      "deadline": "2027-01-15",
+      "notification": "2027-02-15",
+      "conferenceStart": "2027-04-26",
+      "conferenceEnd": "2027-04-28",
+      "location": { "city": "Paris", "country": "France" },
       "format": "AISTATS LaTeX, 8 pages + refs, double-blind",
       "pageLimit": "8",
       "acceptanceRate": 0.3,
       "blind": "double",
       "link": "http://aistats.org/",
-      "fit": "Tangent unless probabilistic-modeling component is central",
-      "confidence": "estimated"
+      "fit": "Tangent unless probabilistic-modeling component is central. Location: Paris (changed from Toronto).",
+      "confidence": "likely"
     },
     {
       "id": "colm-2026",
@@ -1005,17 +1010,17 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2027,
       "fields": ["IR", "data mining"],
       "tier": "A",
-      "deadline": "2026-08-XX",
-      "conferenceStart": "2027-02-XX",
-      "conferenceEnd": "2027-02-XX",
+      "deadline": "2026-08-24",
+      "conferenceStart": "2027-02-15",
+      "conferenceEnd": "2027-02-19",
       "location": { "city": "TBA", "country": "TBA" },
       "format": "ACM 2-col, 10 pages, double-blind",
       "pageLimit": "10",
       "acceptanceRate": 0.18,
       "blind": "double",
-      "link": "https://wsdm-conference.org/",
+      "link": "https://wsdm-conference.org/2027/",
       "fit": "Tacit-knowledge retrieval angle plausible",
-      "confidence": "estimated"
+      "confidence": "likely"
     },
     {
       "id": "corl-2026",
@@ -1063,15 +1068,15 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2027,
       "fields": ["robotics"],
       "tier": "A",
-      "deadline": "2026-09-XX",
-      "conferenceStart": "2027-05-XX",
-      "conferenceEnd": "2027-05-XX",
-      "location": { "city": "TBA", "country": "TBA" },
+      "deadline": "2026-09-15",
+      "conferenceStart": "2027-05-24",
+      "conferenceEnd": "2027-05-28",
+      "location": { "city": "Seoul", "country": "South Korea" },
       "format": "IEEE 2-col, 6 pages + refs, double-blind",
       "pageLimit": "6",
       "acceptanceRate": 0.45,
       "blind": "double",
-      "link": "https://www.ieee-ras.org/conferences-workshops/upcoming-conferences",
+      "link": "https://2027.ieee-icra.org/",
       "fit": "Tangent unless physical/embodied component",
       "confidence": "estimated"
     },

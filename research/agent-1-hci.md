@@ -170,15 +170,15 @@ Notes on conventions:
 
 - **Field:** HCI, CSCW, organizational
 - **Tier:** B
-- **Deadline:** Wave 1: 2026-03-17 (abstract), 2026-03-24 (full) — PASSED; Wave 2: ~Sept 2026 (estimated)
-- **Notification:** Two rounds; final inviting talk at January 2027 conference
+- **Deadline:** Wave 1: 2026-03-17 (abstract), 2026-03-24 (full) — PASSED; Wave 2: 2026-03-17 (abstract), 2026-03-24 (full) — PASSED. All submission waves closed.
+- **Notification:** Two rounds complete
 - **Conference:** 2027-01 (typical)
 - **Location:** TBD (USA, organizers at U Michigan-Flint and U Siegen)
 - **Format:** PDF, anonymous, PACMHCI (single-column); two waves with two-round review
 - **Acceptance:** ~25–30%
 - **Link:** https://group.acm.org/conferences/group27/papers.php
-- **Fit:** Niche but viable for organizational tacit knowledge / collaborative design tooling.
-- **Source:** [group.acm.org/conferences/group27](https://group.acm.org/conferences/group27/papers.php), [acm.org upcoming deadlines](https://www.acm.org/conferences/upcoming-submission-deadlines)
+- **Fit:** Closed for submissions. Both waves had March 2026 deadlines. Watch GROUP 2029 cycle.
+- **Source:** [group.acm.org/conferences/group27](https://group.acm.org/conferences/group27/papers.php), [getpaperpilot.com/deadlines/group-2027](https://www.getpaperpilot.com/deadlines/group-2027.html) — confirmed all waves closed (2026-06-12 refresh)
 
 ## HRI 2027
 
@@ -296,15 +296,15 @@ Notes on conventions:
 
 - **Field:** Multimodal interaction, AI + HCI
 - **Tier:** A
-- **Deadline:** 2026-05-XX (estimated; ICMI typically May/June for Oct conference) — check official site
-- **Notification:** ~July/August 2026
+- **Deadline:** 2026-04-13 — PASSED
+- **Notification:** 2026-07-01
 - **Conference:** 2026-10-06 to 2026-10-08 (workshops Oct 5/9)
 - **Location:** Napoli, Italy
 - **Format:** PDF, anonymous, ACM; long + short papers; theme: "Context and Cultural Awareness"
 - **Acceptance:** ~30%
 - **Link:** https://icmi.acm.org/2026/call-for-papers/
-- **Fit:** Multimodal angle on engineering-design assistants (gesture + speech + sketch) fits well.
-- **Source:** [icmi.acm.org/2026](https://icmi.acm.org/2026/), [icmi.acm.org/2026/important-dates](https://icmi.acm.org/2026/important-dates/)
+- **Fit:** Closed for submissions. Multimodal angle on engineering-design assistants fits well — watch for ICMI 2027.
+- **Source:** [icmi.acm.org/2026](https://icmi.acm.org/2026/), [airesearchtimes.com ICMI 2026 callout](https://airesearchtimes.com/2025/12/08/call-for-workshop-proposals-at-icmi-2026/) — deadline April 13 confirmed via 2 sources (2026-06-12 refresh)
 
 ## UbiComp/ISWC 2026 (IMWUT)
 
@@ -478,15 +478,15 @@ Notes on conventions:
 
 - **Field:** AI (broad), some human-AI/HCI sessions
 - **Tier:** A\*
-- **Deadline:** 2026-07-25 (abstract), 2026-08-01 (full paper)
+- **Deadline:** 2026-07-21 (abstract), 2026-07-28 (full paper)
 - **Notification:** 2026-11-03; rebuttal Oct 2-8
 - **Conference:** 2027-02-16 to 2027-02-23
 - **Location:** Montréal, Québec, Canada
 - **Format:** PDF, AAAI two-column, double-anonymous
 - **Acceptance:** ~20% main track
-- **Link:** https://aaai.org/conference/aaai/
+- **Link:** https://aaai.org/conference/aaai/aaai-27/
 - **Fit:** Lower priority unless an AI-systems framing of Doug's work; HCI presence is small but exists.
-- **Source:** [aaai.org/conference/aaai](https://aaai.org/conference/aaai/), [getpaperpilot.com/deadlines/aaai-2027](https://www.getpaperpilot.com/deadlines/aaai-2027.html)
+- **Source:** [aaai.org/conference/aaai/aaai-27](https://aaai.org/conference/aaai/aaai-27/), [getpaperpilot.com/deadlines/aaai-2027](https://www.getpaperpilot.com/deadlines/aaai-2027.html) — deadlines confirmed July 21/28 via 2 sources (2026-06-12 refresh)
 
 ## NeurIPS 2026 (HCI/AI workshops)
 
@@ -807,7 +807,7 @@ Notes on conventions:
       "year": 2027,
       "fields": ["HCI", "CSCW"],
       "tier": "B",
-      "deadline": "2026-09-15",
+      "deadline": "2026-03-24",
       "notification": "2026-12-01",
       "conferenceStart": "2027-01-10",
       "conferenceEnd": "2027-01-13",
@@ -817,8 +817,8 @@ Notes on conventions:
       "acceptanceRate": 0.27,
       "blind": "anonymous",
       "link": "https://group.acm.org/conferences/group27/papers.php",
-      "fit": "Niche; organizational tacit-knowledge angle.",
-      "confidence": "estimated"
+      "fit": "Closed. Both Wave 1 and Wave 2 had March 24, 2026 deadlines — all submissions closed.",
+      "confidence": "verified"
     },
     {
       "id": "hri-2027",
@@ -858,7 +858,7 @@ Notes on conventions:
       "acceptanceRate": 0.27,
       "blind": "anonymous",
       "link": "https://www.humancomputation.com/2026/",
-      "fit": "Tacit-knowledge mining, crowd-AI workflows, LLMs as annotators. Abstract due June 1 — upcoming!",
+      "fit": "Tacit-knowledge mining, crowd-AI workflows, LLMs as annotators. Abstract was June 1, paper June 8 — both deadlines now closed (2026-06-12).",
       "confidence": "verified"
     },
     {
@@ -988,8 +988,8 @@ Notes on conventions:
       "year": 2026,
       "fields": ["HCI", "AI", "multimodal"],
       "tier": "A",
-      "deadline": "2026-05-15",
-      "notification": "2026-07-30",
+      "deadline": "2026-04-13",
+      "notification": "2026-07-01",
       "conferenceStart": "2026-10-06",
       "conferenceEnd": "2026-10-08",
       "location": { "city": "Napoli", "country": "Italy" },
@@ -998,8 +998,8 @@ Notes on conventions:
       "acceptanceRate": 0.3,
       "blind": "anonymous",
       "link": "https://icmi.acm.org/2026/call-for-papers/",
-      "fit": "Multimodal angle on engineering-design assistants.",
-      "confidence": "estimated"
+      "fit": "Closed. Multimodal angle on engineering-design assistants — watch ICMI 2027.",
+      "confidence": "verified"
     },
     {
       "id": "ubicomp-2026",
@@ -1158,8 +1158,8 @@ Notes on conventions:
       "acceptanceRate": 0.3,
       "blind": "anonymous",
       "link": "https://www.auto-ui.org/26/",
-      "fit": "Low priority; automotive only.",
-      "confidence": "estimated"
+      "fit": "Low priority; automotive only. Deadline passed.",
+      "confidence": "verified"
     },
     {
       "id": "idetc-2026",
@@ -1248,8 +1248,8 @@ Notes on conventions:
       "year": 2027,
       "fields": ["AI"],
       "tier": "A*",
-      "abstractDeadline": "2026-07-25",
-      "deadline": "2026-08-01",
+      "abstractDeadline": "2026-07-21",
+      "deadline": "2026-07-28",
       "notification": "2026-11-03",
       "conferenceStart": "2027-02-16",
       "conferenceEnd": "2027-02-23",
@@ -1259,8 +1259,8 @@ Notes on conventions:
       "acceptanceRate": 0.2,
       "blind": "double",
       "link": "https://aaai.org/conference/aaai/aaai-27/",
-      "fit": "Lower priority; AI-systems framing. Official deadline not yet announced as of 2026-05-26.",
-      "confidence": "likely"
+      "fit": "Lower priority; AI-systems framing. Abstract July 21, paper July 28, 2026 (AoE).",
+      "confidence": "verified"
     },
     {
       "id": "neurips-2026",

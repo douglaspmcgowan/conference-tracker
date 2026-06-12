@@ -1,7 +1,7 @@
-// Generated 2026-05-26 by scripts/refresh-data.js
+// Generated 2026-06-12 by scripts/refresh-data.js
 
 module.exports = {
-  generated: "2026-05-26T14:19:52.180Z",
+  generated: "2026-06-12T14:14:33.861Z",
 
   fields: {
   "HCI": {
@@ -804,6 +804,32 @@ module.exports = {
     "confidence": "verified"
   },
   {
+    "id": "group-2027",
+    "name": "GROUP",
+    "fullName": "ACM Conference on Supporting Group Work",
+    "year": 2027,
+    "fields": [
+      "HCI"
+    ],
+    "tier": "B",
+    "abstractDeadline": null,
+    "deadline": "2026-03-24",
+    "notification": "2026-12-01",
+    "conferenceStart": "2027-01-10",
+    "conferenceEnd": "2027-01-13",
+    "location": {
+      "city": "St Simons Island",
+      "country": "USA"
+    },
+    "format": "PDF, anonymous, PACMHCI single-column",
+    "pageLimit": "n/a",
+    "acceptanceRate": 0.27,
+    "blind": "anonymous",
+    "link": "https://group.acm.org/conferences/group27/papers.php",
+    "fit": "Closed. Both Wave 1 and Wave 2 had March 24, 2026 deadlines — all submissions closed.",
+    "confidence": "verified"
+  },
+  {
     "id": "colm-2026",
     "name": "COLM",
     "fullName": "Conference on Language Modeling",
@@ -1014,6 +1040,33 @@ module.exports = {
     "confidence": "verified"
   },
   {
+    "id": "icmi-2026",
+    "name": "ICMI",
+    "fullName": "ACM International Conference on Multimodal Interaction",
+    "year": 2026,
+    "fields": [
+      "HCI",
+      "ML"
+    ],
+    "tier": "A",
+    "abstractDeadline": null,
+    "deadline": "2026-04-13",
+    "notification": "2026-07-01",
+    "conferenceStart": "2026-10-06",
+    "conferenceEnd": "2026-10-08",
+    "location": {
+      "city": "Napoli",
+      "country": "Italy"
+    },
+    "format": "PDF, anonymous, ACM",
+    "pageLimit": "long+short",
+    "acceptanceRate": 0.3,
+    "blind": "anonymous",
+    "link": "https://icmi.acm.org/2026/call-for-papers/",
+    "fit": "Closed. Multimodal angle on engineering-design assistants — watch ICMI 2027.",
+    "confidence": "verified"
+  },
+  {
     "id": "rapid-tct-2026",
     "name": "RAPID + TCT",
     "fullName": "RAPID + TCT 2026",
@@ -1195,8 +1248,8 @@ module.exports = {
     "acceptanceRate": 0.3,
     "blind": "anonymous",
     "link": "https://www.auto-ui.org/26/",
-    "fit": "Low priority; automotive only.",
-    "confidence": "estimated"
+    "fit": "Low priority; automotive only. Deadline passed.",
+    "confidence": "verified"
   },
   {
     "id": "dsm-2026",
@@ -1412,33 +1465,6 @@ module.exports = {
     "confidence": "verified"
   },
   {
-    "id": "icmi-2026",
-    "name": "ICMI",
-    "fullName": "ACM International Conference on Multimodal Interaction",
-    "year": 2026,
-    "fields": [
-      "HCI",
-      "ML"
-    ],
-    "tier": "A",
-    "abstractDeadline": null,
-    "deadline": "2026-05-15",
-    "notification": "2026-07-30",
-    "conferenceStart": "2026-10-06",
-    "conferenceEnd": "2026-10-08",
-    "location": {
-      "city": "Napoli",
-      "country": "Italy"
-    },
-    "format": "PDF, anonymous, ACM",
-    "pageLimit": "long+short",
-    "acceptanceRate": 0.3,
-    "blind": "anonymous",
-    "link": "https://icmi.acm.org/2026/call-for-papers/",
-    "fit": "Multimodal angle on engineering-design assistants.",
-    "confidence": "estimated"
-  },
-  {
     "id": "vlhcc-2026",
     "name": "VL/HCC",
     "fullName": "IEEE Symposium on Visual Languages and Human-Centric Computing",
@@ -1488,6 +1514,33 @@ module.exports = {
     "blind": "double",
     "link": "https://cikm2026.diag.uniroma1.it/important-dates/",
     "fit": "Strong — KGs of engineering knowledge, retrieval over CAD/spec corpora",
+    "confidence": "verified"
+  },
+  {
+    "id": "aiaa-scitech-2027",
+    "name": "AIAA SciTech",
+    "fullName": "AIAA SciTech Forum 2027",
+    "year": 2027,
+    "fields": [
+      "Knowledge & Information"
+    ],
+    "tier": "A",
+    "abstractDeadline": "2026-05-21",
+    "deadline": "2026-12-01",
+    "notification": null,
+    "conferenceStart": "2027-01-11",
+    "conferenceEnd": "2027-01-15",
+    "location": {
+      "city": "Orlando",
+      "state": "FL",
+      "country": "USA"
+    },
+    "format": "Abstract-driven conference paper, AIAA portal archival",
+    "pageLimit": null,
+    "acceptanceRate": null,
+    "blind": "single",
+    "link": "https://scitech.aiaa.org/call-for-content/",
+    "fit": "Abstract deadline PASSED (May 21, 2026). Manuscript deadline Dec 1, 2026 if abstract was submitted. MDO + AI-for-engineering tracks fit surrogates and human-AI co-design framed for aerospace.",
     "confidence": "verified"
   },
   {
@@ -1646,7 +1699,7 @@ module.exports = {
     "acceptanceRate": 0.27,
     "blind": "anonymous",
     "link": "https://www.humancomputation.com/2026/",
-    "fit": "Tacit-knowledge mining, crowd-AI workflows, LLMs as annotators. Abstract due June 1 — upcoming!",
+    "fit": "Tacit-knowledge mining, crowd-AI workflows, LLMs as annotators. Abstract was June 1, paper June 8 — both deadlines now closed (2026-06-12).",
     "confidence": "verified"
   },
   {
@@ -1730,33 +1783,6 @@ module.exports = {
     "link": "https://namrc.sme.org/",
     "fit": "Manufacturing-science companion to MSEC",
     "confidence": "verified"
-  },
-  {
-    "id": "aiaa-scitech-2027",
-    "name": "AIAA SciTech",
-    "fullName": "AIAA SciTech Forum 2027",
-    "year": 2027,
-    "fields": [
-      "Knowledge & Information"
-    ],
-    "tier": "A",
-    "abstractDeadline": "2026-06-15",
-    "deadline": "2026-06-15",
-    "notification": null,
-    "conferenceStart": "2027-01-15",
-    "conferenceEnd": "2027-01-15",
-    "location": {
-      "city": "Orlando",
-      "state": "FL",
-      "country": "USA"
-    },
-    "format": "Abstract-driven conference paper, AIAA portal archival",
-    "pageLimit": null,
-    "acceptanceRate": null,
-    "blind": "single",
-    "link": "https://www.aiaa.org/SciTech",
-    "fit": "MDO + AI-for-engineering tracks fit surrogates and human-AI co-design framed for aerospace",
-    "confidence": "estimated"
   },
   {
     "id": "psychonomics-2026",
@@ -1998,6 +2024,32 @@ module.exports = {
     "confidence": "verified"
   },
   {
+    "id": "aaai-2027",
+    "name": "AAAI",
+    "fullName": "AAAI Conference on Artificial Intelligence",
+    "year": 2027,
+    "fields": [
+      "ML"
+    ],
+    "tier": "A*",
+    "abstractDeadline": "2026-07-21",
+    "deadline": "2026-07-28",
+    "notification": "2026-11-03",
+    "conferenceStart": "2027-02-16",
+    "conferenceEnd": "2027-02-23",
+    "location": {
+      "city": "Montréal",
+      "country": "Canada"
+    },
+    "format": "PDF, AAAI two-column, double-anonymous",
+    "pageLimit": "8+refs",
+    "acceptanceRate": 0.2,
+    "blind": "double",
+    "link": "https://aaai.org/conference/aaai/aaai-27/",
+    "fit": "Lower priority; AI-systems framing. Abstract July 21, paper July 28, 2026 (AoE).",
+    "confidence": "verified"
+  },
+  {
     "id": "iss-2026",
     "name": "ISS",
     "fullName": "ACM International Conference on Interactive Surfaces and Spaces",
@@ -2022,32 +2074,6 @@ module.exports = {
     "link": "https://www.iss.acm.org/2026/",
     "fit": "Round 2 viable for surface/spatial design tools.",
     "confidence": "verified"
-  },
-  {
-    "id": "aaai-2027",
-    "name": "AAAI",
-    "fullName": "AAAI Conference on Artificial Intelligence",
-    "year": 2027,
-    "fields": [
-      "ML"
-    ],
-    "tier": "A*",
-    "abstractDeadline": "2026-07-25",
-    "deadline": "2026-08-01",
-    "notification": "2026-11-03",
-    "conferenceStart": "2027-02-16",
-    "conferenceEnd": "2027-02-23",
-    "location": {
-      "city": "Montréal",
-      "country": "Canada"
-    },
-    "format": "PDF, AAAI two-column, double-anonymous",
-    "pageLimit": "8+refs",
-    "acceptanceRate": 0.2,
-    "blind": "double",
-    "link": "https://aaai.org/conference/aaai/aaai-27/",
-    "fit": "Lower priority; AI-systems framing. Official deadline not yet announced as of 2026-05-26.",
-    "confidence": "likely"
   },
   {
     "id": "tei-2027",
@@ -2156,32 +2182,6 @@ module.exports = {
     "confidence": "verified"
   },
   {
-    "id": "wsdm-2027",
-    "name": "WSDM",
-    "fullName": "ACM International Conference on Web Search and Data Mining",
-    "year": 2027,
-    "fields": [
-      "Knowledge & Information"
-    ],
-    "tier": "A",
-    "abstractDeadline": null,
-    "deadline": "2026-08-15",
-    "notification": null,
-    "conferenceStart": "2027-02-15",
-    "conferenceEnd": "2027-02-15",
-    "location": {
-      "city": "TBA",
-      "country": "TBA"
-    },
-    "format": "ACM 2-col, 10 pages, double-blind",
-    "pageLimit": "10",
-    "acceptanceRate": 0.18,
-    "blind": "double",
-    "link": "https://wsdm-conference.org/",
-    "fit": "Tacit-knowledge retrieval angle plausible",
-    "confidence": "estimated"
-  },
-  {
     "id": "ieee-case-2026",
     "name": "IEEE CASE",
     "fullName": "IEEE Conference on Automation Science and Engineering 2026",
@@ -2236,6 +2236,32 @@ module.exports = {
     "confidence": "verified"
   },
   {
+    "id": "wsdm-2027",
+    "name": "WSDM",
+    "fullName": "ACM International Conference on Web Search and Data Mining",
+    "year": 2027,
+    "fields": [
+      "Knowledge & Information"
+    ],
+    "tier": "A",
+    "abstractDeadline": null,
+    "deadline": "2026-08-24",
+    "notification": null,
+    "conferenceStart": "2027-02-15",
+    "conferenceEnd": "2027-02-19",
+    "location": {
+      "city": "TBA",
+      "country": "TBA"
+    },
+    "format": "ACM 2-col, 10 pages, double-blind",
+    "pageLimit": "10",
+    "acceptanceRate": 0.18,
+    "blind": "double",
+    "link": "https://wsdm-conference.org/2027/",
+    "fit": "Tacit-knowledge retrieval angle plausible",
+    "confidence": "likely"
+  },
+  {
     "id": "chi-2027",
     "name": "CHI",
     "fullName": "ACM Conference on Human Factors in Computing Systems",
@@ -2260,32 +2286,6 @@ module.exports = {
     "link": "https://chi2027.acm.org/authors/papers/",
     "fit": "Primary fall 2026 target. Generative tools, mixed-initiative, design support, knowledge interfaces, malleable workspaces.",
     "confidence": "verified"
-  },
-  {
-    "id": "group-2027",
-    "name": "GROUP",
-    "fullName": "ACM Conference on Supporting Group Work",
-    "year": 2027,
-    "fields": [
-      "HCI"
-    ],
-    "tier": "B",
-    "abstractDeadline": null,
-    "deadline": "2026-09-15",
-    "notification": "2026-12-01",
-    "conferenceStart": "2027-01-10",
-    "conferenceEnd": "2027-01-13",
-    "location": {
-      "city": "St Simons Island",
-      "country": "USA"
-    },
-    "format": "PDF, anonymous, PACMHCI single-column",
-    "pageLimit": "n/a",
-    "acceptanceRate": 0.27,
-    "blind": "anonymous",
-    "link": "https://group.acm.org/conferences/group27/papers.php",
-    "fit": "Niche; organizational tacit-knowledge angle.",
-    "confidence": "estimated"
   },
   {
     "id": "icra-2027",
@@ -2363,32 +2363,6 @@ module.exports = {
     "blind": "double",
     "link": "https://iclr.cc/",
     "fit": "Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
-    "confidence": "estimated"
-  },
-  {
-    "id": "aistats-2027",
-    "name": "AISTATS",
-    "fullName": "International Conference on Artificial Intelligence and Statistics",
-    "year": 2027,
-    "fields": [
-      "ML"
-    ],
-    "tier": "A",
-    "abstractDeadline": "2026-09-15",
-    "deadline": "2026-10-15",
-    "notification": "2027-01-15",
-    "conferenceStart": "2027-05-16",
-    "conferenceEnd": "2027-05-21",
-    "location": {
-      "city": "Toronto",
-      "country": "Canada"
-    },
-    "format": "AISTATS LaTeX, 8 pages + refs, double-blind",
-    "pageLimit": "8",
-    "acceptanceRate": 0.3,
-    "blind": "double",
-    "link": "http://aistats.org/",
-    "fit": "Tangent unless probabilistic-modeling component is central",
     "confidence": "estimated"
   },
   {
@@ -2838,6 +2812,32 @@ module.exports = {
     "link": "https://icml.cc/",
     "fit": "Primary cycle for next major submission",
     "confidence": "estimated"
+  },
+  {
+    "id": "aistats-2027",
+    "name": "AISTATS",
+    "fullName": "International Conference on Artificial Intelligence and Statistics",
+    "year": 2027,
+    "fields": [
+      "ML"
+    ],
+    "tier": "A",
+    "abstractDeadline": "2027-01-15",
+    "deadline": "2027-01-15",
+    "notification": "2027-02-15",
+    "conferenceStart": "2027-04-26",
+    "conferenceEnd": "2027-04-28",
+    "location": {
+      "city": "Paris",
+      "country": "France"
+    },
+    "format": "AISTATS LaTeX, 8 pages + refs, double-blind",
+    "pageLimit": "8",
+    "acceptanceRate": 0.3,
+    "blind": "double",
+    "link": "http://aistats.org/",
+    "fit": "Tangent unless probabilistic-modeling component is central. Location: Paris (changed from Toronto).",
+    "confidence": "likely"
   },
   {
     "id": "idetc-cie-2027",

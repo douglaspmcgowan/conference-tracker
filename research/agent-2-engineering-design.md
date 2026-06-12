@@ -237,11 +237,12 @@ Notes on confidence:
 
 - **Field:** Aerospace, MDO (multidisciplinary design optimization), Aerospace Design
 - **Tier:** A (top aerospace conf)
-- **Abstract deadline:** ~2026-06 (call for content currently open per April 2026 announcement)
-- **Conference:** 2027-01-XX (typically early-mid January), Orlando, FL (per spacecalendar listing)
+- **Abstract deadline:** 2026-05-21 — PASSED (8:00 PM ET, AoE); Manuscript deadline: 2026-12-01
+- **Conference:** 2027-01-11 to 2027-01-15, Orlando, FL (Orange County Convention Center)
 - **Format:** Abstract-driven, conference paper, archival in AIAA portal
-- **Link:** https://www.aiaa.org/SciTech (current call: AIAA reEngage forum)
-- **Fit:** MDO sessions + AI-for-engineering tracks fit surrogate-model and human-AI co-design work — especially if framed for aerospace.
+- **Link:** https://scitech.aiaa.org/call-for-content/
+- **Source:** [spacecalendar.com AIAA abstract deadline](https://spacecalendar.com/event/abstracts-due-for-aiaa-scitech-forum/), [scitech.aiaa.org](https://scitech.aiaa.org/call-for-content/) — abstract May 21 confirmed via 2 sources (2026-06-12 refresh)
+- **Fit:** Abstract deadline PASSED May 21. Manuscript deadline Dec 1 still relevant if abstract was already submitted. MDO + AI-for-engineering tracks fit surrogate models and human-AI co-design.
 
 ## WCSMO-17 (2027) — World Congress of Structural & Multidisciplinary Optimization
 
@@ -1035,19 +1036,19 @@ Notes on confidence:
       "year": 2027,
       "fields": ["Aerospace", "MDO", "Aerospace Design"],
       "tier": "A",
-      "abstractDeadline": "2026-06-XX",
-      "deadline": "2026-06-XX",
+      "abstractDeadline": "2026-05-21",
+      "deadline": "2026-12-01",
       "notification": null,
-      "conferenceStart": "2027-01-XX",
-      "conferenceEnd": "2027-01-XX",
+      "conferenceStart": "2027-01-11",
+      "conferenceEnd": "2027-01-15",
       "location": { "city": "Orlando", "state": "FL", "country": "USA" },
       "format": "Abstract-driven conference paper, AIAA portal archival",
       "pageLimit": null,
       "acceptanceRate": null,
       "blind": "single",
-      "link": "https://www.aiaa.org/SciTech",
-      "fit": "MDO + AI-for-engineering tracks fit surrogates and human-AI co-design framed for aerospace",
-      "confidence": "estimated"
+      "link": "https://scitech.aiaa.org/call-for-content/",
+      "fit": "Abstract deadline PASSED (May 21, 2026). Manuscript deadline Dec 1, 2026 if abstract was submitted. MDO + AI-for-engineering tracks fit surrogates and human-AI co-design framed for aerospace.",
+      "confidence": "verified"
     },
     {
       "id": "wcsmo-17-2027",
