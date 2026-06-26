@@ -240,8 +240,8 @@ Notes on conventions:
 
 - **Field:** VR, 3D UI, HCI for immersive systems
 - **Tier:** A
-- **Deadline:** 2026-09-XX (paper abstracts), 2026-09/10 (full paper) — estimated from prior cycles
-- **Notification:** 2026-12 (estimated)
+- **Abstract deadline:** 2026-08-24; **Full paper deadline:** 2026-08-31 — confirmed via hci-deadlines.github.io + showsbee.com
+- **Notification:** 2026-12-15 (estimated)
 - **Conference:** 2027-02-27 to 2027-03-03
 - **Location:** Melbourne, Australia
 - **Format:** PDF, double-anonymous, IEEE conference format; full + short tracks; full papers go to TVCG
@@ -479,7 +479,7 @@ Notes on conventions:
 - **Field:** AI (broad), some human-AI/HCI sessions
 - **Tier:** A\*
 - **Deadline:** 2026-07-21 (abstract), 2026-07-28 (full paper)
-- **Notification:** 2026-11-03; rebuttal Oct 2-8
+- **Notification:** 2026-11-30; rebuttal Oct 19-25
 - **Conference:** 2027-02-16 to 2027-02-23
 - **Location:** Montréal, Québec, Canada
 - **Format:** PDF, AAAI two-column, double-anonymous
@@ -908,7 +908,8 @@ Notes on conventions:
       "year": 2027,
       "fields": ["VR", "HCI"],
       "tier": "A",
-      "deadline": "2026-09-25",
+      "abstractDeadline": "2026-08-24",
+      "deadline": "2026-08-31",
       "notification": "2026-12-15",
       "conferenceStart": "2027-02-27",
       "conferenceEnd": "2027-03-03",
@@ -919,7 +920,7 @@ Notes on conventions:
       "blind": "double",
       "link": "http://ieeevr.org/2027/",
       "fit": "Lower priority unless spatial/VR malleable workspaces.",
-      "confidence": "estimated"
+      "confidence": "verified"
     },
     {
       "id": "nordichi-2026",
@@ -1250,7 +1251,7 @@ Notes on conventions:
       "tier": "A*",
       "abstractDeadline": "2026-07-21",
       "deadline": "2026-07-28",
-      "notification": "2026-11-03",
+      "notification": "2026-11-30",
       "conferenceStart": "2027-02-16",
       "conferenceEnd": "2027-02-23",
       "location": { "city": "Montréal", "country": "Canada" },

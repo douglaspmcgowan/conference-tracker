@@ -109,8 +109,8 @@ Confidence legend: **verified** = official site confirms; **likely** = ≥2 seco
 - **Tier:** A\*
 - **Abstract reg:** 2026-07-21 (AoE)
 - **Paper deadline:** 2026-07-28 (AoE)
-- **Rebuttal:** 2026-10-02 → 2026-10-08
-- **Notification:** 2026-11-03
+- **Rebuttal:** 2026-10-19 → 2026-10-25
+- **Notification:** 2026-11-30
 - **Conference:** 2027-02-16 → 2027-02-23
 - **Location:** Montréal, Québec, Canada
 - **Format:** AAAI 2-column, 7 pages content + 2 pages refs (typical); double-blind; some tracks allow longer
@@ -599,7 +599,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2026,
       "fields": ["workshops", "ML4PS", "AI4Science", "agents", "ML4Eng"],
       "tier": "A*-workshop",
-      "deadline": "2026-09-XX",
+      "deadline": "2026-08-29",
       "notification": "2026-10-XX",
       "conferenceStart": "2026-12-06",
       "conferenceEnd": "2026-12-12",
@@ -619,8 +619,8 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2027,
       "fields": ["ML", "representation learning", "LLMs"],
       "tier": "A*",
-      "abstractDeadline": "2026-09-XX",
-      "deadline": "2026-09-XX",
+      "abstractDeadline": "2026-09-16",
+      "deadline": "2026-09-16",
       "rebuttal": "2026-11-XX",
       "notification": "2027-01-XX",
       "conferenceStart": "2027-04-XX",
@@ -685,8 +685,8 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "tier": "A*",
       "abstractDeadline": "2026-07-21",
       "deadline": "2026-07-28",
-      "rebuttal": "2026-10-02 to 2026-10-08",
-      "notification": "2026-11-03",
+      "rebuttal": "2026-10-19 to 2026-10-25",
+      "notification": "2026-11-30",
       "conferenceStart": "2027-02-16",
       "conferenceEnd": "2027-02-23",
       "location": { "city": "Montréal", "country": "Canada" },

@@ -1,7 +1,7 @@
-// Generated 2026-06-12 by scripts/refresh-data.js
+// Generated 2026-06-26 by scripts/refresh-data.js
 
 module.exports = {
-  generated: "2026-06-12T14:14:33.861Z",
+  generated: "2026-06-26T14:12:00.066Z",
 
   fields: {
   "HCI": {
@@ -2034,7 +2034,7 @@ module.exports = {
     "tier": "A*",
     "abstractDeadline": "2026-07-21",
     "deadline": "2026-07-28",
-    "notification": "2026-11-03",
+    "notification": "2026-11-30",
     "conferenceStart": "2027-02-16",
     "conferenceEnd": "2027-02-23",
     "location": {
@@ -2236,6 +2236,32 @@ module.exports = {
     "confidence": "verified"
   },
   {
+    "id": "ieeevr-2027",
+    "name": "IEEE VR",
+    "fullName": "IEEE Conference on Virtual Reality and 3D User Interfaces",
+    "year": 2027,
+    "fields": [
+      "HCI"
+    ],
+    "tier": "A",
+    "abstractDeadline": "2026-08-24",
+    "deadline": "2026-08-31",
+    "notification": "2026-12-15",
+    "conferenceStart": "2027-02-27",
+    "conferenceEnd": "2027-03-03",
+    "location": {
+      "city": "Melbourne",
+      "country": "Australia"
+    },
+    "format": "PDF, double-anonymous, IEEE; full to TVCG",
+    "pageLimit": "n/a",
+    "acceptanceRate": 0.25,
+    "blind": "double",
+    "link": "http://ieeevr.org/2027/",
+    "fit": "Lower priority unless spatial/VR malleable workspaces.",
+    "confidence": "verified"
+  },
+  {
     "id": "wsdm-2027",
     "name": "WSDM",
     "fullName": "ACM International Conference on Web Search and Data Mining",
@@ -2260,6 +2286,32 @@ module.exports = {
     "link": "https://wsdm-conference.org/2027/",
     "fit": "Tacit-knowledge retrieval angle plausible",
     "confidence": "likely"
+  },
+  {
+    "id": "neurips-2026-workshops",
+    "name": "NeurIPS Workshops",
+    "fullName": "NeurIPS 2026 Workshops (multiple)",
+    "year": 2026,
+    "fields": [
+      "ML"
+    ],
+    "tier": "A*",
+    "abstractDeadline": null,
+    "deadline": "2026-08-29",
+    "notification": "2026-10-15",
+    "conferenceStart": "2026-12-06",
+    "conferenceEnd": "2026-12-12",
+    "location": {
+      "city": "Sydney",
+      "country": "Australia"
+    },
+    "format": "Per-workshop; usually 4-9 pages",
+    "pageLimit": "varies",
+    "acceptanceRate": null,
+    "blind": "varies",
+    "link": "https://neurips.cc/Conferences/2026/CallForWorkshops",
+    "fit": "ML4PS, AI4Science, Agent4Science, AI4Mat, Math-AI — multiple strong homes",
+    "confidence": "verified"
   },
   {
     "id": "chi-2027",
@@ -2311,58 +2363,6 @@ module.exports = {
     "blind": "double",
     "link": "https://2027.ieee-icra.org/",
     "fit": "Marginal — only if human-AI co-design has robotic-fabrication arm",
-    "confidence": "estimated"
-  },
-  {
-    "id": "neurips-2026-workshops",
-    "name": "NeurIPS Workshops",
-    "fullName": "NeurIPS 2026 Workshops (multiple)",
-    "year": 2026,
-    "fields": [
-      "ML"
-    ],
-    "tier": "A*",
-    "abstractDeadline": null,
-    "deadline": "2026-09-15",
-    "notification": "2026-10-15",
-    "conferenceStart": "2026-12-06",
-    "conferenceEnd": "2026-12-12",
-    "location": {
-      "city": "Sydney",
-      "country": "Australia"
-    },
-    "format": "Per-workshop; usually 4-9 pages",
-    "pageLimit": "varies",
-    "acceptanceRate": null,
-    "blind": "varies",
-    "link": "https://neurips.cc/Conferences/2026/CallForWorkshops",
-    "fit": "ML4PS, AI4Science, Agent4Science, AI4Mat, Math-AI — multiple strong homes",
-    "confidence": "verified"
-  },
-  {
-    "id": "iclr-2027",
-    "name": "ICLR",
-    "fullName": "International Conference on Learning Representations",
-    "year": 2027,
-    "fields": [
-      "ML"
-    ],
-    "tier": "A*",
-    "abstractDeadline": "2026-09-15",
-    "deadline": "2026-09-15",
-    "notification": "2027-01-15",
-    "conferenceStart": "2027-04-15",
-    "conferenceEnd": "2027-04-15",
-    "location": {
-      "city": "TBA",
-      "country": "TBA"
-    },
-    "format": "ICLR LaTeX, 9 pages + appendix, OpenReview public, double-blind",
-    "pageLimit": "9",
-    "acceptanceRate": 0.32,
-    "blind": "double",
-    "link": "https://iclr.cc/",
-    "fit": "Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
     "confidence": "estimated"
   },
   {
@@ -2470,29 +2470,29 @@ module.exports = {
     "confidence": "likely"
   },
   {
-    "id": "ieeevr-2027",
-    "name": "IEEE VR",
-    "fullName": "IEEE Conference on Virtual Reality and 3D User Interfaces",
+    "id": "iclr-2027",
+    "name": "ICLR",
+    "fullName": "International Conference on Learning Representations",
     "year": 2027,
     "fields": [
-      "HCI"
+      "ML"
     ],
-    "tier": "A",
-    "abstractDeadline": null,
-    "deadline": "2026-09-25",
-    "notification": "2026-12-15",
-    "conferenceStart": "2027-02-27",
-    "conferenceEnd": "2027-03-03",
+    "tier": "A*",
+    "abstractDeadline": "2026-09-16",
+    "deadline": "2026-09-16",
+    "notification": "2027-01-15",
+    "conferenceStart": "2027-04-15",
+    "conferenceEnd": "2027-04-15",
     "location": {
-      "city": "Melbourne",
-      "country": "Australia"
+      "city": "TBA",
+      "country": "TBA"
     },
-    "format": "PDF, double-anonymous, IEEE; full to TVCG",
-    "pageLimit": "n/a",
-    "acceptanceRate": 0.25,
+    "format": "ICLR LaTeX, 9 pages + appendix, OpenReview public, double-blind",
+    "pageLimit": "9",
+    "acceptanceRate": 0.32,
     "blind": "double",
-    "link": "http://ieeevr.org/2027/",
-    "fit": "Lower priority unless spatial/VR malleable workspaces.",
+    "link": "https://iclr.cc/",
+    "fit": "Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
     "confidence": "estimated"
   },
   {
