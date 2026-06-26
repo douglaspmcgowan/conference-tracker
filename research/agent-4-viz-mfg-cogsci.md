@@ -721,7 +721,7 @@ Note on confidence:
       "year": 2026,
       "fields": ["Cognitive Psychology", "Attention", "Memory"],
       "tier": "Top",
-      "deadline": "2026-06-15",
+      "deadline": "2026-06-01",
       "conferenceStart": "2026-11-19",
       "conferenceEnd": "2026-11-22",
       "location": { "city": "San Diego", "country": "USA" },
@@ -729,8 +729,8 @@ Note on confidence:
       "pageLimit": "abstract",
       "blind": "none",
       "link": "https://www.psychonomic.org/page/2026annualmeeting",
-      "fit": "Mental fatigue / cognitive resource framing",
-      "confidence": "likely"
+      "fit": "Mental fatigue / cognitive resource framing. Deadline passed.",
+      "confidence": "verified"
     },
     {
       "id": "aps-2026",
@@ -1003,9 +1003,9 @@ Note on confidence:
       "year": 2027,
       "fields": ["Information Science", "KMC"],
       "tier": "A",
-      "deadline": "2026-09-XX",
-      "conferenceStart": "2027-03-XX",
-      "conferenceEnd": "2027-04-XX",
+      "deadline": "2026-09-15",
+      "conferenceStart": "2027-03-22",
+      "conferenceEnd": "2027-04-09",
       "location": { "city": "Wellington", "country": "New Zealand" },
       "format": "Springer LNCS, double-blind",
       "pageLimit": "15",
@@ -1013,7 +1013,7 @@ Note on confidence:
       "blind": "double",
       "link": "https://www.ischools.org/iconference",
       "fit": "Knowledge organization, info architecture for DfM/AI-in-design field maps",
-      "confidence": "likely"
+      "confidence": "verified"
     },
     {
       "id": "asist-2026",
@@ -1079,9 +1079,10 @@ Note on confidence:
       "year": 2027,
       "fields": ["Web", "Knowledge Graphs", "IR"],
       "tier": "A*",
-      "deadline": "2026-10-XX",
-      "conferenceStart": "2027-04-XX",
-      "conferenceEnd": "2027-04-XX",
+      "abstractDeadline": "2026-09-30",
+      "deadline": "2026-10-07",
+      "conferenceStart": "2027-04-01",
+      "conferenceEnd": "2027-04-05",
       "location": { "city": "Dublin", "country": "Ireland" },
       "format": "ACM template, double-blind, 10–12 pages",
       "pageLimit": "12",
@@ -1089,7 +1090,7 @@ Note on confidence:
       "blind": "double",
       "link": "https://thewebconf.org/",
       "fit": "Knowledge-graph track possible but very competitive",
-      "confidence": "likely"
+      "confidence": "estimated"
     },
     {
       "id": "pervasivehealth-2026",
