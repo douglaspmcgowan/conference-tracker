@@ -1,7 +1,7 @@
-// Generated 2026-06-26 by scripts/refresh-data.js
+// Generated 2026-07-12 by scripts/refresh-data.js
 
 module.exports = {
-  generated: "2026-06-26T14:23:54.333Z",
+  generated: "2026-07-12T14:09:38.512Z",
 
   fields: {
   "HCI": {
@@ -2024,6 +2024,32 @@ module.exports = {
     "confidence": "verified"
   },
   {
+    "id": "kdd-2027-c1",
+    "name": "KDD",
+    "fullName": "ACM SIGKDD Conference on Knowledge Discovery and Data Mining (Cycle 1)",
+    "year": 2027,
+    "fields": [
+      "ML"
+    ],
+    "tier": "A*",
+    "abstractDeadline": "2026-07-19",
+    "deadline": "2026-07-26",
+    "notification": "2026-11-14",
+    "conferenceStart": "2027-08-01",
+    "conferenceEnd": "2027-08-05",
+    "location": {
+      "city": "San Jose",
+      "country": "USA"
+    },
+    "format": "ACM 2-col, 9 pages, double-blind",
+    "pageLimit": "9",
+    "acceptanceRate": 0.2,
+    "blind": "double",
+    "link": "https://kdd.org/",
+    "fit": "Best near-term applied-ML venue with engineering relevance",
+    "confidence": "verified"
+  },
+  {
     "id": "aaai-2027",
     "name": "AAAI",
     "fullName": "AAAI Conference on Artificial Intelligence",
@@ -2076,32 +2102,6 @@ module.exports = {
     "confidence": "verified"
   },
   {
-    "id": "kdd-2027-c1",
-    "name": "KDD",
-    "fullName": "ACM SIGKDD Conference on Knowledge Discovery and Data Mining (Cycle 1)",
-    "year": 2027,
-    "fields": [
-      "ML"
-    ],
-    "tier": "A*",
-    "abstractDeadline": "2026-07-24",
-    "deadline": "2026-07-31",
-    "notification": null,
-    "conferenceStart": "2027-08-01",
-    "conferenceEnd": "2027-08-05",
-    "location": {
-      "city": "San Jose",
-      "country": "USA"
-    },
-    "format": "ACM 2-col, 9 pages, double-blind",
-    "pageLimit": "9",
-    "acceptanceRate": 0.2,
-    "blind": "double",
-    "link": "https://kdd.org/",
-    "fit": "Best near-term applied-ML venue with engineering relevance",
-    "confidence": "estimated"
-  },
-  {
     "id": "tei-2027",
     "name": "TEI",
     "fullName": "ACM International Conference on Tangible, Embedded, and Embodied Interaction",
@@ -2125,33 +2125,7 @@ module.exports = {
     "blind": "anonymous",
     "link": "https://tei.acm.org/2027/",
     "fit": "Lower priority; tangible angle on design tools.",
-    "confidence": "single-source"
-  },
-  {
-    "id": "wsdm-2027",
-    "name": "WSDM",
-    "fullName": "ACM International Conference on Web Search and Data Mining",
-    "year": 2027,
-    "fields": [
-      "Knowledge & Information"
-    ],
-    "tier": "A",
-    "abstractDeadline": "2026-08-07",
-    "deadline": "2026-08-14",
-    "notification": null,
-    "conferenceStart": "2027-02-15",
-    "conferenceEnd": "2027-02-19",
-    "location": {
-      "city": "Hong Kong",
-      "country": "China"
-    },
-    "format": "ACM 2-col, 10 pages, double-blind",
-    "pageLimit": "10",
-    "acceptanceRate": 0.18,
-    "blind": "double",
-    "link": "https://wsdm-conference.org/2027/",
-    "fit": "Tacit-knowledge retrieval angle plausible",
-    "confidence": "likely"
+    "confidence": "verified"
   },
   {
     "id": "norddesign-2026",
@@ -2235,6 +2209,32 @@ module.exports = {
     "confidence": "verified"
   },
   {
+    "id": "wsdm-2027",
+    "name": "WSDM",
+    "fullName": "ACM International Conference on Web Search and Data Mining",
+    "year": 2027,
+    "fields": [
+      "Knowledge & Information"
+    ],
+    "tier": "A",
+    "abstractDeadline": "2026-08-17",
+    "deadline": "2026-08-24",
+    "notification": null,
+    "conferenceStart": "2027-02-15",
+    "conferenceEnd": "2027-02-19",
+    "location": {
+      "city": "Hong Kong",
+      "country": "China"
+    },
+    "format": "ACM 2-col, 10 pages, double-blind",
+    "pageLimit": "10",
+    "acceptanceRate": 0.18,
+    "blind": "double",
+    "link": "https://wsdm-conference.org/2027/",
+    "fit": "Tacit-knowledge retrieval angle plausible",
+    "confidence": "likely"
+  },
+  {
     "id": "cirp-ga-2026",
     "name": "CIRP GA",
     "fullName": "75th CIRP General Assembly",
@@ -2298,7 +2298,7 @@ module.exports = {
     "tier": "A*",
     "abstractDeadline": null,
     "deadline": "2026-08-29",
-    "notification": "2026-10-15",
+    "notification": "2026-09-29",
     "conferenceStart": "2026-12-06",
     "conferenceEnd": "2026-12-12",
     "location": {
@@ -2338,32 +2338,6 @@ module.exports = {
     "link": "https://chi2027.acm.org/authors/papers/",
     "fit": "Primary fall 2026 target. Generative tools, mixed-initiative, design support, knowledge interfaces, malleable workspaces.",
     "confidence": "verified"
-  },
-  {
-    "id": "iclr-2027",
-    "name": "ICLR",
-    "fullName": "International Conference on Learning Representations",
-    "year": 2027,
-    "fields": [
-      "ML"
-    ],
-    "tier": "A*",
-    "abstractDeadline": "2026-09-11",
-    "deadline": "2026-09-16",
-    "notification": "2027-01-15",
-    "conferenceStart": "2027-04-24",
-    "conferenceEnd": "2027-04-28",
-    "location": {
-      "city": "TBA",
-      "country": "TBA"
-    },
-    "format": "ICLR LaTeX, 9 pages + appendix, OpenReview public, double-blind",
-    "pageLimit": "9",
-    "acceptanceRate": 0.32,
-    "blind": "double",
-    "link": "https://iclr.cc/",
-    "fit": "Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
-    "confidence": "estimated"
   },
   {
     "id": "icra-2027",
@@ -2496,31 +2470,30 @@ module.exports = {
     "confidence": "verified"
   },
   {
-    "id": "hri-2027",
-    "name": "HRI",
-    "fullName": "ACM/IEEE International Conference on Human-Robot Interaction",
+    "id": "iclr-2027",
+    "name": "ICLR",
+    "fullName": "International Conference on Learning Representations",
     "year": 2027,
     "fields": [
-      "HCI",
-      "Robotics"
+      "ML"
     ],
-    "tier": "A",
-    "abstractDeadline": "2026-09-22",
-    "deadline": "2026-10-01",
-    "notification": "2026-12-15",
-    "conferenceStart": "2027-03-08",
-    "conferenceEnd": "2027-03-12",
+    "tier": "A*",
+    "abstractDeadline": "2026-09-19",
+    "deadline": "2026-09-24",
+    "notification": "2027-01-22",
+    "conferenceStart": "2027-04-24",
+    "conferenceEnd": "2027-04-28",
     "location": {
-      "city": "Santa Clara",
-      "country": "USA"
+      "city": "TBA",
+      "country": "TBA"
     },
-    "format": "PDF, anonymous, ACM/IEEE format",
-    "pageLimit": "n/a",
-    "acceptanceRate": 0.25,
-    "blind": "anonymous",
-    "link": "https://humanrobotinteraction.org/2027/",
-    "fit": "Lower fit unless embodied agents.",
-    "confidence": "estimated"
+    "format": "ICLR LaTeX, 9 pages + appendix, OpenReview public, double-blind",
+    "pageLimit": "9",
+    "acceptanceRate": 0.32,
+    "blind": "double",
+    "link": "https://iclr.cc/",
+    "fit": "Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
+    "confidence": "likely"
   },
   {
     "id": "thewebconf-2027",
@@ -2547,6 +2520,33 @@ module.exports = {
     "link": "https://thewebconf.org/",
     "fit": "Knowledge-graph track possible but very competitive",
     "confidence": "estimated"
+  },
+  {
+    "id": "hri-2027",
+    "name": "HRI",
+    "fullName": "ACM/IEEE International Conference on Human-Robot Interaction",
+    "year": 2027,
+    "fields": [
+      "HCI",
+      "Robotics"
+    ],
+    "tier": "A",
+    "abstractDeadline": "2026-10-01",
+    "deadline": "2026-10-01",
+    "notification": "2026-12-15",
+    "conferenceStart": "2027-03-08",
+    "conferenceEnd": "2027-03-12",
+    "location": {
+      "city": "Santa Clara",
+      "country": "USA"
+    },
+    "format": "PDF, anonymous, ACM/IEEE format",
+    "pageLimit": "n/a",
+    "acceptanceRate": 0.25,
+    "blind": "anonymous",
+    "link": "https://humanrobotinteraction.org/2027/",
+    "fit": "Lower fit unless embodied agents.",
+    "confidence": "likely"
   },
   {
     "id": "jcdl-2026",

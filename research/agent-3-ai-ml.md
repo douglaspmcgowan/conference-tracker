@@ -61,11 +61,11 @@ Confidence legend: **verified** = official site confirms; **likely** = ≥2 seco
 
 - **Field:** ML (primary), representation learning, LLMs, agents
 - **Tier:** A\*
-- **Abstract reg:** 2026-09-XX (estimated; ICLR 2026 was Sept 19, 2025)
-- **Paper deadline:** 2026-09-XX (estimated; ICLR 2026 was Sept 24, 2025)
+- **Abstract reg:** 2026-09-19 (matches ICLR 2026 cycle; confirmed via 2 sources 2026-07-12 refresh)
+- **Paper deadline:** 2026-09-24
 - **Rebuttal:** 2026-11-XX (rolling discussion w/ reviewers, ~3 weeks)
-- **Notification:** 2027-01-XX
-- **Conference:** 2027-04 or 2027-05 (TBA)
+- **Notification:** 2027-01-22
+- **Conference:** 2027-04-24 to 2027-04-28
 - **Location:** TBA
 - **Format:** ICLR LaTeX, 9 main + unlimited refs + appendix; **double-blind**, **OpenReview** public
 - **Acceptance:** ~32% (ICLR 2025: 32.08%, 11,565 submissions)
@@ -333,9 +333,11 @@ Confidence legend: **verified** = official site confirms; **likely** = ≥2 seco
 
 ## KDD 2027 (Cycle 1)
 
-- **Cycle 1 paper deadline:** ~2026-07-31 (estimated, matching KDD 2026 cycle 1 pattern)
-- **Notification:** ~2026-10
-- **Link:** https://kdd2027.kdd.org/ (TBA)
+- **Abstract deadline:** 2026-07-19; **Paper deadline:** 2026-07-26 — **CRITICAL: abstract due in 7 days as of 2026-07-12 refresh**
+- **Notification:** 2026-11-14
+- **Conference:** 2027-08-01 → 2027-08-05, San Jose, CA, USA
+- **Source:** kdd.org/kdd2027/ + aideadlines.org — abstract July 19, paper July 26 confirmed via 2 sources (2026-07-12 refresh)
+- **Link:** https://kdd.org/
 - **Fit:** Best near-term "applied ML" venue with engineering relevance
 
 ---
@@ -600,7 +602,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "fields": ["workshops", "ML4PS", "AI4Science", "agents", "ML4Eng"],
       "tier": "A*-workshop",
       "deadline": "2026-08-29",
-      "notification": "2026-10-XX",
+      "notification": "2026-09-29",
       "conferenceStart": "2026-12-06",
       "conferenceEnd": "2026-12-12",
       "location": { "city": "Sydney", "country": "Australia" },
@@ -619,10 +621,10 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2027,
       "fields": ["ML", "representation learning", "LLMs"],
       "tier": "A*",
-      "abstractDeadline": "2026-09-11",
-      "deadline": "2026-09-16",
+      "abstractDeadline": "2026-09-19",
+      "deadline": "2026-09-24",
       "rebuttal": "2026-11-XX",
-      "notification": "2027-01-XX",
+      "notification": "2027-01-22",
       "conferenceStart": "2027-04-24",
       "conferenceEnd": "2027-04-28",
       "location": { "city": "TBA", "country": "TBA" },
@@ -632,7 +634,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "blind": "double",
       "link": "https://iclr.cc/",
       "fit": "Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
-      "confidence": "estimated"
+      "confidence": "likely"
     },
     {
       "id": "icml-2026",
@@ -951,8 +953,9 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2027,
       "fields": ["data mining", "ML", "KGs"],
       "tier": "A*",
-      "abstractDeadline": "2026-07-24",
-      "deadline": "2026-07-31",
+      "abstractDeadline": "2026-07-19",
+      "deadline": "2026-07-26",
+      "notification": "2026-11-14",
       "conferenceStart": "2027-08-01",
       "conferenceEnd": "2027-08-05",
       "location": { "city": "San Jose", "country": "USA" },
@@ -962,7 +965,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "blind": "double",
       "link": "https://kdd.org/",
       "fit": "Best near-term applied-ML venue with engineering relevance",
-      "confidence": "estimated"
+      "confidence": "verified"
     },
     {
       "id": "www-2026",
@@ -1011,8 +1014,8 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2027,
       "fields": ["IR", "data mining"],
       "tier": "A",
-      "abstractDeadline": "2026-08-07",
-      "deadline": "2026-08-14",
+      "abstractDeadline": "2026-08-17",
+      "deadline": "2026-08-24",
       "conferenceStart": "2027-02-15",
       "conferenceEnd": "2027-02-19",
       "location": { "city": "Hong Kong", "country": "China" },

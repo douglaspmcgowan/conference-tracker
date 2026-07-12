@@ -295,7 +295,8 @@ Notes on confidence:
 
 - **Field:** HCI, Human-AI Interaction
 - **Tier:** A\* (top HCI venue)
-- **Paper deadline:** ~2026-09 (typical CHI cycle); CFP "coming soon" as of April 2026
+- **Paper deadline:** 2026-09-10 (no abstract deadline; submission site opens 2026-07-30) — confirmed via chi2027.acm.org + getpaperpilot.com (2 sources, 2026-07-12 refresh)
+- **Notification:** 2026-12-17
 - **Conference:** 2027-05-10 → 2027-05-14
 - **Location:** David L. Lawrence Convention Center, Pittsburgh, PA, USA
 - **Format:** Double-blind, archival ACM DL
@@ -1145,9 +1146,9 @@ Notes on confidence:
       "year": 2027,
       "fields": ["HCI", "Human-AI Interaction"],
       "tier": "A*",
-      "abstractDeadline": "2026-09-XX",
-      "deadline": "2026-09-XX",
-      "notification": null,
+      "abstractDeadline": null,
+      "deadline": "2026-09-10",
+      "notification": "2026-12-17",
       "conferenceStart": "2027-05-10",
       "conferenceEnd": "2027-05-14",
       "location": {
@@ -1156,13 +1157,13 @@ Notes on confidence:
         "country": "USA",
         "venue": "David L. Lawrence Convention Center"
       },
-      "format": "Double-blind, ACM DL archival",
+      "format": "Double-blind, ACM DL archival; no abstract deadline; submission opens 2026-07-30",
       "pageLimit": null,
       "acceptanceRate": null,
       "blind": "double",
       "link": "https://chi2027.acm.org/papers/",
       "fit": "Best venue for Psych Battery / human-AI co-design narratives",
-      "confidence": "estimated"
+      "confidence": "verified"
     },
     {
       "id": "uist-2026",
@@ -1344,7 +1345,7 @@ Notes on confidence:
       "fields": ["HRI", "Social Robotics", "Robot UX"],
       "tier": "A",
       "abstractDeadline": null,
-      "deadline": "2026-10-XX",
+      "deadline": "2026-10-01",
       "notification": null,
       "conferenceStart": "2027-03-08",
       "conferenceEnd": "2027-03-12",
@@ -1355,7 +1356,7 @@ Notes on confidence:
       "blind": "double",
       "link": "https://humanrobotinteraction.org/",
       "fit": "Marginal — only if co-design includes a robot collaborator",
-      "confidence": "estimated"
+      "confidence": "likely"
     },
     {
       "id": "siggraph-2026",

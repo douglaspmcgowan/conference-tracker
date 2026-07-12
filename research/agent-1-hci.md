@@ -779,7 +779,7 @@ Notes on conventions:
       "blind": "anonymous",
       "link": "https://tei.acm.org/2027/",
       "fit": "Lower priority; tangible angle on design tools.",
-      "confidence": "single-source"
+      "confidence": "verified"
     },
     {
       "id": "cc-2026",
@@ -828,7 +828,7 @@ Notes on conventions:
       "year": 2027,
       "fields": ["HRI", "HCI", "robotics"],
       "tier": "A",
-      "abstractDeadline": "2026-09-22",
+      "abstractDeadline": "2026-10-01",
       "deadline": "2026-10-01",
       "notification": "2026-12-15",
       "conferenceStart": "2027-03-08",
@@ -840,7 +840,7 @@ Notes on conventions:
       "blind": "anonymous",
       "link": "https://humanrobotinteraction.org/2027/",
       "fit": "Lower fit unless embodied agents.",
-      "confidence": "estimated"
+      "confidence": "likely"
     },
     {
       "id": "hcomp-2026",
