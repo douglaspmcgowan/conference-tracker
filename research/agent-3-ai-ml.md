@@ -627,14 +627,14 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "notification": "2027-01-22",
       "conferenceStart": "2027-04-24",
       "conferenceEnd": "2027-04-28",
-      "location": { "city": "TBA", "country": "TBA" },
+      "location": { "city": "TBA", "country": "Brazil" },
       "format": "ICLR LaTeX, 9 pages + appendix, OpenReview public, double-blind",
       "pageLimit": "9",
       "acceptanceRate": 0.32,
       "blind": "double",
       "link": "https://iclr.cc/",
       "fit": "Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
-      "confidence": "likely"
+      "confidence": "verified"
     },
     {
       "id": "icml-2026",
@@ -884,7 +884,28 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "acceptanceRate": 0.4,
       "blind": "double",
       "link": "https://wacv.thecvf.com/",
-      "fit": "Applied vision; passed for 2026, target WACV 2027 (~July 2026 deadline)",
+      "fit": "Applied vision; passed for 2026. WACV 2027 R2 deadline Aug 28, 2026 (R1 June 26 passed).",
+      "confidence": "verified"
+    },
+    {
+      "id": "wacv-2027",
+      "name": "WACV",
+      "fullName": "IEEE/CVF Winter Conference on Applications of Computer Vision",
+      "year": 2027,
+      "fields": ["CV", "applied"],
+      "tier": "B",
+      "abstractDeadline": "2026-08-28",
+      "deadline": "2026-08-28",
+      "notification": "2026-10-09",
+      "conferenceStart": "2027-01-15",
+      "conferenceEnd": "2027-01-18",
+      "location": { "city": "TBD", "country": "TBD" },
+      "format": "8 pages, double-blind; Round 1 June 26 (passed), Round 2 Aug 28",
+      "pageLimit": "8",
+      "acceptanceRate": 0.4,
+      "blind": "double",
+      "link": "https://wacv.thecvf.com/",
+      "fit": "R2 deadline Aug 28, 2026 — viable for applied vision work including geometry-aware CV for engineering design.",
       "confidence": "verified"
     },
     {
@@ -964,7 +985,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "acceptanceRate": 0.2,
       "blind": "double",
       "link": "https://kdd.org/",
-      "fit": "Best near-term applied-ML venue with engineering relevance",
+      "fit": "Best near-term applied-ML venue with engineering relevance. Both deadlines now passed (abstract July 19, paper July 26, 2026).",
       "confidence": "verified"
     },
     {
@@ -1025,7 +1046,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "blind": "double",
       "link": "https://wsdm-conference.org/2027/",
       "fit": "Tacit-knowledge retrieval angle plausible",
-      "confidence": "likely"
+      "confidence": "verified"
     },
     {
       "id": "corl-2026",
@@ -1074,6 +1095,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "fields": ["robotics"],
       "tier": "A",
       "deadline": "2026-09-15",
+      "notification": "2027-01-31",
       "conferenceStart": "2027-05-24",
       "conferenceEnd": "2027-05-28",
       "location": { "city": "Seoul", "country": "South Korea" },
@@ -1083,7 +1105,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "blind": "double",
       "link": "https://2027.ieee-icra.org/",
       "fit": "Tangent unless physical/embodied component",
-      "confidence": "estimated"
+      "confidence": "verified"
     },
     {
       "id": "iros-2026",

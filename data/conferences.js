@@ -1,7 +1,7 @@
-// Generated 2026-07-12 by scripts/refresh-data.js
+// Generated 2026-07-26 by scripts/refresh-data.js
 
 module.exports = {
-  generated: "2026-07-12T14:09:38.512Z",
+  generated: "2026-07-26T14:11:05.614Z",
 
   fields: {
   "HCI": {
@@ -112,7 +112,7 @@ module.exports = {
     "acceptanceRate": 0.4,
     "blind": "double",
     "link": "https://wacv.thecvf.com/",
-    "fit": "Applied vision; passed for 2026, target WACV 2027 (~July 2026 deadline)",
+    "fit": "Applied vision; passed for 2026. WACV 2027 R2 deadline Aug 28, 2026 (R1 June 26 passed).",
     "confidence": "verified"
   },
   {
@@ -1998,32 +1998,6 @@ module.exports = {
     "confidence": "verified"
   },
   {
-    "id": "spsp-2027",
-    "name": "SPSP",
-    "fullName": "Society for Personality and Social Psychology Annual Convention",
-    "year": 2027,
-    "fields": [
-      "Cognitive Science"
-    ],
-    "tier": "B",
-    "abstractDeadline": null,
-    "deadline": "2026-07-15",
-    "notification": null,
-    "conferenceStart": "2027-02-11",
-    "conferenceEnd": "2027-02-13",
-    "location": {
-      "city": "Philadelphia",
-      "country": "USA"
-    },
-    "format": "Symposia + posters; abstract-only",
-    "pageLimit": null,
-    "acceptanceRate": null,
-    "blind": "none",
-    "link": "https://spsp.org/events/annual-convention",
-    "fit": "Lower — moderate if framing burnout sociologically",
-    "confidence": "verified"
-  },
-  {
     "id": "kdd-2027-c1",
     "name": "KDD",
     "fullName": "ACM SIGKDD Conference on Knowledge Discovery and Data Mining (Cycle 1)",
@@ -2046,7 +2020,7 @@ module.exports = {
     "acceptanceRate": 0.2,
     "blind": "double",
     "link": "https://kdd.org/",
-    "fit": "Best near-term applied-ML venue with engineering relevance",
+    "fit": "Best near-term applied-ML venue with engineering relevance. Both deadlines now passed (abstract July 19, paper July 26, 2026).",
     "confidence": "verified"
   },
   {
@@ -2098,7 +2072,7 @@ module.exports = {
     "acceptanceRate": 0.3,
     "blind": "anonymous",
     "link": "https://www.iss.acm.org/2026/",
-    "fit": "Round 2 viable for surface/spatial design tools.",
+    "fit": "Round 2 deadline (July 22) has now passed. Conference Nov 23-26, Turin, Italy.",
     "confidence": "verified"
   },
   {
@@ -2232,7 +2206,7 @@ module.exports = {
     "blind": "double",
     "link": "https://wsdm-conference.org/2027/",
     "fit": "Tacit-knowledge retrieval angle plausible",
-    "confidence": "likely"
+    "confidence": "verified"
   },
   {
     "id": "cirp-ga-2026",
@@ -2285,6 +2259,32 @@ module.exports = {
     "blind": "double",
     "link": "http://ieeevr.org/2027/",
     "fit": "Lower priority unless spatial/VR malleable workspaces.",
+    "confidence": "verified"
+  },
+  {
+    "id": "wacv-2027",
+    "name": "WACV",
+    "fullName": "IEEE/CVF Winter Conference on Applications of Computer Vision",
+    "year": 2027,
+    "fields": [
+      "CV"
+    ],
+    "tier": "B",
+    "abstractDeadline": "2026-08-28",
+    "deadline": "2026-08-28",
+    "notification": "2026-10-09",
+    "conferenceStart": "2027-01-15",
+    "conferenceEnd": "2027-01-18",
+    "location": {
+      "city": "TBD",
+      "country": "TBD"
+    },
+    "format": "8 pages, double-blind; Round 1 June 26 (passed), Round 2 Aug 28",
+    "pageLimit": "8",
+    "acceptanceRate": 0.4,
+    "blind": "double",
+    "link": "https://wacv.thecvf.com/",
+    "fit": "R2 deadline Aug 28, 2026 — viable for applied vision work including geometry-aware CV for engineering design.",
     "confidence": "verified"
   },
   {
@@ -2444,6 +2444,32 @@ module.exports = {
     "confidence": "estimated"
   },
   {
+    "id": "spsp-2027",
+    "name": "SPSP",
+    "fullName": "Society for Personality and Social Psychology Annual Convention",
+    "year": 2027,
+    "fields": [
+      "Cognitive Science"
+    ],
+    "tier": "B",
+    "abstractDeadline": null,
+    "deadline": "2026-09-15",
+    "notification": null,
+    "conferenceStart": "2027-02-11",
+    "conferenceEnd": "2027-02-13",
+    "location": {
+      "city": "Philadelphia",
+      "country": "USA"
+    },
+    "format": "Symposia + posters; abstract-only",
+    "pageLimit": null,
+    "acceptanceRate": null,
+    "blind": "none",
+    "link": "https://spsp.org/events/annual-convention",
+    "fit": "Poster/roundtable deadline Sep 15, 2026 (podium July 16 passed). Lower — moderate if framing burnout sociologically.",
+    "confidence": "verified"
+  },
+  {
     "id": "iconference-2027",
     "name": "iConference",
     "fullName": "iConference (iSchools annual)",
@@ -2485,7 +2511,7 @@ module.exports = {
     "conferenceEnd": "2027-04-28",
     "location": {
       "city": "TBA",
-      "country": "TBA"
+      "country": "Brazil"
     },
     "format": "ICLR LaTeX, 9 pages + appendix, OpenReview public, double-blind",
     "pageLimit": "9",
@@ -2493,7 +2519,7 @@ module.exports = {
     "blind": "double",
     "link": "https://iclr.cc/",
     "fit": "Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
-    "confidence": "likely"
+    "confidence": "verified"
   },
   {
     "id": "thewebconf-2027",
@@ -2505,10 +2531,10 @@ module.exports = {
     ],
     "tier": "A*",
     "abstractDeadline": "2026-09-30",
-    "deadline": "2026-10-07",
-    "notification": null,
-    "conferenceStart": "2027-04-01",
-    "conferenceEnd": "2027-04-05",
+    "deadline": "2026-10-11",
+    "notification": "2026-12-10",
+    "conferenceStart": "2027-05-10",
+    "conferenceEnd": "2027-05-14",
     "location": {
       "city": "Dublin",
       "country": "Ireland"
@@ -2519,7 +2545,7 @@ module.exports = {
     "blind": "double",
     "link": "https://thewebconf.org/",
     "fit": "Knowledge-graph track possible but very competitive",
-    "confidence": "estimated"
+    "confidence": "likely"
   },
   {
     "id": "hri-2027",
@@ -2772,7 +2798,7 @@ module.exports = {
     "tier": "A",
     "abstractDeadline": "2027-01-11",
     "deadline": "2027-01-18",
-    "notification": "2027-03-15",
+    "notification": "2027-03-19",
     "conferenceStart": "2027-06-28",
     "conferenceEnd": "2027-07-02",
     "location": {
@@ -2785,7 +2811,7 @@ module.exports = {
     "blind": "anonymous",
     "link": "https://dis.acm.org/2027/",
     "fit": "Design-focused for engineering-design tools; pictorials unique.",
-    "confidence": "likely"
+    "confidence": "verified"
   },
   {
     "id": "icml-2027",

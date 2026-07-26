@@ -749,7 +749,7 @@ Notes on conventions:
       "tier": "A",
       "abstractDeadline": "2027-01-11",
       "deadline": "2027-01-18",
-      "notification": "2027-03-15",
+      "notification": "2027-03-19",
       "conferenceStart": "2027-06-28",
       "conferenceEnd": "2027-07-02",
       "location": { "city": "Stockholm", "country": "Sweden" },
@@ -759,7 +759,7 @@ Notes on conventions:
       "blind": "anonymous",
       "link": "https://dis.acm.org/2027/",
       "fit": "Design-focused for engineering-design tools; pictorials unique.",
-      "confidence": "likely"
+      "confidence": "verified"
     },
     {
       "id": "tei-2027",
@@ -981,7 +981,7 @@ Notes on conventions:
       "acceptanceRate": 0.3,
       "blind": "anonymous",
       "link": "https://www.iss.acm.org/2026/",
-      "fit": "Round 2 viable for surface/spatial design tools.",
+      "fit": "Round 2 deadline (July 22) has now passed. Conference Nov 23-26, Turin, Italy.",
       "confidence": "verified"
     },
     {

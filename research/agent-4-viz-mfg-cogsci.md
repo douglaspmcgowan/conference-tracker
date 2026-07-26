@@ -756,14 +756,14 @@ Note on confidence:
       "year": 2027,
       "fields": ["Social Psychology", "Personality"],
       "tier": "Top",
-      "deadline": "2026-07-XX",
+      "deadline": "2026-09-15",
       "conferenceStart": "2027-02-11",
       "conferenceEnd": "2027-02-13",
       "location": { "city": "Philadelphia", "country": "USA" },
       "format": "Symposia + posters; abstract-only",
       "blind": "none",
       "link": "https://spsp.org/events/annual-convention",
-      "fit": "Lower — moderate if framing burnout sociologically",
+      "fit": "Poster/roundtable deadline Sep 15, 2026 (podium July 16 passed). Lower — moderate if framing burnout sociologically.",
       "confidence": "verified"
     },
     {
@@ -869,7 +869,7 @@ Note on confidence:
       "format": "Talks + case studies",
       "blind": "none",
       "link": "https://cdfam.com/",
-      "fit": "Strong — submit a talk on DfM knowledge graphs",
+      "fit": "Conference (July 8-9, 2026) has now passed. DfM knowledge graph community.",
       "confidence": "verified"
     },
     {
@@ -1080,9 +1080,10 @@ Note on confidence:
       "fields": ["Web", "Knowledge Graphs", "IR"],
       "tier": "A*",
       "abstractDeadline": "2026-09-30",
-      "deadline": "2026-10-07",
-      "conferenceStart": "2027-04-01",
-      "conferenceEnd": "2027-04-05",
+      "deadline": "2026-10-11",
+      "notification": "2026-12-10",
+      "conferenceStart": "2027-05-10",
+      "conferenceEnd": "2027-05-14",
       "location": { "city": "Dublin", "country": "Ireland" },
       "format": "ACM template, double-blind, 10–12 pages",
       "pageLimit": "12",
@@ -1090,7 +1091,7 @@ Note on confidence:
       "blind": "double",
       "link": "https://thewebconf.org/",
       "fit": "Knowledge-graph track possible but very competitive",
-      "confidence": "estimated"
+      "confidence": "likely"
     },
     {
       "id": "pervasivehealth-2026",
