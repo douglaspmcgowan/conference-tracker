@@ -4,7 +4,7 @@
     "files":  [
                   {
                       "path":  "AGENTS.md",
-                      "sha256":  "b1bb6df039e7951b46aca61a415b10ecda59a29ff960439efef27c46f0bf8d86"
+                      "sha256":  "bfdcaf494d5b2a4e42dd3afb5b11150b8e8b7f10cbf940ea616723487e17cdb8"
                   },
                   {
                       "path":  "CLAUDE.md",
@@ -16,23 +16,23 @@
                   },
                   {
                       "path":  "DESIGN.md",
-                      "sha256":  "e0512e00d28711f2658ffadd834b70a52aa7c10d89aac6450901777452ff46e5"
+                      "sha256":  "803b92fcad5696798d30ac3a8d37f30e1de5424bc79dbacdc7c864b12820569a"
                   },
                   {
                       "path":  "MAP.md",
-                      "sha256":  "bfc6df126e3402317e45520f19e56782fc15486e5e0d60ae4ed8dc52c94c234c"
+                      "sha256":  "a5da0a0166cdefc94e9f89f0ef1f8282b3e740c475352ffe2d9cc68ca86920b3"
                   },
                   {
                       "path":  "TASK.md",
-                      "sha256":  "3a85105655f145a622ea66aa8441b2de1ac0440b9e3efe6c299f38a95f7f8338"
+                      "sha256":  "0f389651eedc2fc3e839950045b7b2d1ec8abcfbdca2e4353f46a3309f39771b"
                   },
                   {
                       "path":  "STATUS.md",
-                      "sha256":  "7007b80bc75faddf92d57c6f0954035b80dc8909d938428057df9b111f47b805"
+                      "sha256":  "ba9eabab129caf8f20e973ad8e5ac42c59495fd1252d1b1abd06f808bf7a673b"
                   },
                   {
                       "path":  "LOG.md",
-                      "sha256":  "ffbc622431cc4b214ec10e0250d05cedd7c7dfffe6de2629f6f17b43e46015d8"
+                      "sha256":  "d9d0546d9c312380ef8a8b69cb7738bf267139fbb6084c0e6b6abf098a54a71c"
                   },
                   {
                       "path":  "BACKBURNER.md",
@@ -52,11 +52,11 @@
                   },
                   {
                       "path":  "secret-manifest.json",
-                      "sha256":  "4dc611e1497b7459ab43c82285ee6a05b102bcaab5748c94c59f28ff78a62143"
+                      "sha256":  "d9adf8b293dc03c982c2b6ff0be216aadc99429ac327cf0e41f0fad07f7010f7"
                   },
                   {
                       "path":  "secret-manifest.md",
-                      "sha256":  "e42d8c51851ec307d21834282cbe229ef022d8105520ce993be1d818f74c9e1d"
+                      "sha256":  "1916a470e51895fbab655e941ac1552c1afb096171026f09832ddaea1f8355db"
                   },
                   {
                       "path":  ".env.example",

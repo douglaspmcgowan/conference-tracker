@@ -23,27 +23,39 @@
 
 | Component | Purpose | Entry point | Owner |
 |---|---|---|---|
-| `<component>` | `<purpose>` | `<path or command>` | `<owner>` |
+| Express application | Serve the interface, JSON API, health route, and iCalendar feed | `server.js` / `npm start` | Project repository |
+| Conference dataset | Provide the committed runtime source of truth | `data/conferences.js` | Generated from reviewed research inputs |
+| Research inputs | Record sourced conference facts grouped by research cluster | `research/*.md` | Scheduled and manual research workflow |
+| Data refresh | Merge, normalize, deduplicate, and sort research records | `node scripts/refresh-data.js` | Project repository |
+| Browser verifier | Exercise the deployed or local user journeys | `node tests/verify-live.mjs [base-url]` | Project repository |
+| Deployment | Run the Express handler as a Vercel serverless application | `vercel.json` | Vercel project |
 
 ## Important paths
 
 | Path | Purpose | Generated | Committed |
 |---|---|---|---|
-| `<path>` | `<purpose>` | `<yes/no>` | `<yes/no>` |
+| `server.js` | Express routes plus inline HTML, CSS, and browser JavaScript | no | yes |
+| `data/conferences.js` | Normalized conference records used at runtime | yes | yes |
+| `research/` | Human-reviewable research inputs | no | yes |
+| `scripts/refresh-data.js` | Dataset regeneration command | no | yes |
+| `tests/verify-live.mjs` | Playwright end-to-end verification | no | yes |
+| `vercel.json` | Deployment routing | no | yes |
 
 ## Data flow
 
-Describe inputs, transformations, stores, outputs, and trust-boundary crossings.
+Committed `research/*.md` inputs flow through `scripts/refresh-data.js` into the committed `data/conferences.js` dataset. `server.js` reads that dataset and serves HTML, `/api/conferences`, `/cal.ics`, and `/health`. Browser-local notes, stars, filters, and status remain in `localStorage`; they are not synchronized through the repository.
 
 ## Integrations
 
 | System | Direction | Credential name | Failure behavior |
 |---|---|---|---|
-| `<system>` | `<in/out/both>` | `<name only>` | `<behavior>` |
+| Vercel | out | none declared in repository | Deployment or live verification fails without changing committed source |
+| GitHub scheduled research | in | platform-managed GitHub authorization | The committed dataset remains at its last reviewed version |
+| Browser localStorage | both | none | Personal browser state is local to that browser profile |
 
 ## Ownership and concurrency
 
-Record component owners, shared mutable resources, worktree constraints, ports, test databases, and deployment targets.
+Use isolated Git worktrees for concurrent repository changes. The local server uses port 3010 by default. `data/conferences.js` is the shared generated artifact: only one refresh workflow should update it at a time. The deployed target is `conference-tracker-rho.vercel.app`.
 
 ## Update rule
 

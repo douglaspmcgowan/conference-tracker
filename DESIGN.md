@@ -93,17 +93,19 @@ The full universal rules are `~/.agents/DESIGN.md`. Where a library entry and a 
 
 ## Product-specific typography
 
-- Body:
-- Display:
-- Monospace:
+- Body: the existing proportional interface face used for labels, prose, names, dates, and controls.
+- Display: the existing masthead and section-display role defined in `server.js`.
+- Monospace: code, machine-readable identifiers, and the existing `var(--mono)` treatment for timeline/table dates and genuinely tabular numeric metadata.
 
 ## Tokens and components
 
-- Record project-specific tokens, established components, and allowed variants.
+- Preserve the existing `--accent: #2D5BFF`, low-contrast hairlines, warm-dark palette, restrained grain, and four established timeline/card/table/map views.
+- Reuse the existing filters, viewbar, status pills, countdown chips, modal, and responsive layouts before adding variants.
 
 ## Interaction and accessibility
 
-- Record project-specific states, motion, responsive behavior, and accessibility constraints.
+- Preserve 120 ms hover-in and 240 ms hover-out timing, `:focus-visible` rings, reduced-motion support, touch targets, and mobile verification.
+- Status and tier meaning must remain understandable without color alone.
 
 ## Exceptions
 
