@@ -24,7 +24,7 @@ This repository contract travels with the project for Claude, Codex, Cursor, and
 ## Project identity
 
 - Name: `conference-tracker`
-- Purpose: `<one sentence>`
+- Purpose: Track research-conference deadlines, requirements, locations, personal notes, and submission status through a deployed Express application.
 - Default branch: `main`
 
 ## Start and resume
@@ -36,17 +36,19 @@ This repository contract travels with the project for Claude, Codex, Cursor, and
 
 ## Commands
 
-- Setup: `<command>`
-- Test: `<command>`
-- Lint: `<command>`
-- Build: `<command>`
-- End-to-end: `<command>`
+- Setup: `npm ci`
+- Test: `node tests/verify-live.mjs http://localhost:3010` after starting the local server
+- Lint: `node --check server.js` and `node --check scripts/refresh-data.js`
+- Build: `N/A — the Express application has no build step`
+- End-to-end: `node tests/verify-live.mjs`
 
 Record the actual command or observable proof under `TASK.md` → `Verification`.
 
 ## Project-specific rules
 
-- Add only rules required by this repository.
+- Treat `data/conferences.js` as generated output; edit the research inputs and run `node scripts/refresh-data.js`.
+- Preserve the single-file Express application architecture unless a scoped task explicitly changes it.
+- Browser-visible changes require the Playwright verifier against the affected local or deployed surface.
 
 ## Project files
 
