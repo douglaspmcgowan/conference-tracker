@@ -1,0 +1,81 @@
+# Project instructions
+
+This repository contract travels with the project for Claude, Codex, Cursor, and cloud agents.
+
+<!-- agent-harness:portable:v3:start -->
+## Portable operating rules
+
+Use subagents immediately for every independent, file-disjoint workstream. This is explicit authorization to parallelize. Keep only destructive or dependent final gates serial.
+
+Agents may create local commits for in-scope work without asking. Never push, merge, force-update, discard, delete a worktree, or remove a task workspace unless the user explicitly authorizes that action.
+
+- Answer questions before task narration. Keep routine updates concise.
+- Never invent facts, paths, APIs, versions, source content, measurements, credential state, or passing results. Name the source checked.
+- Verify inherited claims against repository, Git, runtime, or current primary evidence.
+- Match commands and paths to the user's actual shell and device.
+- Avoid the rhetorical "it is X, not Y" construction.
+- Preserve unrelated changes. Inspect exact targets before destructive or broad operations and prefer recoverable changes.
+- Before creating, replacing, renaming, or removing an artifact, search the repository and available shared harness for its existing owner, equivalents, consumers, wiring, tests, and documentation. Extend or consolidate the closest adequate owner. Record search evidence and the reason for a truly new owner in authoritative task state.
+- Extract every discrete obligation from a multi-step prompt into authoritative task state. In an enrolled project, use Work Scope tasks or discoveries; otherwise use legacy `TASK.md` checkboxes.
+- Read a named or clearly matching skill in full. Keep canonical workflows under `.agents\skills` and product adapters thin.
+- Reproduce bugs before fixing them and add a regression test when practical. Exercise the assembled system under the condition that exposed the failure.
+- For browser-visible changes, run the repository browser or end-to-end verifier.
+- When a correction requests permanent prevention, use the `correct` skill and implement a durable, narrowly scoped artifact.
+- Treat `MEMORY.md` as a lean index. Keep behavior in instructions, skills, hooks, permissions, tests, or verifiers.
+- Before claiming non-trivial work complete, run the verification recorded in authoritative task state, relevant tests, and an adversarial pass.
+<!-- agent-harness:portable:v3:end -->
+
+## Project identity
+
+- Name: `conference-tracker`
+- Purpose: `<one sentence>`
+- Default branch: `main`
+
+## Start and resume
+
+1. Read this file, `TASK.md`, `STATUS.md`, and recent `LOG.md`.
+2. Run `git status --short --branch` and inspect worktrees before editing.
+3. Read `MAP.md` for architecture, data, ownership, integrations, or important paths.
+4. Read `DESIGN.md` for interface work and `PRODUCT.md` when present.
+
+## Task-state authority
+
+If the exact project path `.agents/work/state.json` exists, Work Scope is enrolled and that structured file is authoritative. Load and follow the `work-scope` skill, including its scope-guard, ownership, evidence, and handoff rules. Resolve tools from the package containing the loaded skill, then run `Test-WorkState.ps1`, `Get-WorkResume.ps1`, and `Reconcile-WorkState.ps1` with `-Root <project-root>` before changing task state. Treat `PROJECT.md`, `TRACKS.md`, `TASK.md`, `BACKBURNER.md`, and `LOG.md` as generated, read-only views. Route active-cell changes through `Update-WorkState.ps1`, executed checks through `Invoke-WorkScopeEvidence.ps1`, and pre-write ownership checks through `Test-WorkScopeGuard.ps1`. Route adjacent or deferred work through `Capture-WorkDiscovery.ps1`; use `New-WorkHandoff.ps1` for independent outcomes. A present but invalid state file fails closed and never falls back to legacy task files.
+
+When `.agents/work/state.json` is absent, the legacy `TASK.md`, `BACKBURNER.md`, and `LOG.md` files retain their documented ownership. `STATUS.md` remains separately authored in either mode.
+
+## Commands
+
+- Setup: `<command>`
+- Test: `<command>`
+- Lint: `<command>`
+- Build: `<command>`
+- End-to-end: `<command>`
+
+Record the actual command or observable proof in authoritative task state: Work Scope evidence when enrolled, or legacy `TASK.md` → `Verification` otherwise.
+
+## Project-specific rules
+
+- Add only rules required by this repository.
+
+## Project files
+
+- `TASK.md`: generated Work Scope view when enrolled; otherwise the legacy current goal, actionable queue, blockers, completed evidence, and next verifier.
+- `STATUS.md`: durable capability state.
+- `LOG.md`: generated Work Scope view when enrolled; otherwise the legacy append-only completed-work record.
+- `BACKBURNER.md`: generated Work Scope discovery view when enrolled; otherwise legacy parked ideas.
+- `MAP.md`: architecture, paths, data flow, integrations, and ownership.
+- `DESIGN.md`: universal interface rules plus project-specific design rules.
+- `PRODUCT.md`: optional product intent for an app or product repository.
+- `MEMORY.md`: lean links to durable references.
+- `skills-manifest.json`: canonical baseline and project skill bindings.
+- `data-manifest.yaml`: external-data authorities, adapters, restore rules, and verifiers.
+- `secret-manifest.json`: value-free secret names, providers, trust boundaries, and consumers.
+
+## Product adapters
+
+- Claude loads `CLAUDE.md`, which imports this file.
+- Codex loads this file.
+- Cursor loads `.cursor\rules\00-project-contract.mdc`, which points here.
+
+When the local shared harness exists, also follow `~/.agents/AGENTS.md`. Repository rules supply the portable fallback for cloud sessions.
