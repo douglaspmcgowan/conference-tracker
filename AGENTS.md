@@ -33,7 +33,7 @@ Agents may create local commits for in-scope work without asking. Never push, me
 
 ## Start and resume
 
-1. Read this file, `TASK.md`, `STATUS.md`, and recent `LOG.md`.
+1. Read this file, `TASK.md`, and recent `LOG.md`.
 2. Run `git status --short --branch` and inspect worktrees before editing.
 3. Read `MAP.md` for architecture, data, ownership, integrations, or important paths.
 4. Read `DESIGN.md` for interface work and `PRODUCT.md` when present.
@@ -42,7 +42,7 @@ Agents may create local commits for in-scope work without asking. Never push, me
 
 If the exact project path `.agents/work/state.json` exists, Work Scope is enrolled and that structured file is authoritative. Load and follow the `work-scope` skill, including its scope-guard, ownership, evidence, and handoff rules. Resolve tools from the package containing the loaded skill, then run `Test-WorkState.ps1`, `Get-WorkResume.ps1`, and `Reconcile-WorkState.ps1` with `-Root <project-root>` before changing task state. Treat `PROJECT.md`, `TRACKS.md`, `TASK.md`, `BACKBURNER.md`, and `LOG.md` as generated, read-only views. Route active-cell changes through `Update-WorkState.ps1`, executed checks through `Invoke-WorkScopeEvidence.ps1`, and pre-write ownership checks through `Test-WorkScopeGuard.ps1`. Route adjacent or deferred work through `Capture-WorkDiscovery.ps1`; use `New-WorkHandoff.ps1` for independent outcomes. A present but invalid state file fails closed and never falls back to legacy task files.
 
-When `.agents/work/state.json` is absent, the legacy `TASK.md`, `BACKBURNER.md`, and `LOG.md` files retain their documented ownership. `STATUS.md` remains separately authored in either mode.
+When `.agents/work/state.json` is absent, the legacy `TASK.md`, `BACKBURNER.md`, and `LOG.md` files retain their documented ownership. In either mode, durable capability state belongs in `MAP.md`, not in a task file. `STATUS.md` is retired; do not create one.
 
 ## Commands
 
@@ -61,7 +61,6 @@ Record the actual command or observable proof in authoritative task state: Work 
 ## Project files
 
 - `TASK.md`: generated Work Scope view when enrolled; otherwise the legacy current goal, actionable queue, blockers, completed evidence, and next verifier.
-- `STATUS.md`: durable capability state.
 - `LOG.md`: generated Work Scope view when enrolled; otherwise the legacy append-only completed-work record.
 - `BACKBURNER.md`: generated Work Scope discovery view when enrolled; otherwise legacy parked ideas.
 - `MAP.md`: architecture, paths, data flow, integrations, and ownership.
