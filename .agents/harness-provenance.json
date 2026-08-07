@@ -16,7 +16,7 @@
     },
     {
       "path": "DESIGN.md",
-      "sha256": "221d6473f1f26c08b84b2c25649d0baf620127651c74a81103cbf7f4d4fcb1a0"
+      "sha256": "263478884db1befdb3b2baeb0dc86b0bac8f21eac0985b9c4b40aec8e977e8bf"
     },
     {
       "path": "MAP.md",
@@ -25,10 +25,6 @@
     {
       "path": "TASK.md",
       "sha256": "7284271fa0462f73f50709016100269ad532bc531d3084e90cfd6f1c33f3f796"
-    },
-    {
-      "path": "STATUS.md",
-      "sha256": "a181b5be69412d40354b2ab7246113bf8995fac34b909bce310917c3b7cee1e7"
     },
     {
       "path": "LOG.md",
