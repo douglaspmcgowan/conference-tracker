@@ -1,7 +1,7 @@
-// Generated 2026-07-26 by scripts/refresh-data.js
+// Generated 2026-08-12 by scripts/refresh-data.js
 
 module.exports = {
-  generated: "2026-07-26T14:11:05.614Z",
+  generated: "2026-08-12T14:13:53.797Z",
 
   fields: {
   "HCI": {
@@ -2046,7 +2046,7 @@ module.exports = {
     "acceptanceRate": 0.2,
     "blind": "double",
     "link": "https://aaai.org/conference/aaai/aaai-27/",
-    "fit": "Lower priority; AI-systems framing. Abstract July 21, paper July 28, 2026 (AoE).",
+    "fit": "Both deadlines passed (abstract July 21, paper July 28). Lower priority; AI-systems framing.",
     "confidence": "verified"
   },
   {
@@ -2098,7 +2098,7 @@ module.exports = {
     "acceptanceRate": 0.3,
     "blind": "anonymous",
     "link": "https://tei.acm.org/2027/",
-    "fit": "Lower priority; tangible angle on design tools.",
+    "fit": "Deadline (July 31) has passed. Lower priority; tangible angle on design tools.",
     "confidence": "verified"
   },
   {
@@ -2363,7 +2363,7 @@ module.exports = {
     "blind": "double",
     "link": "https://2027.ieee-icra.org/",
     "fit": "Marginal — only if human-AI co-design has robotic-fabrication arm",
-    "confidence": "estimated"
+    "confidence": "verified"
   },
   {
     "id": "ml4ps-2026",
@@ -2504,14 +2504,14 @@ module.exports = {
       "ML"
     ],
     "tier": "A*",
-    "abstractDeadline": "2026-09-19",
-    "deadline": "2026-09-24",
+    "abstractDeadline": "2026-09-18",
+    "deadline": "2026-09-25",
     "notification": "2027-01-22",
-    "conferenceStart": "2027-04-24",
-    "conferenceEnd": "2027-04-28",
+    "conferenceStart": "2027-04-26",
+    "conferenceEnd": "2027-04-30",
     "location": {
-      "city": "TBA",
-      "country": "Brazil"
+      "city": "San Francisco",
+      "country": "USA"
     },
     "format": "ICLR LaTeX, 9 pages + appendix, OpenReview public, double-blind",
     "pageLimit": "9",
@@ -2743,13 +2743,13 @@ module.exports = {
     ],
     "tier": "A",
     "abstractDeadline": null,
-    "deadline": "2026-12-15",
+    "deadline": "2026-12-07",
     "notification": "2027-04-15",
     "conferenceStart": "2027-08-16",
-    "conferenceEnd": "2027-08-15",
+    "conferenceEnd": "2027-08-20",
     "location": {
-      "city": "TBA",
-      "country": "TBA"
+      "city": "Hamburg",
+      "country": "Germany"
     },
     "format": "Cambridge UP / Proceedings of the Design Society, peer-reviewed, archival",
     "pageLimit": "10",
@@ -2814,32 +2814,6 @@ module.exports = {
     "confidence": "verified"
   },
   {
-    "id": "icml-2027",
-    "name": "ICML",
-    "fullName": "International Conference on Machine Learning",
-    "year": 2027,
-    "fields": [
-      "ML"
-    ],
-    "tier": "A*",
-    "abstractDeadline": "2027-01-15",
-    "deadline": "2027-01-15",
-    "notification": "2027-05-15",
-    "conferenceStart": "2027-07-15",
-    "conferenceEnd": "2027-07-15",
-    "location": {
-      "city": "TBA",
-      "country": "TBA"
-    },
-    "format": "ICML LaTeX, 8 pages, double-blind",
-    "pageLimit": "8",
-    "acceptanceRate": null,
-    "blind": "double",
-    "link": "https://icml.cc/",
-    "fit": "Primary cycle for next major submission",
-    "confidence": "estimated"
-  },
-  {
     "id": "aistats-2027",
     "name": "AISTATS",
     "fullName": "International Conference on Artificial Intelligence and Statistics",
@@ -2864,6 +2838,32 @@ module.exports = {
     "link": "http://aistats.org/",
     "fit": "Tangent unless probabilistic-modeling component is central. Location: Paris (changed from Toronto).",
     "confidence": "likely"
+  },
+  {
+    "id": "icml-2027",
+    "name": "ICML",
+    "fullName": "International Conference on Machine Learning",
+    "year": 2027,
+    "fields": [
+      "ML"
+    ],
+    "tier": "A*",
+    "abstractDeadline": "2027-01-16",
+    "deadline": "2027-01-22",
+    "notification": "2027-05-15",
+    "conferenceStart": "2027-07-11",
+    "conferenceEnd": "2027-07-17",
+    "location": {
+      "city": "TBA",
+      "country": "TBA"
+    },
+    "format": "ICML LaTeX, 8 pages, double-blind",
+    "pageLimit": "8",
+    "acceptanceRate": null,
+    "blind": "double",
+    "link": "https://icml.cc/",
+    "fit": "Primary cycle for next major submission",
+    "confidence": "estimated"
   },
   {
     "id": "idetc-cie-2027",
@@ -2927,7 +2927,7 @@ module.exports = {
     ],
     "tier": "A",
     "abstractDeadline": null,
-    "deadline": "2027-04-01",
+    "deadline": "2027-04-02",
     "notification": "2027-08-15",
     "conferenceStart": "2027-10-01",
     "conferenceEnd": "2027-10-31",

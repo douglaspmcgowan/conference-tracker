@@ -586,11 +586,11 @@ Notes on confidence:
       ],
       "tier": "A",
       "abstractDeadline": null,
-      "deadline": "2026-12-XX",
+      "deadline": "2026-12-07",
       "notification": "2027-04-XX",
       "conferenceStart": "2027-08-16",
-      "conferenceEnd": "2027-08-XX",
-      "location": { "city": "TBA", "country": "TBA" },
+      "conferenceEnd": "2027-08-20",
+      "location": { "city": "Hamburg", "country": "Germany" },
       "format": "Cambridge UP / Proceedings of the Design Society, peer-reviewed, archival",
       "pageLimit": "10",
       "acceptanceRate": null,
@@ -1335,7 +1335,7 @@ Notes on confidence:
       "blind": "double",
       "link": "https://2027.ieee-icra.org/",
       "fit": "Marginal — only if human-AI co-design has robotic-fabrication arm",
-      "confidence": "estimated"
+      "confidence": "verified"
     },
     {
       "id": "hri-2027",

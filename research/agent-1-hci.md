@@ -646,7 +646,7 @@ Notes on conventions:
       "year": 2027,
       "fields": ["HCI", "systems"],
       "tier": "A",
-      "deadline": "2027-04-01",
+      "deadline": "2027-04-02",
       "notification": "2027-08-15",
       "conferenceStart": "2027-10-01",
       "conferenceEnd": "2027-10-31",
@@ -778,7 +778,7 @@ Notes on conventions:
       "acceptanceRate": 0.3,
       "blind": "anonymous",
       "link": "https://tei.acm.org/2027/",
-      "fit": "Lower priority; tangible angle on design tools.",
+      "fit": "Deadline (July 31) has passed. Lower priority; tangible angle on design tools.",
       "confidence": "verified"
     },
     {
@@ -1263,7 +1263,7 @@ Notes on conventions:
       "acceptanceRate": 0.2,
       "blind": "double",
       "link": "https://aaai.org/conference/aaai/aaai-27/",
-      "fit": "Lower priority; AI-systems framing. Abstract July 21, paper July 28, 2026 (AoE).",
+      "fit": "Both deadlines passed (abstract July 21, paper July 28). Lower priority; AI-systems framing.",
       "confidence": "verified"
     },
     {
