@@ -1045,7 +1045,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "acceptanceRate": 0.18,
       "blind": "double",
       "link": "https://wsdm-conference.org/2027/",
-      "fit": "Tacit-knowledge retrieval angle plausible",
+      "fit": "Deadline passed (abstract Aug 17, paper Aug 24, 2026). Reference only.",
       "confidence": "verified"
     },
     {
@@ -1173,7 +1173,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2026,
       "fields": ["ML4PS", "AI for science"],
       "tier": "workshop",
-      "deadline": "2026-09-XX",
+      "deadline": "2026-08-29",
       "conferenceStart": "2026-12-XX",
       "conferenceEnd": "2026-12-XX",
       "location": { "city": "Sydney", "country": "Australia" },
@@ -1183,7 +1183,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "blind": "double",
       "link": "https://ml4physicalsciences.github.io/",
       "fit": "Strong if physics-aware ML or simulation surrogates are involved",
-      "confidence": "estimated"
+      "confidence": "likely"
     },
     {
       "id": "ai4science-2026",
@@ -1192,7 +1192,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2026,
       "fields": ["AI4Science"],
       "tier": "workshop",
-      "deadline": "2026-09-XX",
+      "deadline": "2026-08-29",
       "conferenceStart": "2026-12-XX",
       "conferenceEnd": "2026-12-XX",
       "location": { "city": "Sydney", "country": "Australia" },
@@ -1202,7 +1202,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "blind": "double",
       "link": "https://ai4sciencecommunity.github.io/",
       "fit": "Strong for scientific-discovery agents touching engineering",
-      "confidence": "estimated"
+      "confidence": "likely"
     },
     {
       "id": "ai4mat-2026",
@@ -1211,7 +1211,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "year": 2026,
       "fields": ["materials", "AI4Science"],
       "tier": "workshop",
-      "deadline": "2026-09-XX",
+      "deadline": "2026-08-29",
       "conferenceStart": "2026-12-XX",
       "conferenceEnd": "2026-12-XX",
       "location": { "city": "Sydney", "country": "Australia" },
@@ -1221,7 +1221,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "blind": "double",
       "link": "https://sites.google.com/view/ai4mat/home",
       "fit": "Tangent — materials selection in design",
-      "confidence": "estimated"
+      "confidence": "likely"
     }
   ]
 }

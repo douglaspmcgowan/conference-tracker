@@ -1,7 +1,7 @@
-// Generated 2026-08-12 by scripts/refresh-data.js
+// Generated 2026-08-26 by scripts/refresh-data.js
 
 module.exports = {
-  generated: "2026-08-12T14:13:53.797Z",
+  generated: "2026-08-26T14:09:31.228Z",
 
   fields: {
   "HCI": {
@@ -2152,7 +2152,7 @@ module.exports = {
     "acceptanceRate": 0.28,
     "blind": "double",
     "link": "https://iui.acm.org/2027/",
-    "fit": "Strong fit: mixed-initiative, human-AI design tools, LLM-augmented engineering design.",
+    "fit": "Deadline passed (abstract Aug 13, paper Aug 20, 2026). Reference only for IUI 2028 cycle.",
     "confidence": "verified"
   },
   {
@@ -2205,7 +2205,7 @@ module.exports = {
     "acceptanceRate": 0.18,
     "blind": "double",
     "link": "https://wsdm-conference.org/2027/",
-    "fit": "Tacit-knowledge retrieval angle plausible",
+    "fit": "Deadline passed (abstract Aug 17, paper Aug 24, 2026). Reference only.",
     "confidence": "verified"
   },
   {
@@ -2314,6 +2314,84 @@ module.exports = {
     "confidence": "verified"
   },
   {
+    "id": "ml4ps-2026",
+    "name": "ML4PS @ NeurIPS 2026",
+    "fullName": "NeurIPS Workshop: Machine Learning and the Physical Sciences",
+    "year": 2026,
+    "fields": [
+      "ML"
+    ],
+    "tier": "B",
+    "abstractDeadline": null,
+    "deadline": "2026-08-29",
+    "notification": null,
+    "conferenceStart": "2026-12-15",
+    "conferenceEnd": "2026-12-15",
+    "location": {
+      "city": "Sydney",
+      "country": "Australia"
+    },
+    "format": "Short paper, double-blind",
+    "pageLimit": "4-8",
+    "acceptanceRate": 0.5,
+    "blind": "double",
+    "link": "https://ml4physicalsciences.github.io/",
+    "fit": "Strong if physics-aware ML or simulation surrogates are involved",
+    "confidence": "likely"
+  },
+  {
+    "id": "ai4science-2026",
+    "name": "AI for Science @ NeurIPS 2026",
+    "fullName": "NeurIPS Workshop: AI for Science",
+    "year": 2026,
+    "fields": [
+      "ML"
+    ],
+    "tier": "B",
+    "abstractDeadline": null,
+    "deadline": "2026-08-29",
+    "notification": null,
+    "conferenceStart": "2026-12-15",
+    "conferenceEnd": "2026-12-15",
+    "location": {
+      "city": "Sydney",
+      "country": "Australia"
+    },
+    "format": "Short paper, double-blind",
+    "pageLimit": "4-8",
+    "acceptanceRate": 0.45,
+    "blind": "double",
+    "link": "https://ai4sciencecommunity.github.io/",
+    "fit": "Strong for scientific-discovery agents touching engineering",
+    "confidence": "likely"
+  },
+  {
+    "id": "ai4mat-2026",
+    "name": "AI4Mat",
+    "fullName": "Workshop on AI for Accelerated Materials Design (ICLR/NeurIPS)",
+    "year": 2026,
+    "fields": [
+      "Engineering Design"
+    ],
+    "tier": "B",
+    "abstractDeadline": null,
+    "deadline": "2026-08-29",
+    "notification": null,
+    "conferenceStart": "2026-12-15",
+    "conferenceEnd": "2026-12-15",
+    "location": {
+      "city": "Sydney",
+      "country": "Australia"
+    },
+    "format": "Short paper",
+    "pageLimit": "4-8",
+    "acceptanceRate": 0.5,
+    "blind": "double",
+    "link": "https://sites.google.com/view/ai4mat/home",
+    "fit": "Tangent — materials selection in design",
+    "confidence": "likely"
+  },
+  {
     "id": "chi-2027",
     "name": "CHI",
     "fullName": "ACM Conference on Human Factors in Computing Systems",
@@ -2364,84 +2442,6 @@ module.exports = {
     "link": "https://2027.ieee-icra.org/",
     "fit": "Marginal — only if human-AI co-design has robotic-fabrication arm",
     "confidence": "verified"
-  },
-  {
-    "id": "ml4ps-2026",
-    "name": "ML4PS @ NeurIPS 2026",
-    "fullName": "NeurIPS Workshop: Machine Learning and the Physical Sciences",
-    "year": 2026,
-    "fields": [
-      "ML"
-    ],
-    "tier": "B",
-    "abstractDeadline": null,
-    "deadline": "2026-09-15",
-    "notification": null,
-    "conferenceStart": "2026-12-15",
-    "conferenceEnd": "2026-12-15",
-    "location": {
-      "city": "Sydney",
-      "country": "Australia"
-    },
-    "format": "Short paper, double-blind",
-    "pageLimit": "4-8",
-    "acceptanceRate": 0.5,
-    "blind": "double",
-    "link": "https://ml4physicalsciences.github.io/",
-    "fit": "Strong if physics-aware ML or simulation surrogates are involved",
-    "confidence": "estimated"
-  },
-  {
-    "id": "ai4science-2026",
-    "name": "AI for Science @ NeurIPS 2026",
-    "fullName": "NeurIPS Workshop: AI for Science",
-    "year": 2026,
-    "fields": [
-      "ML"
-    ],
-    "tier": "B",
-    "abstractDeadline": null,
-    "deadline": "2026-09-15",
-    "notification": null,
-    "conferenceStart": "2026-12-15",
-    "conferenceEnd": "2026-12-15",
-    "location": {
-      "city": "Sydney",
-      "country": "Australia"
-    },
-    "format": "Short paper, double-blind",
-    "pageLimit": "4-8",
-    "acceptanceRate": 0.45,
-    "blind": "double",
-    "link": "https://ai4sciencecommunity.github.io/",
-    "fit": "Strong for scientific-discovery agents touching engineering",
-    "confidence": "estimated"
-  },
-  {
-    "id": "ai4mat-2026",
-    "name": "AI4Mat",
-    "fullName": "Workshop on AI for Accelerated Materials Design (ICLR/NeurIPS)",
-    "year": 2026,
-    "fields": [
-      "Engineering Design"
-    ],
-    "tier": "B",
-    "abstractDeadline": null,
-    "deadline": "2026-09-15",
-    "notification": null,
-    "conferenceStart": "2026-12-15",
-    "conferenceEnd": "2026-12-15",
-    "location": {
-      "city": "Sydney",
-      "country": "Australia"
-    },
-    "format": "Short paper",
-    "pageLimit": "4-8",
-    "acceptanceRate": 0.5,
-    "blind": "double",
-    "link": "https://sites.google.com/view/ai4mat/home",
-    "fit": "Tangent — materials selection in design",
-    "confidence": "estimated"
   },
   {
     "id": "spsp-2027",

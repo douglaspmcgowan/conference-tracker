@@ -71,7 +71,7 @@ Note on confidence:
 - **Acceptance rate:** ~25–30%
 - **Link:** https://iui.acm.org/2027/
 - **Source:** [iui.acm.org/2027](https://iui.acm.org/2027/), [getpaperpilot.com/deadlines/iui-2027](https://www.getpaperpilot.com/deadlines/iui-2027.html) — deadlines confirmed Aug 13/20 via 2 sources (2026-06-12 refresh)
-- **Fit for Doug:** Strong — AI-in-design field maps fit explicitly; Psych Battery as adaptive interface.
+- **Fit for Doug:** DEADLINE PASSED (abstract Aug 13, paper Aug 20, 2026). Reference only for IUI 2028 cycle.
 
 ### CHI 2026
 
@@ -637,7 +637,7 @@ Note on confidence:
       "acceptanceRate": 0.27,
       "blind": "double",
       "link": "https://iui.acm.org/2027/",
-      "fit": "AI-in-design field maps fit explicitly; Psych Battery as adaptive interface",
+      "fit": "Deadline passed (abstract Aug 13, paper Aug 20, 2026). Reference only for IUI 2028 cycle.",
       "confidence": "verified"
     },
     {

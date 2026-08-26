@@ -107,7 +107,7 @@ Notes on conventions:
 - **Format:** PDF, double-anonymous, ACM template, full (12 pp) + short (6 pp) tracks
 - **Acceptance:** ~25–30% (historical)
 - **Link:** https://iui.acm.org/2027/
-- **Fit:** Strong fit for Doug's mixed-initiative / human-AI design tool work; LLM-augmented engineering design papers land here naturally.
+- **Fit:** DEADLINE PASSED (abstract Aug 13, paper Aug 20, 2026). Reference only for IUI 2028 cycle.
 - **Source:** [iui.acm.org/2027](https://iui.acm.org/2027/) (official CFP), [getpaperpilot.com/deadlines/iui-2027](https://www.getpaperpilot.com/deadlines/iui-2027.html) — deadline confirmed via 2 sources
 
 ## DIS 2026
@@ -717,7 +717,7 @@ Notes on conventions:
       "acceptanceRate": 0.28,
       "blind": "double",
       "link": "https://iui.acm.org/2027/",
-      "fit": "Strong fit: mixed-initiative, human-AI design tools, LLM-augmented engineering design.",
+      "fit": "Deadline passed (abstract Aug 13, paper Aug 20, 2026). Reference only for IUI 2028 cycle.",
       "confidence": "verified"
     },
     {
