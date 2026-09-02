@@ -1,0 +1,38 @@
+---
+provenance: "douglas-core"
+name: correct
+description: "Use when Douglas reports a correction, repeated defect, unsafe omission, or a safeguard that did not fire."
+---
+
+# Correct
+
+Turn a correction into value-free evidence, the narrowest supported safeguard, and proof that a future session encounters it. Every invocation runs the instance procedure and the class sweep in this file; the sweep may conclude zero other instances.
+
+Use `TASK.md` for unfinished work and `MAP.md` for project facts and durable capability state. The feedback log records decisions and evidence for audit.
+
+## Procedure
+
+1. Answer the correction directly and stop the failing path. Preserve value-free evidence: file, test, screenshot, or transcript locations without credential values, protected content, or private source data.
+2. Run the existing-owner gate before proposing an artifact. Search the repository, `~/.agents`, product configuration, manifests, hooks, skills, scripts, tests, and human guide for owners, equivalents, consumers, imports, wiring, adapters, tests, and documentation links. Record exact paths and searches inspected. A portable contract sentence has one owner: `.agents/templates/AGENTS.md`, rendered by `Manage-Harness.ps1 -Action EnsureProject` or `-Action InstallGlobal`; never hand-edit generated `AGENTS.md`, `CLAUDE.md`, or a product projection. Run `Test-ContractBudget.ps1` after rendering. Its combined rule-sentence count is advisory against an 80-instruction point past which a cited study puts the fully-correct-response rate at zero; weigh a rise against the mechanism ranking in step 5.
+3. Classify the instance root cause as `hypothesis`, `supported`, or `reproduced`; reproduce safely before treating it as durable fact. Select every supported scope: `path`, `project`, `shared`, `platform`, `provider-model`, `human`.
+4. Choose the artifact decision for the instance: `extend` the closest adequate owner; `consolidate` overlapping owners with a thin compatibility pointer when discovery requires one; `replace` or `remove` only with a backup and verified consumers; `create` only when no existing owner can responsibly hold the behavior, with the reason recorded. Choose mechanisms for distinct recurrence paths, ranked by ability to fire: `hook`/`permission` > `test` > `verifier` > generated projection or rendered contract > `rule`/`skill` prose > `memory`. A rule already stated in prose and violated once requires the next mechanism in the rank; stronger restatement is not a safeguard. Record the instance with `pwsh -File .agents/skills/correct/scripts/Record-Correction.ps1`. Use the repository log for `project`/`path` scope and the shared log for `shared`/`platform`/`provider-model` scope. Each append-only entry contains a stable ID and UTC timestamp; value-free incident, consequence, and evidence; root-cause status; owner search and artifact decision; scopes, surfaces, mechanisms; artifact paths, verification, owner, status, and review trigger. Confirm the ID appears in `.agents/feedback/FEEDBACK-LOG.md` when that log owns the scope: `grep -c "<the ID used in step 1>" .agents/feedback/FEEDBACK-LOG.md` must return a positive count.
+5. Start true RED against the real bad input: write and run the failing test first, and confirm the expected failure targets the instance. A first-run pass is unproven.
+6. Implement the narrowest safe, authorized artifact, fail closed or report skips loudly enough that PASS cannot hide zero inspected inputs, then run the test green and verify the assembled condition. Test the correction itself as input; this prevents a new guard refusing the commit that lands it. If multiple copies land, test that copies agree. Update `MAP.md` when ownership, loading, paths, or integrations change.
+7. Count prior firings before or alongside the new record, then record the total. Total `1` requires the narrow safeguard and the mandatory sweep. Total `2+` requires the detective pass and enforcement above prose. Six same-guard misfires in one session are a guard failure requiring immediate owner escalation and a recurrence-counting check. A rule that exists and never fires is not a safeguard: verify its firing count and state what the count triggers. The measured incident had six misfires against one guard with no recurrence counting or escalation. Classify class root cause as `hypothesis`, `supported`, or `reproduced`; reproduce safely before treating it as durable fact.
+8. For recurrence or a severe consequence where “why did this escape?” is itself a finding, run `.agents/skills/detective/SKILL.md` as a topic-scoped pass for this named failure. Stop when the pass names a check that exists but does not run on the relevant path, a check that runs but misses the failing condition, or no check exists for the class; if obvious candidates show none, record `cause: undetermined`. The detective pass is time-bounded by this stopping rule.
+9. Sweep every eligible repository and harness surface that could carry the class: same patterns, missing checks, untested branches, sibling hooks, adapters, tools, skills, processes, and generated wiring. Record the exact search command and result, including zero hits. The full sweep inspects every eligible surface and reports all findings.
+10. Build or extend a class-level `*.test.ps1` (or native test) in the owning skill or `.agents/tools/`. Write the failing test before the safeguard, run it, and confirm the expected failure is caused by the class defect. Then implement the minimal safeguard and run the same test green. The supplied RED evidence is six misfires against one guard in one session with no recurrence counting or escalation; prose-only enforcement already failed once.
+11. Register the recurring check through discovery: `.agents/tools/Run-ToolTests.ps1` recursively runs `*.test.ps1` under `.agents/tools/` and `.agents/skills/**`. Placement alone registers the suite; no manifest edit, cron, or separate registration is needed. Confirm the suite name appears in `pwsh -NoProfile -File .agents/tools/Run-ToolTests.ps1`. Use `.agents/skills/add-ci/SKILL.md` for every-commit execution; its procedure owns CI registration.
+12. Run the mandatory debloat gate over every file edited or written. Read `.agents/skills/debloat/SKILL.md` in `plan` mode, review the diff, then apply it. Report per-file bytes before/after, corpus totals, KEEP-line conservation, relocations, and open questions. A pass that cuts a dense file must report the keep-map percentage and stop when it exceeds 70%.
+
+## Stop conditions
+
+- Stop before any credential value, protected content, or private source data enters a record.
+- Keep an unresolved cause labeled `hypothesis` and stop before broadening ordinary one-project preference to shared scope without cross-project evidence.
+- Stop before replacement, removal, or renaming while a consumer remains unresolved.
+- Stop before claiming registration without `Run-ToolTests.ps1` output and before claiming a safeguard without red-green evidence.
+- Use `.agents/skills/detective/SKILL.md` for open-ended sweeps with no single named failure. Use `.agents/skills/add-ci/SKILL.md` for unrelated CI wiring.
+
+## Verification and report
+
+Run `scripts\Record-Correction.test.ps1`, the class test, `pwsh -NoProfile -File .agents/tools/Run-ToolTests.ps1`, relevant repository checks, and `git diff --check`. Re-read this file and the compatibility alias for trigger overlap and contradictory routing. Report the class cause, recurrence count and trigger, owner search, artifact decision, scopes, mechanisms, full paths, sweep command/result, red-green evidence, registration output, debloat table, unresolved cause, and review trigger.

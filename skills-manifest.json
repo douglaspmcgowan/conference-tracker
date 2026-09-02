@@ -11,28 +11,24 @@
     },
     {
       "capability": "recon",
-      "canonical": [],
-      "commands": [
+      "canonical": [
         "recon"
       ],
-      "delivery": "command"
+      "delivery": "vendored"
     },
     {
       "capability": "ultra-skill",
-      "canonical": [],
-      "commands": [
+      "canonical": [
         "ultraskill"
       ],
-      "delivery": "command"
+      "delivery": "vendored"
     },
     {
       "capability": "task-design",
-      "canonical": [],
-      "commands": [
-        "task",
-        "design"
+      "canonical": [
+        "craft"
       ],
-      "delivery": "command"
+      "delivery": "vendored"
     },
     {
       "capability": "work-scope",
@@ -88,24 +84,21 @@
     },
     {
       "capability": "design-review",
-      "canonical": [],
-      "commands": [
+      "canonical": [
         "design-review"
       ],
-      "delivery": "command"
+      "delivery": "vendored"
     },
     {
       "capability": "docket",
-      "canonical": [],
-      "commands": [
+      "canonical": [
         "docket"
       ],
-      "delivery": "command"
+      "delivery": "vendored"
     },
     {
       "capability": "harden-tail",
-      "canonical": [],
-      "commands": [
+      "canonical": [
         "pathway",
         "solo-review",
         "probe",
@@ -123,19 +116,17 @@
     },
     {
       "capability": "probe",
-      "canonical": [],
-      "commands": [
+      "canonical": [
         "probe"
       ],
-      "delivery": "command"
+      "delivery": "vendored"
     },
     {
       "capability": "spar",
-      "canonical": [],
-      "commands": [
+      "canonical": [
         "spar"
       ],
-      "delivery": "command"
+      "delivery": "vendored"
     },
     {
       "capability": "spec",

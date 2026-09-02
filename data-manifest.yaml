@@ -18,7 +18,7 @@ assets: []
 #     restore_verifier: "<safe restore verification command or procedure>"
 #     regeneration_rule: "<required for regenerable-output>"
 #     recovery_rule: "<required for live or local mutable state>"
-#     retention_daily: 2
-#     retention_weekly: 2
-#     retention_monthly: 1
+#     retention_daily: 3
+#     retention_weekly: 4
+#     retention_monthly: 3
 #     stale_write_rule: "compare-and-swap|immutable-generations|single-writer-lease"
