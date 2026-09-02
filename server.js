@@ -18,7 +18,7 @@ app.get("/favicon.svg", (req, res) => {
       '<line x1="16" y1="5" x2="16" y2="27" stroke="#FAFAF7" stroke-width="1.4" stroke-linecap="round"/>' +
       '<line x1="5" y1="16" x2="27" y2="16" stroke="#FAFAF7" stroke-width="1.4" stroke-linecap="round"/>' +
       '<circle cx="16" cy="16" r="2.4" fill="#2D5BFF"/>' +
-    '</svg>'
+      "</svg>",
   );
 });
 app.get("/favicon.ico", (req, res) => res.redirect(302, "/favicon.svg"));
@@ -26,7 +26,12 @@ app.get("/favicon.ico", (req, res) => res.redirect(302, "/favicon.svg"));
 app.get("/cal.ics", (req, res) => {
   // ?ids=a,b,c restricts the export; otherwise all conferences with deadlines.
   const onlyIds = req.query.ids
-    ? new Set(String(req.query.ids).split(",").map((s) => s.trim()).filter(Boolean))
+    ? new Set(
+        String(req.query.ids)
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+      )
     : null;
   res.set("Content-Type", "text/calendar; charset=utf-8");
   res.set("Content-Disposition", 'attachment; filename="conferences.ics"');
@@ -40,41 +45,59 @@ app.get("*", (req, res) => {
 
 // ------ iCalendar export (RFC 5545) ------
 function buildICS(onlyIds) {
-  const dtstamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const dtstamp = new Date()
+    .toISOString()
+    .replace(/[-:]/g, "")
+    .replace(/\.\d{3}/, "");
   const events = [];
   for (const c of data.conferences) {
     if (onlyIds && !onlyIds.has(c.id)) continue;
     if (c.deadline) {
-      events.push(icsEvent({
-        uid: `${c.id}-deadline@conference-tracker`,
-        summary: `${c.name} ${c.year} — paper deadline`,
-        description: [c.fullName, c.fit, "Format: " + (c.format || "—"), "CFP: " + c.link]
-          .filter(Boolean).join("\n"),
-        url: c.link,
-        date: c.deadline,
-        dtstamp,
-      }));
+      events.push(
+        icsEvent({
+          uid: `${c.id}-deadline@conference-tracker`,
+          summary: `${c.name} ${c.year} — paper deadline`,
+          description: [
+            c.fullName,
+            c.fit,
+            "Format: " + (c.format || "—"),
+            "CFP: " + c.link,
+          ]
+            .filter(Boolean)
+            .join("\n"),
+          url: c.link,
+          date: c.deadline,
+          dtstamp,
+        }),
+      );
     }
     if (c.abstractDeadline) {
-      events.push(icsEvent({
-        uid: `${c.id}-abstract@conference-tracker`,
-        summary: `${c.name} ${c.year} — abstract due`,
-        description: c.fullName,
-        url: c.link,
-        date: c.abstractDeadline,
-        dtstamp,
-      }));
+      events.push(
+        icsEvent({
+          uid: `${c.id}-abstract@conference-tracker`,
+          summary: `${c.name} ${c.year} — abstract due`,
+          description: c.fullName,
+          url: c.link,
+          date: c.abstractDeadline,
+          dtstamp,
+        }),
+      );
     }
     if (c.conferenceStart) {
-      events.push(icsEvent({
-        uid: `${c.id}-conference@conference-tracker`,
-        summary: `${c.name} ${c.year} (conference)`,
-        description: [c.fullName, "Where: " + ((c.location && c.location.city) || "TBA")].join("\n"),
-        url: c.link,
-        date: c.conferenceStart,
-        dateEnd: c.conferenceEnd || c.conferenceStart,
-        dtstamp,
-      }));
+      events.push(
+        icsEvent({
+          uid: `${c.id}-conference@conference-tracker`,
+          summary: `${c.name} ${c.year} (conference)`,
+          description: [
+            c.fullName,
+            "Where: " + ((c.location && c.location.city) || "TBA"),
+          ].join("\n"),
+          url: c.link,
+          date: c.conferenceStart,
+          dateEnd: c.conferenceEnd || c.conferenceStart,
+          dtstamp,
+        }),
+      );
     }
   }
   return [
@@ -110,7 +133,9 @@ function icsEvent({ uid, summary, description, url, date, dateEnd, dtstamp }) {
   return lines.join("\r\n");
 }
 function icsEscape(s) {
-  return String(s).replace(/[\\;,]/g, (c) => "\\" + c).replace(/\n/g, "\\n");
+  return String(s)
+    .replace(/[\\;,]/g, (c) => "\\" + c)
+    .replace(/\n/g, "\\n");
 }
 
 function buildPage() {
@@ -142,7 +167,6 @@ function buildPage() {
           </svg>
         </span>
         <div class="brand-titles">
-          <span class="brand-eyebrow">AI <span class="amp">&amp;</span> Design</span>
           <h1 class="brand-title">AI <span class="amp">&amp;</span> Engineering Design Conference Tracker</h1>
         </div>
       </div>
@@ -208,7 +232,7 @@ function buildPage() {
     </div>
     <div class="filters-search">
     <div class="filter-group filter-group-search">
-      <input type="search" id="searchInput" placeholder="Search conferences…" autocomplete="off">
+      <input type="search" id="searchInput" placeholder="Search conferences…" autocomplete="off" aria-label="Search conferences">
       <label class="starred-toggle">
         <input type="checkbox" id="starredOnly">
         <span>★ Starred only</span>
@@ -235,7 +259,7 @@ function buildPage() {
   <footer class="colophon">
     <span class="colophon-bit">Inter Tight · JetBrains Mono</span>
     <span class="colophon-sep">/</span>
-    <span class="colophon-bit">Data refreshed ${(data.generated || new Date().toISOString()).slice(0,10)}</span>
+    <span class="colophon-bit">Data refreshed ${(data.generated || new Date().toISOString()).slice(0, 10)}</span>
     <span class="colophon-sep">/</span>
     <span class="colophon-bit"><a class="colophon-link" href="https://github.com/douglaspmcgowan/conference-tracker" target="_blank" rel="noopener">github.com/douglaspmcgowan/conference-tracker</a></span>
   </footer>
@@ -308,7 +332,7 @@ html {
   text-rendering: optimizeLegibility;
   line-height: 1.58;
 }
-body { margin: 0; background: var(--paper); color: var(--ink); min-height: 100vh; }
+body { margin: 0; background: var(--paper); color: var(--ink); min-height: 100dvh; }
 button, input, textarea, select { font: inherit; }
 p, .masthead-lede, .card-fullname, .card-fit, .modal-fullname, .timeline-empty {
   max-width: var(--measure);
@@ -326,7 +350,7 @@ code {
 }
 ::selection { background: var(--accent-soft); color: var(--ink); }
 :focus { outline: none; }
-:where(a, button, input, label):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+:where(a, button, input, label, select, textarea):focus-visible { outline: none; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--accent); }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -363,15 +387,7 @@ code {
 }
 .brand-mark svg { display: block; }
 .brand-titles { min-width: 0; display: flex; flex-direction: column; gap: 0.18rem; }
-.brand-eyebrow {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 500;
-  line-height: 1;
-}
+/* .brand-eyebrow removed — redundant above h1 and was an AI-ism (mono eyebrow) */
 .brand-title { font-size: clamp(1.45rem, 2.5vw, 1.8rem); font-weight: 600; letter-spacing: -0.028em; margin: 0; line-height: 1.06; max-width: 24ch; }
 .amp { font-family: "Inter Tight", serif; font-style: italic; font-weight: 500; color: var(--accent); padding: 0 0.04em; }
 .masthead-lede { color: var(--ink-soft); font-size: 1.02rem; margin: 0 0 1.18rem; line-height: 1.66; }
@@ -381,11 +397,11 @@ code {
   gap: 0.65rem 1.6rem;
   padding-top: 0.95rem;
   border-top: 1px solid var(--rule);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.74rem;
   color: var(--ink-faint);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   font-variant-numeric: tabular-nums;
 }
 .stat { display: inline-flex; align-items: baseline; gap: 0.46rem; min-height: 1.5rem; }
@@ -468,9 +484,9 @@ code {
   align-self: center;
   margin: 0.4rem 0;
   padding: 0.32rem 0.7rem;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.74rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   color: var(--ink-soft);
   text-decoration: none;
   background: transparent;
@@ -500,7 +516,7 @@ code {
   transition: border-color var(--dur-out) var(--ease-out), background var(--dur-out) var(--ease-out);
 }
 .select:hover { border-color: var(--ink-soft); transition-duration: var(--dur-in); }
-.select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.select:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--accent); }
 
 /* ------ Status pill (per-conf state) ------ */
 .status-pill {
@@ -546,10 +562,10 @@ code {
   flex-wrap: wrap;
   gap: 0.5rem 1.4rem;
   padding: 0.4rem 0 1.1rem;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.74rem;
   color: var(--ink-faint);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   border-bottom: 1px solid var(--rule-soft);
   margin-bottom: 1.1rem;
 }
@@ -594,10 +610,10 @@ code {
 }
 .tracking-row-stack { flex-direction: column; align-items: stretch; gap: 0.4rem; }
 .tracking-label {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.74rem;
   color: var(--ink-faint);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   width: 5.5rem;
   flex-shrink: 0;
@@ -617,7 +633,7 @@ code {
   min-height: 5rem;
   transition: border-color var(--dur-out) var(--ease-out), background var(--dur-out) var(--ease-out);
 }
-.notes-area:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-color: transparent; background: var(--paper); }
+.notes-area:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--accent); border-color: transparent; background: var(--paper); }
 .notes-area::placeholder { color: var(--ink-faint); }
 
 .modal-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.1rem; }
@@ -636,10 +652,10 @@ code {
 .filter-group-search { display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem; flex-wrap: wrap; width: 100%; min-width: 0; }
 .filter-label {
   padding-top: 0.38rem;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.69rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: var(--ink-faint);
   white-space: nowrap;
 }
@@ -680,14 +696,13 @@ code {
   align-items: center;
   gap: 0.5rem;
   padding: 0.44rem 0.72rem;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.72rem;
   color: var(--ink-soft);
   background: var(--paper-raised);
   box-shadow: inset 0 0 0 1px var(--rule-soft);
   border-radius: 999px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: normal;
   cursor: pointer;
   user-select: none;
 }
@@ -706,10 +721,10 @@ main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
   padding: 0 0 1rem;
   margin-bottom: 0.95rem;
   border-bottom: 1px solid var(--rule-soft);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.7rem;
   color: var(--ink-faint);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 .view-toolbar-label { color: var(--ink-faint); margin-right: 0.18rem; }
@@ -786,10 +801,10 @@ main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
   padding: 0.15rem 0 1rem;
   font-size: 0.72rem;
   color: var(--ink-soft);
-  font-family: var(--mono);
+  font-family: var(--sans);
   border-bottom: 1px solid var(--rule);
   margin-bottom: 1.1rem;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 .legend-item { display: inline-flex; align-items: center; gap: 0.42rem; white-space: nowrap; }
@@ -1053,7 +1068,7 @@ table.confs td.num { font-family: var(--mono); font-variant-numeric: tabular-num
 .modal-panel {
   position: relative; background: var(--paper); border: 0;
   border-radius: 10px; max-width: 38rem; width: min(38rem, 100%);
-  max-height: min(86vh, 44rem); overflow-y: auto; padding: 1.9rem 2rem 2rem;
+  max-height: min(86dvh, 44rem); overflow-y: auto; padding: 1.9rem 2rem 2rem;
   box-shadow: inset 0 0 0 1px var(--rule-soft), var(--shadow-modal);
 }
 [data-theme="dark"] .modal-panel { box-shadow: inset 0 0 0 1px var(--rule-soft), var(--shadow-modal); }
@@ -1071,7 +1086,7 @@ table.confs td.num { font-family: var(--mono); font-variant-numeric: tabular-num
 .modal-name { font-size: clamp(1.45rem, 2.5vw, 1.72rem); margin: 0; font-weight: 600; letter-spacing: -0.03em; line-height: 1.08; }
 .modal-fullname { color: var(--ink-soft); font-size: 0.95rem; margin: 0 0 0.3rem; line-height: 1.62; max-width: 50ch; text-wrap: pretty; }
 .modal-section { margin: 0; padding-top: 0.95rem; border-top: 1px solid var(--rule); }
-.modal-section h3 { font-family: var(--mono); font-size: 0.69rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); margin: 0 0 0.68rem; font-weight: 500; }
+.modal-section h3 { font-family: var(--sans); font-size: 0.69rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); margin: 0 0 0.68rem; font-weight: 500; }
 .modal-meta { display: grid; grid-template-columns: minmax(5.6rem, max-content) 1fr; gap: 0.48rem 1.25rem; font-size: 0.92rem; }
 .modal-meta dt { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-faint); padding-top: 0.1rem; letter-spacing: 0.05em; text-transform: uppercase; }
 .modal-meta dd { margin: 0; font-variant-numeric: tabular-nums; line-height: 1.46; }
@@ -1084,9 +1099,8 @@ table.confs td.num { font-family: var(--mono); font-variant-numeric: tabular-num
     color var(--dur-out) var(--ease-out),
     box-shadow var(--dur-out) var(--ease-out),
     transform var(--dur-out) var(--ease-out);
-  margin-top: 0.85rem; letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-family: var(--mono);
+  margin-top: 0.85rem; letter-spacing: 0.01em;
+  font-family: var(--sans);
 }
 .modal-link-btn:hover { color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent-line); transform: translateY(-1px); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
 
@@ -1118,7 +1132,7 @@ table.confs td.num { font-family: var(--mono); font-variant-numeric: tabular-num
   table.confs { font-size: 0.82rem; min-width: 44rem; }
   table.confs th, table.confs td { padding: 0.62rem 0.72rem; }
   .modal { padding: 0.75rem; }
-  .modal-panel { padding: 1.45rem 1.2rem 1.35rem; max-width: 100%; max-height: calc(100vh - 1.5rem); }
+  .modal-panel { padding: 1.45rem 1.2rem 1.35rem; max-width: 100%; max-height: calc(100dvh - 1.5rem); }
   .modal-meta { grid-template-columns: 1fr; gap: 0.16rem; }
   .modal-section { padding-top: 0.85rem; }
   .colophon { padding-top: 1.35rem; padding-bottom: 2rem; }
@@ -2136,7 +2150,9 @@ function getJS() {
   // ------ Modal ------
   const modal = document.getElementById("detailModal");
   const modalBody = document.getElementById("modalBody");
+  let _lastFocused = null;
   function openDetail(id) {
+    _lastFocused = document.activeElement;
     const c = CONFS.find(x => x.id === id);
     if (!c) return;
     const days = daysUntil(parseDate(c.deadline));
@@ -2201,12 +2217,22 @@ function getJS() {
     }
     modal.classList.remove("hidden");
     modal.setAttribute("aria-hidden", "false");
+    // Move focus into modal for keyboard accessibility
+    requestAnimationFrame(() => {
+      const closeBtn = modal.querySelector(".modal-close");
+      if (closeBtn) closeBtn.focus();
+    });
   }
   modal.addEventListener("click", (e) => {
     if (e.target.matches("[data-close]")) closeDetail();
   });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDetail(); });
-  function closeDetail() { modal.classList.add("hidden"); modal.setAttribute("aria-hidden", "true"); }
+  function closeDetail() {
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+    // Restore focus to the element that triggered the modal
+    if (_lastFocused && typeof _lastFocused.focus === "function") _lastFocused.focus();
+  }
 
   // ------ Helpers ------
   function escape(s) { return String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -2219,6 +2245,8 @@ function getJS() {
 }
 
 if (!process.env.VERCEL) {
-  app.listen(PORT, () => console.log("Conference Tracker on http://localhost:" + PORT));
+  app.listen(PORT, () =>
+    console.log("Conference Tracker on http://localhost:" + PORT),
+  );
 }
 module.exports = app;
