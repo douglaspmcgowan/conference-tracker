@@ -1,82 +1,38 @@
 ---
+provenance: "douglas-core"
 name: correct
-description: "Turn Douglas's correction into durable, scoped prevention. Use when he reports an agent mistake, says never to repeat something, asks to remember feedback, invokes /correct, or requests a rule, hook, test, verifier, permission, memory, skill, adapter, or workflow change based on observed behavior."
+description: "Use when Douglas reports a correction, repeated defect, unsafe omission, or a safeguard that did not fire."
 ---
 
 # Correct
 
-Convert an observed failure into value-free evidence, the narrowest supported enforcement, and proof that a future session will encounter the fix.
+Turn a correction into value-free evidence, the narrowest supported safeguard, and proof that a future session encounters it. Every invocation runs the instance procedure and the class sweep in this file; the sweep may conclude zero other instances.
 
-## Boundaries
-
-Use this skill for a correction or recurrence-prevention request. Use `TASK.md` for unfinished work, `STATUS.md` or `MAP.md` for project facts, and the existing human guide for explanation without enforcement.
-
-The feedback log records decisions and evidence for audit. It does not teach the procedure and does not load every session.
+Use `TASK.md` for unfinished work and `MAP.md` for project facts and durable capability state. The feedback log records decisions and evidence for audit.
 
 ## Procedure
 
-1. Answer the correction directly and stop the failing path.
-2. Run the existing-owner gate before proposing an artifact:
-   - Search the repository, `~/.agents`, relevant product configuration, manifests, hooks, skills, scripts, tests, and human guide for the current owner and equivalents.
-   - Find consumers, imports, hook wiring, adapters, tests, and documentation links before renaming, replacing, or removing anything.
-   - Record exact paths and searches inspected.
-3. Choose the artifact decision in this order:
-   - `extend`: add the behavior to the closest adequate owner;
-   - `consolidate`: merge overlapping owners and leave a thin compatibility pointer when discovery requires one;
-   - `replace` or `remove`: preserve a backup and update verified consumers;
-   - `create`: use only when the search shows no existing owner can responsibly hold the behavior, and record why.
-4. Preserve value-free evidence. Record file, test, screenshot, or transcript locations without credential values, protected content, or private source data.
-5. Classify root-cause status as `hypothesis`, `supported`, or `reproduced`. Reproduce safely before recording a cause as durable fact or building a load-bearing guard around it.
-6. Select every supported scope:
-   - `path`
-   - `project`
-   - `shared`
-   - `platform`
-   - `provider-model`
-   - `human`
-7. Select each enforcement mechanism that covers a distinct recurrence path:
-   - stable judgment or style: `rule`
-   - repeatable procedure: `skill`
-   - reusable fact: `memory`
-   - completion evidence: `verifier`
-   - detectable unsafe action: `hook` or `permission`
-   - reproduced behavior: `test`
-   - human rationale: `brief`
-   - deferred authorized work: `backlog`
-8. Prefer the narrowest proven scope. Stable cross-project behavior belongs in the shared contract. Product mechanics stay in thin adapters. Cloud-required behavior travels in committed repository files.
-9. Append the decision with `scripts/Record-Correction.ps1`. Use the repository log for path/project scope and the shared log for shared/platform/provider scope. Preserve history through superseding or retirement entries.
-10. Implement every safe, authorized enforcement artifact. Update `MAP.md` when ownership, loading, paths, or integrations change.
-11. Verify every mechanism independently. Then exercise the assembled repository or harness under the condition that exposed the failure.
-12. Report the scope, artifact decision, mechanisms, full paths, verification, unresolved cause, and review trigger.
-
-## Record contract
-
-Each append-only entry contains:
-
-- stable ID and UTC timestamp;
-- value-free incident, consequence, and evidence references;
-- root-cause status;
-- existing-owner search evidence and artifact decision;
-- scopes, surfaces, and enforcement mechanisms;
-- artifact paths, verification, owner, status, and review trigger.
+1. Answer the correction directly and stop the failing path. Preserve value-free evidence: file, test, screenshot, or transcript locations without credential values, protected content, or private source data.
+2. Run the existing-owner gate before proposing an artifact. Search the repository, `~/.agents`, product configuration, manifests, hooks, skills, scripts, tests, and human guide for owners, equivalents, consumers, imports, wiring, adapters, tests, and documentation links. Record exact paths and searches inspected. A portable contract sentence has one owner: `.agents/templates/AGENTS.md`, rendered by `Manage-Harness.ps1 -Action EnsureProject` or `-Action InstallGlobal`; never hand-edit generated `AGENTS.md`, `CLAUDE.md`, or a product projection. Run `Test-ContractBudget.ps1` after rendering. Its combined rule-sentence count is advisory against an 80-instruction point past which a cited study puts the fully-correct-response rate at zero; weigh a rise against the mechanism ranking in step 5.
+3. Classify the instance root cause as `hypothesis`, `supported`, or `reproduced`; reproduce safely before treating it as durable fact. Select every supported scope: `path`, `project`, `shared`, `platform`, `provider-model`, `human`.
+4. Choose the artifact decision for the instance: `extend` the closest adequate owner; `consolidate` overlapping owners with a thin compatibility pointer when discovery requires one; `replace` or `remove` only with a backup and verified consumers; `create` only when no existing owner can responsibly hold the behavior, with the reason recorded. Choose mechanisms for distinct recurrence paths, ranked by ability to fire: `hook`/`permission` > `test` > `verifier` > generated projection or rendered contract > `rule`/`skill` prose > `memory`. A rule already stated in prose and violated once requires the next mechanism in the rank; stronger restatement is not a safeguard. Record the instance with `pwsh -File .agents/skills/correct/scripts/Record-Correction.ps1`. Use the repository log for `project`/`path` scope and the shared log for `shared`/`platform`/`provider-model` scope. Each append-only entry contains a stable ID and UTC timestamp; value-free incident, consequence, and evidence; root-cause status; owner search and artifact decision; scopes, surfaces, mechanisms; artifact paths, verification, owner, status, and review trigger. Confirm the ID appears in `.agents/feedback/FEEDBACK-LOG.md` when that log owns the scope: `grep -c "<the ID used in step 1>" .agents/feedback/FEEDBACK-LOG.md` must return a positive count.
+5. Start true RED against the real bad input: write and run the failing test first, and confirm the expected failure targets the instance. A first-run pass is unproven.
+6. Implement the narrowest safe, authorized artifact, fail closed or report skips loudly enough that PASS cannot hide zero inspected inputs, then run the test green and verify the assembled condition. Test the correction itself as input; this prevents a new guard refusing the commit that lands it. If multiple copies land, test that copies agree. Update `MAP.md` when ownership, loading, paths, or integrations change.
+7. Count prior firings before or alongside the new record, then record the total. Total `1` requires the narrow safeguard and the mandatory sweep. Total `2+` requires the detective pass and enforcement above prose. Six same-guard misfires in one session are a guard failure requiring immediate owner escalation and a recurrence-counting check. A rule that exists and never fires is not a safeguard: verify its firing count and state what the count triggers. The measured incident had six misfires against one guard with no recurrence counting or escalation. Classify class root cause as `hypothesis`, `supported`, or `reproduced`; reproduce safely before treating it as durable fact.
+8. For recurrence or a severe consequence where “why did this escape?” is itself a finding, run `.agents/skills/detective/SKILL.md` as a topic-scoped pass for this named failure. Stop when the pass names a check that exists but does not run on the relevant path, a check that runs but misses the failing condition, or no check exists for the class; if obvious candidates show none, record `cause: undetermined`. The detective pass is time-bounded by this stopping rule.
+9. Sweep every eligible repository and harness surface that could carry the class: same patterns, missing checks, untested branches, sibling hooks, adapters, tools, skills, processes, and generated wiring. Record the exact search command and result, including zero hits. The full sweep inspects every eligible surface and reports all findings.
+10. Build or extend a class-level `*.test.ps1` (or native test) in the owning skill or `.agents/tools/`. Write the failing test before the safeguard, run it, and confirm the expected failure is caused by the class defect. Then implement the minimal safeguard and run the same test green. The supplied RED evidence is six misfires against one guard in one session with no recurrence counting or escalation; prose-only enforcement already failed once.
+11. Register the recurring check through discovery: `.agents/tools/Run-ToolTests.ps1` recursively runs `*.test.ps1` under `.agents/tools/` and `.agents/skills/**`. Placement alone registers the suite; no manifest edit, cron, or separate registration is needed. Confirm the suite name appears in `pwsh -NoProfile -File .agents/tools/Run-ToolTests.ps1`. Use `.agents/skills/add-ci/SKILL.md` for every-commit execution; its procedure owns CI registration.
+12. Run the mandatory debloat gate over every file edited or written. Read `.agents/skills/debloat/SKILL.md` in `plan` mode, review the diff, then apply it. Report per-file bytes before/after, corpus totals, KEEP-line conservation, relocations, and open questions. A pass that cuts a dense file must report the keep-map percentage and stop when it exceeds 70%.
 
 ## Stop conditions
 
-- Stop before any credential value, protected content, or private source data could enter a record.
-- Keep an unresolved cause labeled `hypothesis`.
-- Stop before broadening an ordinary one-project preference to shared scope without cross-project evidence.
-- Stop before replacement, removal, or renaming when a consumer remains unresolved.
+- Stop before any credential value, protected content, or private source data enters a record.
+- Keep an unresolved cause labeled `hypothesis` and stop before broadening ordinary one-project preference to shared scope without cross-project evidence.
+- Stop before replacement, removal, or renaming while a consumer remains unresolved.
+- Stop before claiming registration without `Run-ToolTests.ps1` output and before claiming a safeguard without red-green evidence.
+- Use `.agents/skills/detective/SKILL.md` for open-ended sweeps with no single named failure. Use `.agents/skills/add-ci/SKILL.md` for unrelated CI wiring.
 
-## Verification
+## Verification and report
 
-- Run `scripts\Record-Correction.test.ps1`.
-- Re-read this file and the compatibility alias for trigger overlap and contradictory routing.
-- For each real correction, run the tests or verifiers attached to its enforcement artifacts.
-
-## Final report
-
-State what was verified this pass and what remains. Include all created or updated paths and repeat open questions only when Douglas must answer them.
-
-## Provenance
-
-This workflow consolidates the former `feedback` skill, `FEEDBACK-ROUTER.md`, and `Record-Feedback.ps1`. The `feedback` skill remains a discovery alias.
+Run `scripts\Record-Correction.test.ps1`, the class test, `pwsh -NoProfile -File .agents/tools/Run-ToolTests.ps1`, relevant repository checks, and `git diff --check`. Re-read this file and the compatibility alias for trigger overlap and contradictory routing. Report the class cause, recurrence count and trigger, owner search, artifact decision, scopes, mechanisms, full paths, sweep command/result, red-green evidence, registration output, debloat table, unresolved cause, and review trigger.

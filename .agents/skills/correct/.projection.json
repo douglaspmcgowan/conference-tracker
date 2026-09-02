@@ -1,6 +1,6 @@
 {
-    "schemaVersion":  1,
-    "name":  "correct",
-    "source":  "C:\\Users\\dougl\\.agents\\skills\\correct",
-    "sha256":  "cab4b981b26f0f2f496a560f1ff7568f0eb052af042a18ab78a6711251c878f5"
+  "schemaVersion": 1,
+  "name": "correct",
+  "source": "C:\\Users\\dougl\\.agents\\skills\\correct",
+  "sha256": "e57ff014dfca96ee17b6a29ccb296603a795e0d50c35e6d0ee7ae40bbebf134f"
 }

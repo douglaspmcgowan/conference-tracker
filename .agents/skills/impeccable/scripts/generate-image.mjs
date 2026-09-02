@@ -13,6 +13,7 @@
  */
 import fs from 'node:fs';
 import zlib from 'node:zlib';
+import { invokeSecretGuard } from '../../../cloud/secretguard-client.mjs';
 
 function arg(name, fallback = null) {
   const i = process.argv.indexOf(`--${name}`);
@@ -198,11 +199,6 @@ if (process.env.IMPECCABLE_IMAGE_GEN_FAKE) {
   process.exit(0);
 }
 
-const key = process.env.OPENAI_API_KEY;
-if (!key) {
-  console.error('generate-image: OPENAI_API_KEY is not set; use the harness-native image tool instead.');
-  process.exit(1);
-}
 const promptFile = arg('prompt-file');
 const prompt = promptFile ? fs.readFileSync(promptFile, 'utf8') : arg('prompt');
 const out = arg('out');
@@ -213,20 +209,31 @@ if (!prompt || !out) {
 const size = arg('size', '1536x1024');
 const quality = arg('quality', 'medium');
 
-const response = await fetch('https://api.openai.com/v1/images/generations', {
-  method: 'POST',
-  headers: { Authorization: `Bearer ${key}`, 'content-type': 'application/json' },
-  body: JSON.stringify({ model: 'gpt-image-2', prompt, size, quality, n: 1 }),
-});
-if (!response.ok) {
-  console.error(`generate-image: API error ${response.status}: ${(await response.text()).slice(0, 300)}`);
+let json;
+try {
+  json = await invokeSecretGuard({
+    uri: 'https://api.openai.com/v1/images/generations',
+    secretName: 'OPENAI_API_KEY',
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: { model: 'gpt-image-2', prompt, size, quality, n: 1 },
+  });
+} catch (error) {
+  console.error(`generate-image: ${error.message}`);
   process.exit(1);
 }
-const json = await response.json();
 const b64 = json?.data?.[0]?.b64_json;
 if (!b64) {
   console.error('generate-image: no image in response');
   process.exit(1);
 }
 fs.writeFileSync(out, Buffer.from(b64, 'base64'));
-console.log(`IMAGE: ${out} (${size}, ${quality}, gpt-image-2, billed to your OpenAI key)`);
+// The prompt travels with the asset: embedded in the file itself (EXIF-class
+// metadata via embed-prompt.mjs) so intent survives copies across harnesses,
+// plus a sidecar for anything that indexes rather than opens the image.
+try {
+  const { spawnSync } = await import('node:child_process');
+  spawnSync(process.execPath, [new URL('./embed-prompt.mjs', import.meta.url).pathname, out, '--prompt', prompt], { stdio: 'ignore' });
+  fs.writeFileSync(`${out}.json`, JSON.stringify({ prompt, createdAt: new Date().toISOString(), tool: 'generate-image.mjs', model: 'gpt-image-2' }, null, 2));
+} catch { /* embedding is best-effort */ }
+console.log(`IMAGE: ${out} (${size}, ${quality}, gpt-image-2, billed to your OpenAI key); prompt embedded + sidecar at ${out}.json`);

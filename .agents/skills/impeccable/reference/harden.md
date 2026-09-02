@@ -78,7 +78,7 @@ Systematically improve resilience:
 
 **Responsive text sizing**:
 - Use `clamp()` for fluid typography
-- Set minimum readable sizes (14px on mobile)
+- Set minimum readable sizes (16px body on mobile, the same floor the typography guidance sets; 14px only for genuinely secondary text. iOS Safari force-zooms focused inputs under 16px, which breaks form layouts)
 - Test text scaling (zoom to 200%)
 - Ensure containers expand with text
 
@@ -121,9 +121,9 @@ border-inline-end: 1px solid; /* Not border-right */
 new Intl.DateTimeFormat('en-US').format(date); // 1/15/2024
 new Intl.DateTimeFormat('de-DE').format(date); // 15.1.2024
 
-new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD'
+new Intl.NumberFormat('en-US', { 
+  style: 'currency', 
+  currency: 'USD' 
 }).format(1234.56); // $1,234.56
 ```
 
@@ -235,7 +235,7 @@ t('items', { count }) // Handles complex plural rules
 **Constraint handling**:
 ```html
 <!-- Set clear constraints -->
-<input
+<input 
   type="text"
   maxlength="100"
   pattern="[A-Za-z0-9]+"

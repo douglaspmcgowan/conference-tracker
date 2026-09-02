@@ -1,6 +1,6 @@
 {
-    "schemaVersion":  1,
-    "name":  "deep-search",
-    "source":  "C:\\Users\\dougl\\.agents\\skills\\deep-search",
-    "sha256":  "b6b04f03463bcab001e539300babdd484c725484c415084f002b03d77e1ba5ed"
+  "schemaVersion": 1,
+  "name": "deep-search",
+  "source": "C:\\Users\\dougl\\.agents\\skills\\deep-search",
+  "sha256": "e0aa7b9e92a8b448f311248dba7851d344a89292ca93fe611c3cb430ed3dc7f8"
 }
