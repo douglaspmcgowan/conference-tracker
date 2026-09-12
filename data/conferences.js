@@ -1,7 +1,7 @@
-// Generated 2026-08-26 by scripts/refresh-data.js
+// Generated 2026-09-12 by scripts/refresh-data.js
 
 module.exports = {
-  generated: "2026-08-26T14:09:31.228Z",
+  generated: "2026-09-12T14:08:25.412Z",
 
   fields: {
   "HCI": {
@@ -2258,7 +2258,7 @@ module.exports = {
     "acceptanceRate": 0.25,
     "blind": "double",
     "link": "http://ieeevr.org/2027/",
-    "fit": "Lower priority unless spatial/VR malleable workspaces.",
+    "fit": "Deadline passed (Aug 31, 2026). Lower priority unless spatial/VR malleable workspaces.",
     "confidence": "verified"
   },
   {
@@ -2284,7 +2284,7 @@ module.exports = {
     "acceptanceRate": 0.4,
     "blind": "double",
     "link": "https://wacv.thecvf.com/",
-    "fit": "R2 deadline Aug 28, 2026 — viable for applied vision work including geometry-aware CV for engineering design.",
+    "fit": "Deadline passed (Aug 28, 2026). Viable for applied vision work including geometry-aware CV for engineering design.",
     "confidence": "verified"
   },
   {
@@ -2310,7 +2310,7 @@ module.exports = {
     "acceptanceRate": null,
     "blind": "varies",
     "link": "https://neurips.cc/Conferences/2026/CallForWorkshops",
-    "fit": "ML4PS, AI4Science, Agent4Science, AI4Mat, Math-AI — multiple strong homes",
+    "fit": "Deadline passed (Aug 29, 2026). ML4PS, AI4Science, Agent4Science, AI4Mat, Math-AI — multiple strong homes.",
     "confidence": "verified"
   },
   {
@@ -2336,7 +2336,7 @@ module.exports = {
     "acceptanceRate": 0.5,
     "blind": "double",
     "link": "https://ml4physicalsciences.github.io/",
-    "fit": "Strong if physics-aware ML or simulation surrogates are involved",
+    "fit": "Deadline passed (Aug 29, 2026). Strong if physics-aware ML or simulation surrogates are involved.",
     "confidence": "likely"
   },
   {
@@ -2362,7 +2362,7 @@ module.exports = {
     "acceptanceRate": 0.45,
     "blind": "double",
     "link": "https://ai4sciencecommunity.github.io/",
-    "fit": "Strong for scientific-discovery agents touching engineering",
+    "fit": "Deadline passed (Aug 29, 2026). Strong for scientific-discovery agents touching engineering.",
     "confidence": "likely"
   },
   {
@@ -2388,7 +2388,7 @@ module.exports = {
     "acceptanceRate": 0.5,
     "blind": "double",
     "link": "https://sites.google.com/view/ai4mat/home",
-    "fit": "Tangent — materials selection in design",
+    "fit": "Deadline passed (Aug 29, 2026). Tangent — materials selection in design.",
     "confidence": "likely"
   },
   {
@@ -2414,7 +2414,7 @@ module.exports = {
     "acceptanceRate": 0.25,
     "blind": "double",
     "link": "https://chi2027.acm.org/authors/papers/",
-    "fit": "Primary fall 2026 target. Generative tools, mixed-initiative, design support, knowledge interfaces, malleable workspaces.",
+    "fit": "Deadline passed (Sept 10, 2026). R&R resubmission 2026-12-03 still upcoming. Primary HCI venue for generative tools, mixed-initiative, design support, knowledge interfaces, malleable workspaces.",
     "confidence": "verified"
   },
   {

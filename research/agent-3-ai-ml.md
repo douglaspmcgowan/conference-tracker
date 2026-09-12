@@ -61,8 +61,8 @@ Confidence legend: **verified** = official site confirms; **likely** = ≥2 seco
 
 - **Field:** ML (primary), representation learning, LLMs, agents
 - **Tier:** A\*
-- **Abstract reg:** 2026-09-19 (matches ICLR 2026 cycle; confirmed via 2 sources 2026-07-12 refresh)
-- **Paper deadline:** 2026-09-24
+- **Abstract reg:** 2026-09-18 (AoE; confirmed via official iclr.cc CFP + mldeadlines.com, 2026-09-12 refresh)
+- **Paper deadline:** 2026-09-25
 - **Rebuttal:** 2026-11-XX (rolling discussion w/ reviewers, ~3 weeks)
 - **Notification:** 2027-01-22
 - **Conference:** 2027-04-24 to 2027-04-28
@@ -611,7 +611,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "acceptanceRate": null,
       "blind": "varies",
       "link": "https://neurips.cc/Conferences/2026/CallForWorkshops",
-      "fit": "ML4PS, AI4Science, Agent4Science, AI4Mat, Math-AI — multiple strong homes",
+      "fit": "Deadline passed (Aug 29, 2026). ML4PS, AI4Science, Agent4Science, AI4Mat, Math-AI — multiple strong homes.",
       "confidence": "verified"
     },
     {
@@ -905,7 +905,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "acceptanceRate": 0.4,
       "blind": "double",
       "link": "https://wacv.thecvf.com/",
-      "fit": "R2 deadline Aug 28, 2026 — viable for applied vision work including geometry-aware CV for engineering design.",
+      "fit": "Deadline passed (Aug 28, 2026). Viable for applied vision work including geometry-aware CV for engineering design.",
       "confidence": "verified"
     },
     {
@@ -1182,7 +1182,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "acceptanceRate": 0.5,
       "blind": "double",
       "link": "https://ml4physicalsciences.github.io/",
-      "fit": "Strong if physics-aware ML or simulation surrogates are involved",
+      "fit": "Deadline passed (Aug 29, 2026). Strong if physics-aware ML or simulation surrogates are involved.",
       "confidence": "likely"
     },
     {
@@ -1201,7 +1201,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "acceptanceRate": 0.45,
       "blind": "double",
       "link": "https://ai4sciencecommunity.github.io/",
-      "fit": "Strong for scientific-discovery agents touching engineering",
+      "fit": "Deadline passed (Aug 29, 2026). Strong for scientific-discovery agents touching engineering.",
       "confidence": "likely"
     },
     {
@@ -1220,7 +1220,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "acceptanceRate": 0.5,
       "blind": "double",
       "link": "https://sites.google.com/view/ai4mat/home",
-      "fit": "Tangent — materials selection in design",
+      "fit": "Deadline passed (Aug 29, 2026). Tangent — materials selection in design.",
       "confidence": "likely"
     }
   ]

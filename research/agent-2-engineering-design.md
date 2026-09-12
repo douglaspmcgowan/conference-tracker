@@ -1162,7 +1162,7 @@ Notes on confidence:
       "acceptanceRate": null,
       "blind": "double",
       "link": "https://chi2027.acm.org/papers/",
-      "fit": "Best venue for Psych Battery / human-AI co-design narratives",
+      "fit": "Deadline passed (Sept 10, 2026). R&R resubmission 2026-12-03 still upcoming. Best venue for Psych Battery / human-AI co-design narratives.",
       "confidence": "verified"
     },
     {

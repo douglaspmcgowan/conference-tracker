@@ -616,7 +616,7 @@ Notes on conventions:
       "acceptanceRate": 0.25,
       "blind": "double",
       "link": "https://chi2027.acm.org/authors/papers/",
-      "fit": "Primary fall 2026 target. Generative tools, mixed-initiative, design support, knowledge interfaces, malleable workspaces.",
+      "fit": "Deadline passed (Sept 10, 2026). R&R resubmission 2026-12-03 still upcoming. Primary HCI venue for generative tools, mixed-initiative, design support, knowledge interfaces, malleable workspaces.",
       "confidence": "verified"
     },
     {
@@ -921,7 +921,7 @@ Notes on conventions:
       "acceptanceRate": 0.25,
       "blind": "double",
       "link": "http://ieeevr.org/2027/",
-      "fit": "Lower priority unless spatial/VR malleable workspaces.",
+      "fit": "Deadline passed (Aug 31, 2026). Lower priority unless spatial/VR malleable workspaces.",
       "confidence": "verified"
     },
     {
