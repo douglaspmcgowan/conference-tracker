@@ -1344,8 +1344,8 @@ Notes on confidence:
       "year": 2027,
       "fields": ["HRI", "Social Robotics", "Robot UX"],
       "tier": "A",
-      "abstractDeadline": null,
-      "deadline": "2026-10-01",
+      "abstractDeadline": "2026-09-11",
+      "deadline": "2026-09-18",
       "notification": null,
       "conferenceStart": "2027-03-08",
       "conferenceEnd": "2027-03-12",
@@ -1354,9 +1354,9 @@ Notes on confidence:
       "pageLimit": null,
       "acceptanceRate": null,
       "blind": "double",
-      "link": "https://humanrobotinteraction.org/",
-      "fit": "Marginal — only if co-design includes a robot collaborator",
-      "confidence": "likely"
+      "link": "https://humanrobotinteraction.org/2027/",
+      "fit": "Full paper deadline passed (Sep 18, 2026). Short contributions Oct 1. Marginal — only if co-design includes a robot collaborator.",
+      "confidence": "verified"
     },
     {
       "id": "siggraph-2026",

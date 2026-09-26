@@ -380,14 +380,16 @@ Note on confidence:
 - **Full name:** ACM Web Conference (formerly WWW)
 - **Fields:** Web, Knowledge Graphs, IR
 - **Tier:** A\* (top web venue)
-- **Deadline:** ~October 2026 (typical)
-- **Conference:** TBA spring 2027
+- **Abstract deadline:** 2026-10-11; **Paper deadline:** 2026-10-18
+- **Notification:** 2026-12-10
+- **Conference:** 2027-05-10 to 2027-05-14
 - **Location:** Dublin, Ireland
 - **Format:** ACM template, double-blind, 10–12 pages
 - **Acceptance rate:** ~17%
-- **Link:** https://thewebconf.org/
+- **Link:** https://www2027.thewebconf.org/
 - **Fit for Doug:** Possible knowledge-graph track fit, but very competitive.
-- **Confidence:** likely
+- **Confidence:** verified
+- **Source:** [www2027.thewebconf.org](https://www2027.thewebconf.org/) + [mldeadlines.com](https://mldeadlines.com/) — 2 sources confirmed (2026-09-26 refresh)
 
 ---
 
@@ -763,7 +765,7 @@ Note on confidence:
       "format": "Symposia + posters; abstract-only",
       "blind": "none",
       "link": "https://spsp.org/events/annual-convention",
-      "fit": "Poster/roundtable deadline Sep 15, 2026 (podium July 16 passed). Lower — moderate if framing burnout sociologically.",
+      "fit": "Deadline passed (Sept 15, 2026). Lower — moderate if framing burnout sociologically.",
       "confidence": "verified"
     },
     {
@@ -1012,7 +1014,7 @@ Note on confidence:
       "acceptanceRate": 0.4,
       "blind": "double",
       "link": "https://www.ischools.org/iconference",
-      "fit": "Knowledge organization, info architecture for DfM/AI-in-design field maps",
+      "fit": "Deadline passed (Sept 15, 2026). Knowledge organization, info architecture for DfM/AI-in-design field maps",
       "confidence": "verified"
     },
     {
@@ -1079,8 +1081,8 @@ Note on confidence:
       "year": 2027,
       "fields": ["Web", "Knowledge Graphs", "IR"],
       "tier": "A*",
-      "abstractDeadline": "2026-09-30",
-      "deadline": "2026-10-11",
+      "abstractDeadline": "2026-10-11",
+      "deadline": "2026-10-18",
       "notification": "2026-12-10",
       "conferenceStart": "2027-05-10",
       "conferenceEnd": "2027-05-14",
@@ -1089,9 +1091,9 @@ Note on confidence:
       "pageLimit": "12",
       "acceptanceRate": 0.17,
       "blind": "double",
-      "link": "https://thewebconf.org/",
+      "link": "https://www2027.thewebconf.org/",
       "fit": "Knowledge-graph track possible but very competitive",
-      "confidence": "likely"
+      "confidence": "verified"
     },
     {
       "id": "pervasivehealth-2026",

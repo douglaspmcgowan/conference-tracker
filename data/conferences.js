@@ -1,7 +1,7 @@
-// Generated 2026-09-12 by scripts/refresh-data.js
+// Generated 2026-09-26 by scripts/refresh-data.js
 
 module.exports = {
-  generated: "2026-09-12T14:08:25.412Z",
+  generated: "2026-09-26T14:08:17.359Z",
 
   fields: {
   "HCI": {
@@ -2418,6 +2418,33 @@ module.exports = {
     "confidence": "verified"
   },
   {
+    "id": "hri-2027",
+    "name": "HRI",
+    "fullName": "ACM/IEEE International Conference on Human-Robot Interaction",
+    "year": 2027,
+    "fields": [
+      "HCI",
+      "Robotics"
+    ],
+    "tier": "A",
+    "abstractDeadline": "2026-09-11",
+    "deadline": "2026-09-18",
+    "notification": "2026-12-15",
+    "conferenceStart": "2027-03-08",
+    "conferenceEnd": "2027-03-12",
+    "location": {
+      "city": "Santa Clara",
+      "country": "USA"
+    },
+    "format": "PDF, anonymous, ACM/IEEE format",
+    "pageLimit": "n/a",
+    "acceptanceRate": 0.25,
+    "blind": "anonymous",
+    "link": "https://humanrobotinteraction.org/2027/",
+    "fit": "Full paper deadline passed (abstract Sep 11, paper Sep 18, 2026). Short contributions deadline Oct 1. Lower fit unless embodied agents.",
+    "confidence": "verified"
+  },
+  {
     "id": "icra-2027",
     "name": "ICRA",
     "fullName": "IEEE International Conference on Robotics and Automation 2027",
@@ -2466,7 +2493,7 @@ module.exports = {
     "acceptanceRate": null,
     "blind": "none",
     "link": "https://spsp.org/events/annual-convention",
-    "fit": "Poster/roundtable deadline Sep 15, 2026 (podium July 16 passed). Lower — moderate if framing burnout sociologically.",
+    "fit": "Deadline passed (Sept 15, 2026). Lower — moderate if framing burnout sociologically.",
     "confidence": "verified"
   },
   {
@@ -2492,7 +2519,7 @@ module.exports = {
     "acceptanceRate": 0.4,
     "blind": "double",
     "link": "https://www.ischools.org/iconference",
-    "fit": "Knowledge organization, info architecture for DfM/AI-in-design field maps",
+    "fit": "Deadline passed (Sept 15, 2026). Knowledge organization, info architecture for DfM/AI-in-design field maps",
     "confidence": "verified"
   },
   {
@@ -2506,11 +2533,11 @@ module.exports = {
     "tier": "A*",
     "abstractDeadline": "2026-09-18",
     "deadline": "2026-09-25",
-    "notification": "2027-01-22",
+    "notification": "2026-12-16",
     "conferenceStart": "2027-04-26",
     "conferenceEnd": "2027-04-30",
     "location": {
-      "city": "San Francisco",
+      "city": "California",
       "country": "USA"
     },
     "format": "ICLR LaTeX, 9 pages + appendix, OpenReview public, double-blind",
@@ -2518,7 +2545,7 @@ module.exports = {
     "acceptanceRate": 0.32,
     "blind": "double",
     "link": "https://iclr.cc/",
-    "fit": "Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
+    "fit": "Deadline passed (Sept 25, 2026). Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
     "confidence": "verified"
   },
   {
@@ -2530,8 +2557,8 @@ module.exports = {
       "Knowledge & Information"
     ],
     "tier": "A*",
-    "abstractDeadline": "2026-09-30",
-    "deadline": "2026-10-11",
+    "abstractDeadline": "2026-10-11",
+    "deadline": "2026-10-18",
     "notification": "2026-12-10",
     "conferenceStart": "2027-05-10",
     "conferenceEnd": "2027-05-14",
@@ -2543,36 +2570,9 @@ module.exports = {
     "pageLimit": "12",
     "acceptanceRate": 0.17,
     "blind": "double",
-    "link": "https://thewebconf.org/",
+    "link": "https://www2027.thewebconf.org/",
     "fit": "Knowledge-graph track possible but very competitive",
-    "confidence": "likely"
-  },
-  {
-    "id": "hri-2027",
-    "name": "HRI",
-    "fullName": "ACM/IEEE International Conference on Human-Robot Interaction",
-    "year": 2027,
-    "fields": [
-      "HCI",
-      "Robotics"
-    ],
-    "tier": "A",
-    "abstractDeadline": "2026-10-01",
-    "deadline": "2026-10-01",
-    "notification": "2026-12-15",
-    "conferenceStart": "2027-03-08",
-    "conferenceEnd": "2027-03-12",
-    "location": {
-      "city": "Santa Clara",
-      "country": "USA"
-    },
-    "format": "PDF, anonymous, ACM/IEEE format",
-    "pageLimit": "n/a",
-    "acceptanceRate": 0.25,
-    "blind": "anonymous",
-    "link": "https://humanrobotinteraction.org/2027/",
-    "fit": "Lower fit unless embodied agents.",
-    "confidence": "likely"
+    "confidence": "verified"
   },
   {
     "id": "jcdl-2026",
@@ -2941,7 +2941,7 @@ module.exports = {
     "blind": "anonymous",
     "link": "https://uist.acm.org/",
     "fit": "Backup if UIST 2026 doesn't land.",
-    "confidence": "estimated"
+    "confidence": "likely"
   },
   {
     "id": "wcsmo-17-2027",

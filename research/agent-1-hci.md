@@ -58,15 +58,15 @@ Notes on conventions:
 
 - **Field:** HCI, systems, UI software
 - **Tier:** A
-- **Deadline:** 2027-04-XX (estimated, abstract); 2027-04-XX (paper) — based on prior cycles
-- **Notification:** 2027-08 (estimated)
-- **Conference:** 2027-10/11 (estimated, fall)
+- **Deadline:** 2027-04-02 (paper); abstract ~late March
+- **Notification:** 2027-08-15 (estimated)
+- **Conference:** 2027-10 (estimated, fall)
 - **Location:** TBD
 - **Format:** Same as UIST 2026 (anonymous, ACM double-column, 10 std / 5 short pages)
 - **Acceptance:** ~22% (historical)
 - **Link:** https://uist.acm.org/
 - **Fit:** Backup target if UIST 2026 doesn't land. Same fit profile.
-- **Source:** [uist.acm.org](https://uist.acm.org/) — 2027 page not yet posted
+- **Source:** [getpaperpilot.com](https://getpaperpilot.com/) + [wikicfp.com](http://wikicfp.com/) — Apr 2 deadline confirmed via 2 secondary sources (2026-09-26 refresh)
 
 ## CSCW 2026
 
@@ -184,15 +184,15 @@ Notes on conventions:
 
 - **Field:** HRI, robotics + HCI
 - **Tier:** A
-- **Deadline:** 2026-10-XX (estimated; full paper abstracts mid-Oct, full paper late Oct based on prior cycles)
-- **Notification:** ~December 2026 / January 2027 (estimated)
+- **Deadline:** Full papers: abstract 2026-09-11 (PASSED), full 2026-09-18 (PASSED); Short contributions: 2026-10-01
+- **Notification:** ~December 2026
 - **Conference:** 2027-03-08 to 2027-03-12
 - **Location:** Santa Clara, CA, USA
 - **Format:** PDF, anonymous, ACM/IEEE format; theme: "Innovative HRI"
 - **Acceptance:** ~25%
 - **Link:** https://humanrobotinteraction.org/2027/
-- **Fit:** Lower fit unless Doug's tooling involves embodied/robotic agents; if "AI agents" angle dominates, HRI fits.
-- **Source:** [humanrobotinteraction.org/2027](https://humanrobotinteraction.org/2027/), [SIGCHI upcoming](https://sigchi.org/conferences/upcoming/)
+- **Fit:** Full paper deadline passed (Sep 18). Short contributions Oct 1 still open. Lower fit unless embodied agents.
+- **Source:** [humanrobotinteraction.org/2027](https://humanrobotinteraction.org/2027/) — deadlines confirmed (2026-09-26 refresh)
 
 ## HCOMP 2026
 
@@ -657,7 +657,7 @@ Notes on conventions:
       "blind": "anonymous",
       "link": "https://uist.acm.org/",
       "fit": "Backup if UIST 2026 doesn't land.",
-      "confidence": "estimated"
+      "confidence": "likely"
     },
     {
       "id": "cscw-2026",
@@ -828,8 +828,8 @@ Notes on conventions:
       "year": 2027,
       "fields": ["HRI", "HCI", "robotics"],
       "tier": "A",
-      "abstractDeadline": "2026-10-01",
-      "deadline": "2026-10-01",
+      "abstractDeadline": "2026-09-11",
+      "deadline": "2026-09-18",
       "notification": "2026-12-15",
       "conferenceStart": "2027-03-08",
       "conferenceEnd": "2027-03-12",
@@ -839,8 +839,8 @@ Notes on conventions:
       "acceptanceRate": 0.25,
       "blind": "anonymous",
       "link": "https://humanrobotinteraction.org/2027/",
-      "fit": "Lower fit unless embodied agents.",
-      "confidence": "likely"
+      "fit": "Full paper deadline passed (abstract Sep 11, paper Sep 18, 2026). Short contributions deadline Oct 1. Lower fit unless embodied agents.",
+      "confidence": "verified"
     },
     {
       "id": "hcomp-2026",

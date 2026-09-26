@@ -64,13 +64,13 @@ Confidence legend: **verified** = official site confirms; **likely** = ≥2 seco
 - **Abstract reg:** 2026-09-18 (AoE; confirmed via official iclr.cc CFP + mldeadlines.com, 2026-09-12 refresh)
 - **Paper deadline:** 2026-09-25
 - **Rebuttal:** 2026-11-XX (rolling discussion w/ reviewers, ~3 weeks)
-- **Notification:** 2027-01-22
-- **Conference:** 2027-04-24 to 2027-04-28
-- **Location:** TBA
+- **Notification:** 2026-12-16
+- **Conference:** 2027-04-26 to 2027-04-30
+- **Location:** California, USA
 - **Format:** ICLR LaTeX, 9 main + unlimited refs + appendix; **double-blind**, **OpenReview** public
 - **Acceptance:** ~32% (ICLR 2025: 32.08%, 11,565 submissions)
 - **Link:** https://iclr.cc/ (ICLR 2027 CFP not yet posted)
-- **Fit:** Main track for agent / LLM methods, ICLR Workshops on AI4Mat / AI for Science / ML for engineering reliably appear
+- **Fit:** Deadline passed (Sept 25, 2026). Main track for agent / LLM methods, ICLR Workshops on AI4Mat / AI for Science / ML for engineering reliably appear
 
 ---
 
@@ -624,16 +624,16 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "abstractDeadline": "2026-09-18",
       "deadline": "2026-09-25",
       "rebuttal": "2026-11-XX",
-      "notification": "2027-01-22",
+      "notification": "2026-12-16",
       "conferenceStart": "2027-04-26",
       "conferenceEnd": "2027-04-30",
-      "location": { "city": "San Francisco", "country": "USA" },
+      "location": { "city": "California", "country": "USA" },
       "format": "ICLR LaTeX, 9 pages + appendix, OpenReview public, double-blind",
       "pageLimit": "9",
       "acceptanceRate": 0.32,
       "blind": "double",
       "link": "https://iclr.cc/",
-      "fit": "Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
+      "fit": "Deadline passed (Sept 25, 2026). Main track for agent/LLM methods; ICLR workshops on AI4Mat, AI4Science",
       "confidence": "verified"
     },
     {
@@ -1104,7 +1104,7 @@ Plus targeting cycles: **UIST 2027** (deadline ~April 2027), **COLM 2027** (dead
       "acceptanceRate": 0.45,
       "blind": "double",
       "link": "https://2027.ieee-icra.org/",
-      "fit": "Tangent unless physical/embodied component",
+      "fit": "Deadline passed (Sept 15, 2026). Tangent unless physical/embodied component.",
       "confidence": "verified"
     },
     {
