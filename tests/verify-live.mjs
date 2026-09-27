@@ -29,8 +29,11 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
   log("\nMasthead + data");
   const title = await page.title();
   title === "AI & Design — Conference Tracker" ? ok("title correct") : fail(`title: ${title}`);
-  const eyebrow = await page.locator(".brand-eyebrow").innerText();
-  /AI\s*&\s*Design/i.test(eyebrow) ? ok(`brand eyebrow: ${eyebrow}`) : fail(`eyebrow: ${eyebrow}`);
+  // .brand-eyebrow was deliberately removed in f3e77d4 ("redundant mono eyebrow above h1").
+  // The assertion was never updated, so this suite aborted here on every run since that commit.
+  // Assert the masthead lede, which still carries the positioning line.
+  const lede = await page.locator(".masthead-lede").innerText();
+  /Submission deadlines/i.test(lede) ? ok(`masthead lede present`) : fail(`lede: ${lede}`);
   const h1 = await page.locator(".brand-title").innerText();
   /Engineering Design Conference Tracker/.test(h1) ? ok(`brand title: ${h1.replace(/\s+/g, " ").trim()}`) : fail(`h1: ${h1}`);
   const faviconRes = await page.request.get(URL.replace(/\/$/, "") + "/favicon.svg");

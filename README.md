@@ -1,6 +1,6 @@
 # conference-tracker
 
-Submission deadlines, locations, and requirements for **130 conferences and journals** across HCI, engineering design, AI / ML, visualization, manufacturing, and cognitive science.
+Submission deadlines, locations, and requirements for **131 conferences and journals** across HCI, engineering design, AI / ML, visualization, manufacturing, and cognitive science.
 
 **Live:** [conference-tracker-rho.vercel.app](https://conference-tracker-rho.vercel.app/)
 
@@ -91,7 +91,7 @@ Endpoints:
 
 ```bash
 node scripts/refresh-data.js
-# → wrote 130 conferences across 14 fields
+# → wrote 131 conferences across 14 fields
 ```
 
 After editing any `research/*.md` file (or after the scheduled remote agent does), run the merge script and commit `data/conferences.js`. Vercel auto-deploys from `main`.
@@ -103,7 +103,7 @@ node tests/verify-live.mjs                              # against live deploy
 node tests/verify-live.mjs http://localhost:3010        # against local
 ```
 
-The suite has 38 checks across the masthead, all four views, filtering, sort, search, modal, dark mode, iCal export, notes/status persistence, and mobile viewport.
+The suite has 52 checks across the masthead, all four views, filtering, sort, search, modal, dark mode, iCal export, notes/status persistence, and mobile viewport.
 
 ## Conventions
 
@@ -116,7 +116,7 @@ The suite has 38 checks across the masthead, all four views, filtering, sort, se
 - Grain overlay at 3% opacity
 - `:focus-visible`-only ring; `prefers-reduced-motion` honored
 
-See `../explainer_site_playbook.md` for the full design language.
+The universal interface floor these sit on is `~/.agents/DESIGN.md`; project-specific rules are in `DESIGN.md` in this repository.
 
 ## Suggesting a conference
 
