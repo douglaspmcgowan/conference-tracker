@@ -14,6 +14,13 @@
 //
 //   * The wait is a setTimeout, never requestAnimationFrame — rAF never fires while a browser
 //     pane is hidden, which silently yields an all-zero capture.
+//   * A hash is only comparable against another hash taken ON THE SAME DAY. Countdown urgency
+//     classes are derived from today's date, so which cards carry .urgent and which .soon
+//     changes at midnight and the hash changes with them. A before/after pair captured either
+//     side of a date rollover differs for that reason alone and says nothing about the diff
+//     under test. To compare against an earlier commit, serve that commit's file alongside the
+//     current one and capture both now:
+//       git show <ref>:server.ts > .local-server-before.mts && PORT=<n> node .local-server-before.mts
 //   * The context runs with reducedMotion: "reduce" and waits longer than --dur-out (240ms).
 //     Flipping data-theme starts a colour transition; sampling inside it returns interpolated
 //     values, so the dark hash varied run to run. Reduced motion collapses the transition and
