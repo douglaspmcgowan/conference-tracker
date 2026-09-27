@@ -270,6 +270,45 @@ function buildPage() {
 </html>`;
 }
 
+// The dark theme's token values, written once and applied twice: to [data-theme="dark"] for
+// an explicit choice, and inside @media (prefers-color-scheme: dark) for the first paint.
+// Two copies of this list in the stylesheet would drift; one constant cannot.
+const DARK_TOKENS = `  --paper: #15120E;
+  --paper-soft: #1D1914;
+  --paper-deep: #272118;
+  --paper-raised: rgba(39, 33, 24, 0.86);
+  --ink: #E9E2D2;
+  --ink-soft: #B9B09F;
+  --ink-faint: #877C6B;
+  --rule: rgba(233, 226, 210, 0.12);
+  --rule-soft: rgba(233, 226, 210, 0.07);
+  --accent: #7A9CFF;
+  --accent-soft: rgba(122, 156, 255, 0.14);
+  --accent-line: rgba(122, 156, 255, 0.24);
+  --urgent: #FF7B75;
+  --urgent-soft: rgba(255, 123, 117, 0.16);
+  --warn: #D2AD79;
+  --warn-soft: rgba(210, 173, 121, 0.16);
+  --tag-ink: #FAFAF7;
+  --shadow-card: 0 18px 32px rgba(0, 0, 0, 0.28);
+  --shadow-modal: 0 30px 80px rgba(0, 0, 0, 0.52);
+  --shadow-toggle-hover: 0 10px 20px rgba(0, 0, 0, 0.24);
+  --shadow-tooltip: 0 6px 20px rgba(0, 0, 0, 0.28), 0 1px 4px rgba(0, 0, 0, 0.18);
+  --chip-active-scrim: rgba(15, 15, 14, 0.34);
+  --card-sheen: rgba(255, 255, 255, 0.04);
+  --tag-scrim: rgba(12, 10, 8, 0.34);
+  --tag-ring: rgba(250, 250, 247, 0.16);
+  --today-wash: rgba(122, 156, 255, 0.18);
+  --row-hover: rgba(122, 156, 255, 0.08);
+  --backdrop: rgba(9, 8, 7, 0.68);
+  --map-fill: rgba(233, 226, 210, 0.04);
+  --map-stroke: rgba(233, 226, 210, 0.10);
+  --warn-ink: #D2AD79;
+  --warn-tint: rgba(210, 173, 121, 0.14);
+  --warn-line: rgba(210, 173, 121, 0.22);
+  --grain-opacity: 0.042;
+  --grain-blend: screen;`;
+
 function getCSS() {
   return `
 :root {
@@ -389,41 +428,17 @@ function getCSS() {
   --radius-999-px: 999px;
 }
 [data-theme="dark"] {
-  --paper: #15120E;
-  --paper-soft: #1D1914;
-  --paper-deep: #272118;
-  --paper-raised: rgba(39, 33, 24, 0.86);
-  --ink: #E9E2D2;
-  --ink-soft: #B9B09F;
-  --ink-faint: #877C6B;
-  --rule: rgba(233, 226, 210, 0.12);
-  --rule-soft: rgba(233, 226, 210, 0.07);
-  --accent: #7A9CFF;
-  --accent-soft: rgba(122, 156, 255, 0.14);
-  --accent-line: rgba(122, 156, 255, 0.24);
-  --urgent: #FF7B75;
-  --urgent-soft: rgba(255, 123, 117, 0.16);
-  --warn: #D2AD79;
-  --warn-soft: rgba(210, 173, 121, 0.16);
-  --tag-ink: #FAFAF7;
-  --shadow-card: 0 18px 32px rgba(0, 0, 0, 0.28);
-  --shadow-modal: 0 30px 80px rgba(0, 0, 0, 0.52);
-  --shadow-toggle-hover: 0 10px 20px rgba(0, 0, 0, 0.24);
-  --shadow-tooltip: 0 6px 20px rgba(0, 0, 0, 0.28), 0 1px 4px rgba(0, 0, 0, 0.18);
-  --chip-active-scrim: rgba(15, 15, 14, 0.34);
-  --card-sheen: rgba(255, 255, 255, 0.04);
-  --tag-scrim: rgba(12, 10, 8, 0.34);
-  --tag-ring: rgba(250, 250, 247, 0.16);
-  --today-wash: rgba(122, 156, 255, 0.18);
-  --row-hover: rgba(122, 156, 255, 0.08);
-  --backdrop: rgba(9, 8, 7, 0.68);
-  --map-fill: rgba(233, 226, 210, 0.04);
-  --map-stroke: rgba(233, 226, 210, 0.10);
-  --warn-ink: #D2AD79;
-  --warn-tint: rgba(210, 173, 121, 0.14);
-  --warn-line: rgba(210, 173, 121, 0.22);
-  --grain-opacity: 0.042;
-  --grain-blend: screen;
+${DARK_TOKENS}
+}
+/* Same values again for the FIRST PAINT. The theme script reads the same media query and
+   sets data-theme, but only after it runs, so a dark-preference visitor saw one frame of the
+   light theme. :root:not([data-theme]) applies these until the script lands and then stops
+   matching, so an explicit choice - including a "light" choice stored from a previous visit -
+   still wins. Steady-state appearance is unchanged in both themes; only the flash is gone. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+${DARK_TOKENS}
+  }
 }
 * { box-sizing: border-box; }
 html {
