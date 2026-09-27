@@ -12,9 +12,9 @@
 import { chromium } from "playwright";
 
 const url = process.argv[2] || "http://localhost:3010/";
-const errors = [];
-const ok = (m) => console.log("  ✓", m);
-const fail = (m) => { errors.push(m); console.log("  ✗", m); };
+const errors: string[] = [];
+const ok = (m: string) => console.log("  ✓", m);
+const fail = (m: string) => { errors.push(m); console.log("  ✗", m); };
 
 const read = () => ({
   attr: document.documentElement.getAttribute("data-theme"),
@@ -23,7 +23,7 @@ const read = () => ({
 });
 
 const browser = await chromium.launch();
-for (const scheme of ["light", "dark"]) {
+for (const scheme of ["light", "dark"] as const) {
   const noJsCtx = await browser.newContext({ colorScheme: scheme, javaScriptEnabled: false });
   const noJsPage = await noJsCtx.newPage();
   await noJsPage.goto(url, { waitUntil: "load", timeout: 30000 });

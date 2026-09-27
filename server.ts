@@ -1,14 +1,47 @@
-const express = require("express");
-const path = require("path");
-const data = require("./data/conferences");
+import type { Request, Response } from "express";
+
+const express = require("express") as typeof import("express");
+const data = require("./data/conferences") as ConferenceData;
+
+// The data module is generated output (scripts/refresh-data.js writes data/conferences.js),
+// so it is not converted to TypeScript; its shape is declared here instead.
+interface Conference {
+  id: string;
+  name: string;
+  year: number | string;
+  fullName?: string;
+  fit?: string;
+  format?: string;
+  link: string;
+  deadline?: string | null;
+  abstractDeadline?: string | null;
+  conferenceStart?: string | null;
+  conferenceEnd?: string | null;
+  location?: { city?: string; country?: string } | null;
+  [key: string]: unknown;
+}
+interface ConferenceData {
+  generated: string;
+  conferences: Conference[];
+  [key: string]: unknown;
+}
+interface IcsEvent {
+  uid: string;
+  summary: string;
+  description?: string;
+  url?: string;
+  date: string;
+  dateEnd?: string | null;
+  dtstamp: string;
+}
 
 const app = express();
 const PORT = process.env.PORT || 3010;
 
-app.get("/health", (req, res) => res.send("ok"));
-app.get("/api/conferences", (req, res) => res.json(data));
+app.get("/health", (req: Request, res: Response) => res.send("ok"));
+app.get("/api/conferences", (req: Request, res: Response) => res.json(data));
 
-app.get("/favicon.svg", (req, res) => {
+app.get("/favicon.svg", (req: Request, res: Response) => {
   res.set("Content-Type", "image/svg+xml; charset=utf-8");
   res.set("Cache-Control", "public, max-age=86400");
   res.send(
@@ -21,9 +54,9 @@ app.get("/favicon.svg", (req, res) => {
       "</svg>",
   );
 });
-app.get("/favicon.ico", (req, res) => res.redirect(302, "/favicon.svg"));
+app.get("/favicon.ico", (req: Request, res: Response) => res.redirect(302, "/favicon.svg"));
 
-app.get("/cal.ics", (req, res) => {
+app.get("/cal.ics", (req: Request, res: Response) => {
   // ?ids=a,b,c restricts the export; otherwise all conferences with deadlines.
   const onlyIds = req.query.ids
     ? new Set(
@@ -38,18 +71,18 @@ app.get("/cal.ics", (req, res) => {
   res.send(buildICS(onlyIds));
 });
 
-app.get("*", (req, res) => {
+app.get("*", (req: Request, res: Response) => {
   res.set("Content-Type", "text/html; charset=utf-8");
   res.send(buildPage());
 });
 
 // ------ iCalendar export (RFC 5545) ------
-function buildICS(onlyIds) {
+function buildICS(onlyIds: Set<string> | null): string {
   const dtstamp = new Date()
     .toISOString()
     .replace(/[-:]/g, "")
     .replace(/\.\d{3}/, "");
-  const events = [];
+  const events: string[] = [];
   for (const c of data.conferences) {
     if (onlyIds && !onlyIds.has(c.id)) continue;
     if (c.deadline) {
@@ -112,8 +145,8 @@ function buildICS(onlyIds) {
     "END:VCALENDAR",
   ].join("\r\n");
 }
-function icsEvent({ uid, summary, description, url, date, dateEnd, dtstamp }) {
-  const fmt = (d) => d.replace(/-/g, "");
+function icsEvent({ uid, summary, description, url, date, dateEnd, dtstamp }: IcsEvent): string {
+  const fmt = (d: string): string => d.replace(/-/g, "");
   const lines = [
     "BEGIN:VEVENT",
     "UID:" + uid,
@@ -132,13 +165,13 @@ function icsEvent({ uid, summary, description, url, date, dateEnd, dtstamp }) {
   lines.push("END:VEVENT");
   return lines.join("\r\n");
 }
-function icsEscape(s) {
+function icsEscape(s: string): string {
   return String(s)
     .replace(/[\\;,]/g, (c) => "\\" + c)
     .replace(/\n/g, "\\n");
 }
 
-function buildPage() {
+function buildPage(): string {
   const dataJson = JSON.stringify(data);
   return `<!doctype html>
 <html lang="en">
@@ -181,12 +214,12 @@ function buildPage() {
     <div class="masthead-stats" id="stats" aria-live="polite"></div>
   </header>
 
-  <nav class="viewbar" role="tablist" aria-label="View">
+  <nav class="viewbar" aria-label="View">
     <div class="viewbar-inner">
-      <button class="view-tab active" data-view="timeline" role="tab" aria-selected="true">Timeline</button>
-      <button class="view-tab" data-view="cards" role="tab" aria-selected="false">Cards</button>
-      <button class="view-tab" data-view="table" role="tab" aria-selected="false">Table</button>
-      <button class="view-tab" data-view="map" role="tab" aria-selected="false">Map</button>
+      <button class="view-tab active" data-view="timeline" aria-pressed="true">Timeline</button>
+      <button class="view-tab" data-view="cards" aria-pressed="false">Cards</button>
+      <button class="view-tab" data-view="table" aria-pressed="false">Table</button>
+      <button class="view-tab" data-view="map" aria-pressed="false">Map</button>
       <span class="viewbar-spacer"></span>
       <a class="viewbar-action" href="/cal.ics" download="conferences.ics" title="Download all deadlines as iCal">.ics</a>
       <button class="viewbar-action" id="submitConfBtn" title="Suggest a missing conference">+ suggest</button>
@@ -211,7 +244,7 @@ function buildPage() {
       </div>
     </div>
     <div class="filter-group">
-      <span class="filter-label">Sort</span>
+      <label class="filter-label" for="sortSelect">Sort</label>
       <select class="select" id="sortSelect">
         <option value="deadline-asc">Deadline ↑</option>
         <option value="deadline-desc">Deadline ↓</option>
@@ -309,7 +342,7 @@ const DARK_TOKENS = `  --paper: #15120E;
   --grain-opacity: 0.042;
   --grain-blend: screen;`;
 
-function getCSS() {
+function getCSS(): string {
   return `
 :root {
   --paper: #FAFAF7;
@@ -468,7 +501,7 @@ code {
 }
 ::selection { background: var(--accent-soft); color: var(--ink); }
 :focus { outline: none; }
-:where(a, button, input, label, select, textarea):focus-visible { outline: none; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--accent); }
+:where(a, button, input, label, select, textarea, [tabindex]):focus-visible { outline: none; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--accent); }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1239,7 +1272,7 @@ table.confs td.num { font-family: var(--mono); font-variant-numeric: tabular-num
 `;
 }
 
-function getJS() {
+function getJS(): string {
   return `
 (function(){
   const DATA = window.__DATA__;
@@ -1505,7 +1538,7 @@ function getJS() {
       localStorage.setItem("ct.view", state.view);
       document.querySelectorAll(".view-tab").forEach(x => {
         x.classList.toggle("active", x === t);
-        x.setAttribute("aria-selected", x === t ? "true" : "false");
+        x.setAttribute("aria-pressed", x === t ? "true" : "false");
       });
       document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
       document.getElementById("view-" + state.view).classList.remove("hidden");
@@ -1522,7 +1555,7 @@ function getJS() {
   }
   document.querySelectorAll(".view-tab").forEach(t => {
     t.classList.toggle("active", t.dataset.view === state.view);
-    t.setAttribute("aria-selected", t.dataset.view === state.view ? "true" : "false");
+    t.setAttribute("aria-pressed", t.dataset.view === state.view ? "true" : "false");
   });
 
   // ------ Filtering ------

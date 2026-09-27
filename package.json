@@ -2,17 +2,20 @@
   "name": "conference-tracker",
   "version": "1.0.0",
   "private": true,
-  "main": "server.js",
+  "main": "server.ts",
   "engines": {
-    "node": "22.x"
+    "node": ">=22.18.0 <23"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "test": "node tests/verify-live.mjs",
-    "floor": "node tests/floor-measure.mjs",
-    "oracle": "node tests/computed-style-oracle.mjs",
-    "refresh-data": "node scripts/refresh-data.js"
+    "start": "node server.ts",
+    "dev": "node server.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node tests/verify-live.mts",
+    "a11y": "node tests/a11y.mts",
+    "theme-paint": "node tests/theme-first-paint.mts",
+    "floor": "node tests/floor-measure.mts",
+    "oracle": "node tests/computed-style-oracle.mts",
+    "refresh-data": "node scripts/refresh-data.ts"
   },
   "dependencies": {
     "express": "4.21.2"

@@ -41,7 +41,7 @@ const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, d
 const page = await ctx.newPage();
 await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
 
-const out = {};
+const out: Record<string, { elements: number; sha256: string }> = {};
 for (const theme of ["light", "dark"]) {
   const ser = await page.evaluate(async ({ theme, PROPS }) => {
     document.documentElement.setAttribute("data-theme", theme);
