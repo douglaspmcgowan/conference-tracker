@@ -1,6 +1,7 @@
 // Playwright end-to-end verification of the live Vercel deploy.
 // Run: node tests/verify-live.mjs [URL]
 import { chromium } from "playwright";
+import { AxeBuilder } from "@axe-core/playwright";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -8,10 +9,16 @@ const URL = process.argv[2] || "https://conference-tracker-rho.vercel.app/";
 const SHOTS = path.resolve("tests/screenshots");
 fs.mkdirSync(SHOTS, { recursive: true });
 
-const errors = [];
-const log = (...a) => console.log(...a);
-const ok = (msg) => log("  ✓", msg);
-const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
+declare global {
+  interface Window {
+    __DATA__: { conferences: Array<Record<string, unknown>>; fields: Record<string, unknown> };
+  }
+}
+
+const errors: string[] = [];
+const log = (...a: unknown[]) => console.log(...a);
+const ok = (msg: string) => log("  ✓", msg);
+const fail = (msg: string) => { errors.push(msg); log("  ✗", msg); };
 
 (async () => {
   const browser = await chromium.launch();
@@ -29,8 +36,11 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
   log("\nMasthead + data");
   const title = await page.title();
   title === "AI & Design — Conference Tracker" ? ok("title correct") : fail(`title: ${title}`);
-  const eyebrow = await page.locator(".brand-eyebrow").innerText();
-  /AI\s*&\s*Design/i.test(eyebrow) ? ok(`brand eyebrow: ${eyebrow}`) : fail(`eyebrow: ${eyebrow}`);
+  // .brand-eyebrow was deliberately removed in f3e77d4 ("redundant mono eyebrow above h1").
+  // The assertion was never updated, so this suite aborted here on every run since that commit.
+  // Assert the masthead lede, which still carries the positioning line.
+  const lede = await page.locator(".masthead-lede").innerText();
+  /Submission deadlines/i.test(lede) ? ok(`masthead lede present`) : fail(`lede: ${lede}`);
   const h1 = await page.locator(".brand-title").innerText();
   /Engineering Design Conference Tracker/.test(h1) ? ok(`brand title: ${h1.replace(/\s+/g, " ").trim()}`) : fail(`h1: ${h1}`);
   const faviconRes = await page.request.get(URL.replace(/\/$/, "") + "/favicon.svg");
@@ -41,7 +51,7 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
   const dataInfo = await page.evaluate(() => ({
     confs: window.__DATA__?.conferences?.length || 0,
     fields: Object.keys(window.__DATA__?.fields || {}).length,
-    verified: window.__DATA__.conferences.filter(c => c.confidence === "verified").length,
+    verified: window.__DATA__.conferences.filter((c: { confidence?: string }) => c.confidence === "verified").length,
   }));
   dataInfo.confs >= 100 ? ok(`${dataInfo.confs} conferences loaded`) : fail(`only ${dataInfo.confs} conferences`);
   dataInfo.fields >= 10 ? ok(`${dataInfo.fields} field categories`) : fail(`only ${dataInfo.fields} fields`);
@@ -60,10 +70,34 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
     deadlineCells: document.querySelectorAll(".tlcal-cell.has-deadline").length,
     todayCells: document.querySelectorAll(".tlcal-cell.today").length,
     activeMode: document.querySelector("#tlModeGroup .active")?.textContent || "",
+    // The property, not a threshold: every distinct deadline date inside the rendered month
+    // span must have its cell. A bare `deadlineCells >= 20` outlived its dataset — 47 of 131
+    // entries carry no deadline at all and only a minority of the rest fall in the forward
+    // window, so the count is a fact about the data, while THIS is a fact about the renderer.
+    expectedDeadlineCells: (() => {
+      const labels = [...document.querySelectorAll(".tlcal-month")]
+        .map((e) => (e.textContent || "").trim())
+        .filter((t) => /^[A-Z]{3} \d{4}$/.test(t));
+      if (!labels.length) return -1;
+      const parse = (t: string) => new Date(t.replace(/^([A-Z]{3}) (\d{4})$/, "$1 1, $2"));
+      const first = parse(labels[0]!);
+      const last = parse(labels[labels.length - 1]!);
+      const end = new Date(last.getFullYear(), last.getMonth() + 1, 0);
+      const inSpan = new Set<string>();
+      for (const c of window.__DATA__.conferences) {
+        const d = c["deadline"];
+        if (typeof d !== "string" || !d) continue;
+        const dt = new Date(d + "T00:00:00");
+        if (dt >= first && dt <= end) inSpan.add(d);
+      }
+      return inSpan.size;
+    })(),
   }));
   cal.activeMode === "Calendar" ? ok("calendar mode active") : fail(`mode: ${cal.activeMode}`);
   cal.monthRows >= 12 ? ok(`${cal.monthRows} month rows`) : fail(`only ${cal.monthRows} months`);
-  cal.deadlineCells >= 20 ? ok(`${cal.deadlineCells} deadline cells`) : fail(`only ${cal.deadlineCells} deadline cells`);
+  cal.deadlineCells === cal.expectedDeadlineCells
+    ? ok(`${cal.deadlineCells} deadline cells — every deadline date in the rendered span is drawn`)
+    : fail(`${cal.deadlineCells} deadline cells drawn, ${cal.expectedDeadlineCells} deadline dates in the rendered span`);
   cal.todayCells === 1 ? ok("today cell highlighted") : fail(`today cells: ${cal.todayCells}`);
 
   await page.screenshot({ path: path.join(SHOTS, "01a-timeline-calendar.png"), fullPage: false });
@@ -157,7 +191,7 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
   log("\nModal detail");
   await page.click(".card");
   await page.waitForTimeout(200);
-  const modalOpen = await page.evaluate(() => !document.getElementById("detailModal").classList.contains("hidden"));
+  const modalOpen = await page.evaluate(() => !document.getElementById("detailModal")!.classList.contains("hidden"));
   modalOpen ? ok("modal opens on card click") : fail("modal did not open");
   const modalText = await page.locator("#modalBody").innerText();
   /Schedule|Where|Submission/i.test(modalText) ? ok("modal has Schedule / Where / Submission sections") : fail("modal missing sections");
@@ -181,7 +215,7 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
     svg: !!document.querySelector(".map-svg"),
     markers: document.querySelectorAll(".map-marker").length,
     continents: document.querySelectorAll(".map-continent").length,
-    meta: document.querySelector(".map-meta")?.innerText.replace(/\s+/g, " ").trim() || "",
+    meta: (document.querySelector(".map-meta") as HTMLElement | null)?.innerText.replace(/\s+/g, " ").trim() || "",
   }));
   mapInfo.svg ? ok("map SVG rendered") : fail("no map SVG");
   mapInfo.markers >= 50 ? ok(`${mapInfo.markers} city markers`) : fail(`only ${mapInfo.markers} markers`);
@@ -248,6 +282,33 @@ const fail = (msg) => { errors.push(msg); log("  ✗", msg); };
   mobileCards > 0 ? ok(`mobile renders ${mobileCards} cards`) : fail("mobile broken");
   await page.screenshot({ path: path.join(SHOTS, "08-mobile.png"), fullPage: false });
   ok("screenshot: 08-mobile.png");
+
+  log("");
+  log("Accessibility (axe-core, WCAG 2.0/2.1 A + AA)");
+  // Scan in a FRESH context, not on `page`. Every check above this point has written to
+  // localStorage (view, theme, notes, status, starred) and left filters and a modal behind, and
+  // axe reads whatever is on screen. Measured 2026-09-27: scanning the interacted page reported
+  // 879 failing color-contrast nodes where a first-load page reports 36 — the inherited state is
+  // not the surface the gate claims to check. A first-time visitor is the right subject.
+  const axeCtx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
+  const axePage = await axeCtx.newPage();
+  await axePage.goto(URL, { waitUntil: "networkidle", timeout: 30000 });
+  await axePage.waitForTimeout(300);
+  // color-contrast is pinned at its measured size rather than asserted to zero: every fix for
+  // it changes a token VALUE, which changes the rendered page, and the repair pass that added
+  // this check is barred from visual change. Lower it when the palette is fixed; never raise it.
+  const CONTRAST_CAP = 36;
+  const axe = await new AxeBuilder({ page: axePage }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
+  const serious = axe.violations.filter(v => v.id !== "color-contrast" && (v.impact === "serious" || v.impact === "critical"));
+  serious.length === 0
+    ? ok("no serious or critical axe violations")
+    : fail("axe: " + serious.map(v => `[${v.impact}] ${v.id} x${v.nodes.length}`).join(", "));
+  const contrast = axe.violations.find(v => v.id === "color-contrast");
+  const contrastNodes = contrast ? contrast.nodes.length : 0;
+  contrastNodes <= CONTRAST_CAP
+    ? ok(`color-contrast at ${contrastNodes} nodes, recorded baseline ${CONTRAST_CAP}`)
+    : fail(`color-contrast grew to ${contrastNodes} nodes, recorded baseline ${CONTRAST_CAP}`);
+  await axeCtx.close();
 
   await browser.close();
 

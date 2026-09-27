@@ -94,7 +94,7 @@ The full universal rules are `~/.agents/DESIGN.md`. Where a library entry and a 
 ## Product-specific typography
 
 - Body: the existing proportional interface face used for labels, prose, names, dates, and controls.
-- Display: the existing masthead and section-display role defined in `server.js`.
+- Display: the existing masthead and section-display role defined in `server.ts`.
 - Monospace: code, machine-readable identifiers, and the existing `var(--mono)` treatment for timeline/table dates and genuinely tabular numeric metadata.
 
 ## Tokens and components

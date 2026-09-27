@@ -23,27 +23,27 @@
 
 | Component | Purpose | Entry point | Owner |
 |---|---|---|---|
-| Express application | Serve the interface, JSON API, health route, and iCalendar feed | `server.js` / `npm start` | Project repository |
+| Express application | Serve the interface, JSON API, health route, and iCalendar feed | `server.ts` / `npm start` | Project repository |
 | Conference dataset | Provide the committed runtime source of truth | `data/conferences.js` | Generated from reviewed research inputs |
 | Research inputs | Record sourced conference facts grouped by research cluster | `research/*.md` | Scheduled and manual research workflow |
-| Data refresh | Merge, normalize, deduplicate, and sort research records | `node scripts/refresh-data.js` | Project repository |
-| Browser verifier | Exercise the deployed or local user journeys | `node tests/verify-live.mjs [base-url]` | Project repository |
+| Data refresh | Merge, normalize, deduplicate, and sort research records | `node scripts/refresh-data.ts` | Project repository |
+| Browser verifier | Exercise the deployed or local user journeys | `node tests/verify-live.mts [base-url]` | Project repository |
 | Deployment | Run the Express handler as a Vercel serverless application | `vercel.json` | Vercel project |
 
 ## Important paths
 
 | Path | Purpose | Generated | Committed |
 |---|---|---|---|
-| `server.js` | Express routes plus inline HTML, CSS, and browser JavaScript | no | yes |
+| `server.ts` | Express routes plus inline HTML, CSS, and browser JavaScript | no | yes |
 | `data/conferences.js` | Normalized conference records used at runtime | yes | yes |
 | `research/` | Human-reviewable research inputs | no | yes |
-| `scripts/refresh-data.js` | Dataset regeneration command | no | yes |
-| `tests/verify-live.mjs` | Playwright end-to-end verification | no | yes |
+| `scripts/refresh-data.ts` | Dataset regeneration command | no | yes |
+| `tests/verify-live.mts` | Playwright end-to-end verification | no | yes |
 | `vercel.json` | Deployment routing | no | yes |
 
 ## Data flow
 
-Committed `research/*.md` inputs flow through `scripts/refresh-data.js` into the committed `data/conferences.js` dataset. `server.js` reads that dataset and serves HTML, `/api/conferences`, `/cal.ics`, and `/health`. Browser-local notes, stars, filters, and status remain in `localStorage`; they are not synchronized through the repository.
+Committed `research/*.md` inputs flow through `scripts/refresh-data.ts` into the committed `data/conferences.js` dataset. `server.ts` reads that dataset and serves HTML, `/api/conferences`, `/cal.ics`, and `/health`. Browser-local notes, stars, filters, and status remain in `localStorage`; they are not synchronized through the repository.
 
 ## Integrations
 
