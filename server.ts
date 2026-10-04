@@ -380,6 +380,7 @@ function buildPage(): string {
   </div>
 
   <footer class="colophon shell">
+    <p class="masthead-lede">Submission deadlines, locations, and requirements for conferences and journals at the intersection of AI and engineering design — spanning HCI, design science, AI / ML, visualization, manufacturing, and cognitive science.</p>
     <span class="colophon-bit">Onest</span>
     <span class="colophon-sep">/</span>
     <span class="colophon-bit">Data refreshed ${(data.generated || new Date().toISOString()).slice(0, 10)}</span>
@@ -1418,6 +1419,7 @@ table.confs tbody tr.closed .spec { color: var(--text-3); }
 
 /* ------ Footer ------ */
 .colophon { padding-block: var(--space-5) var(--space-7); display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: center; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3); }
+.colophon .masthead-lede { flex: 1 0 100%; margin: 0 0 var(--space-3); color: var(--text-2); font-size: var(--fs-base); }
 .colophon-bit { white-space: nowrap; }
 .colophon-sep { color: var(--line); }
 

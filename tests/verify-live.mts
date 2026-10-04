@@ -46,7 +46,7 @@ const fail = (msg: string) => { errors.push(msg); log("  ✗", msg); };
   const faviconRes = await page.request.get(URL.replace(/\/$/, "") + "/favicon.svg");
   faviconRes.ok() ? ok("favicon.svg served") : fail(`favicon.svg: ${faviconRes.status()}`);
   const stats = await page.locator("#stats").innerText();
-  /\d+\s*conferences/i.test(stats) ? ok(`stats: ${stats.replace(/\s+/g, " ").trim()}`) : fail(`stats malformed: ${stats}`);
+  /\d+\s*(venues|conferences)/i.test(stats) ? ok(`stats: ${stats.replace(/\s+/g, " ").trim()}`) : fail(`stats malformed: ${stats}`);
 
   const dataInfo = await page.evaluate(() => ({
     confs: window.__DATA__?.conferences?.length || 0,
@@ -110,14 +110,14 @@ const fail = (msg: string) => { errors.push(msg); log("  ✗", msg); };
     rows: document.querySelectorAll(".tl-row").length,
     deadlineMarkers: document.querySelectorAll(".timeline-deadline-marker").length,
     confBars: document.querySelectorAll(".tl-conf").length,
-    todayLabelExists: Array.from(document.querySelectorAll("text")).some(t => t.textContent === "TODAY"),
+    todayLabelExists: Array.from(document.querySelectorAll("text")).some(t => t.textContent === "Today"),
     svgExists: !!document.querySelector(".timeline-svg"),
   }));
   tl.svgExists ? ok("gantt SVG rendered") : fail("no timeline SVG");
   tl.rows >= 80 ? ok(`${tl.rows} timeline rows`) : fail(`only ${tl.rows} rows`);
   tl.deadlineMarkers >= 50 ? ok(`${tl.deadlineMarkers} deadline markers`) : fail(`only ${tl.deadlineMarkers} markers`);
   tl.confBars >= 50 ? ok(`${tl.confBars} conference bars`) : fail(`only ${tl.confBars} conference bars`);
-  tl.todayLabelExists ? ok("TODAY axis label present") : fail("missing TODAY label");
+  tl.todayLabelExists ? ok("Today axis label present") : fail("missing TODAY label");
 
   await page.screenshot({ path: path.join(SHOTS, "01b-timeline-gantt.png"), fullPage: false });
   ok("screenshot: 01b-timeline-gantt.png");
