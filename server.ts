@@ -231,46 +231,58 @@ function buildPage(): string {
 <symbol id="i-filter" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
   <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227" /></symbol>
 </svg>
-  <header class="masthead">
-    <div class="masthead-row">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-            <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
-            <line x1="12" y1="3" x2="12" y2="21" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-            <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-            <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
-          </svg>
-        </span>
-        <div class="brand-titles">
-          <h1 class="brand-title">AI &amp; Engineering Design Conference Tracker</h1>
-        </div>
-      </div>
-      <div class="masthead-actions">
-        <button class="theme-toggle" id="themeBtn" aria-label="Dark theme" aria-pressed="false" title="Toggle theme">
-          <span class="theme-icon-light"><svg class="icon" aria-hidden="true"><use href="#i-sun"></use></svg></span>
-          <span class="theme-icon-dark"><svg class="icon" aria-hidden="true"><use href="#i-moon"></use></svg></span>
-        </button>
-      </div>
+  <header class="appbar shell">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <line x1="12" y1="3" x2="12" y2="21" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
+        </svg>
+      </span>
+      <h1 class="brand-title"><span class="title-long">AI &amp; Engineering Design </span>Conference Tracker</h1>
     </div>
-    <p class="masthead-lede">Submission deadlines, locations, and requirements for conferences and journals at the intersection of AI and engineering design — spanning HCI, design science, AI / ML, visualization, manufacturing, and cognitive science.</p>
-    <div class="masthead-stats" id="stats" aria-live="polite"><span class="skeleton skeleton-text" aria-hidden="true"></span><span class="skeleton skeleton-text" aria-hidden="true"></span></div>
+    <button class="theme-toggle" id="themeBtn" aria-label="Dark theme" aria-pressed="false" title="Toggle theme">
+      <span class="theme-icon-light"><svg class="icon" aria-hidden="true"><use href="#i-sun"></use></svg></span>
+      <span class="theme-icon-dark"><svg class="icon" aria-hidden="true"><use href="#i-moon"></use></svg></span>
+    </button>
   </header>
 
-  <nav class="viewbar" aria-label="View">
-    <div class="viewbar-inner">
+  <section class="strip shell" aria-label="Deadline strip">
+    <div class="strip-box">
+      <div class="strip-grid">
+        <div class="readout" id="readout" aria-live="polite"><span class="skeleton skeleton-text" aria-hidden="true"></span></div>
+        <div class="strip-side">
+          <div class="masthead-stats" id="stats" aria-live="polite"><span class="skeleton skeleton-text" aria-hidden="true"></span><span class="skeleton skeleton-text" aria-hidden="true"></span></div>
+          <figure class="yearrail" id="yearRail"><span class="skeleton skeleton-text" aria-hidden="true"></span></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="viewbar shell" aria-label="View">
+    <div class="view-tabs">
       <button class="view-tab active" data-view="timeline" aria-pressed="true">Timeline</button>
       <button class="view-tab" data-view="cards" aria-pressed="false">Cards</button>
       <button class="view-tab" data-view="table" aria-pressed="false">Table</button>
       <button class="view-tab" data-view="map" aria-pressed="false">Map</button>
-      <span class="viewbar-spacer"></span>
+    </div>
+    <div class="search-field" id="searchField">
+      <svg class="icon search-icon" aria-hidden="true"><use href="#i-search"></use></svg>
+      <input type="search" id="searchInput" placeholder="Search conferences…" autocomplete="off" aria-label="Search conferences">
+      <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg></button>
+    </div>
+    <div class="viewbar-actions">
       <a class="viewbar-action" href="/cal.ics" download="conferences.ics" title="Download all deadlines as iCal"><svg class="icon" aria-hidden="true"><use href="#i-calendar-down"></use></svg>.ics</a>
       <button class="viewbar-action" id="submitConfBtn" title="Suggest a missing conference"><svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>Suggest</button>
     </div>
   </nav>
 
-  <section class="filters" aria-label="Filters">
-    <div class="filters-main">
+  <div class="workspace shell">
+  <details class="filters" id="filters" open>
+    <summary class="filters-summary" id="filtersSummary"><svg class="icon" aria-hidden="true"><use href="#i-filter"></use></svg><span>Filters</span><span class="filters-count" id="filtersCount" aria-live="polite">0 active</span><svg class="icon filters-chevron" aria-hidden="true"><use href="#i-chevron-down"></use></svg></summary>
+    <div class="filters-body" aria-label="Filters">
     <div class="filter-group">
       <span class="filter-label">Field</span>
       <div class="chip-row" id="fieldChips"></div>
@@ -287,6 +299,15 @@ function buildPage(): string {
       </div>
     </div>
     <div class="filter-group">
+      <span class="filter-label">Window</span>
+      <div class="chip-row" id="windowChips">
+        <button class="chip" data-window="30" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>30d</button>
+        <button class="chip" data-window="90" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>90d</button>
+        <button class="chip" data-window="180" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>180d</button>
+        <button class="chip active" data-window="all" aria-pressed="true"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>All</button>
+      </div>
+    </div>
+    <div class="filter-group">
       <label class="filter-label" for="sortSelect">Sort</label>
       <div class="select-wrap">
         <select class="select" id="sortSelect">
@@ -300,29 +321,13 @@ function buildPage(): string {
       </div>
     </div>
     <div class="filter-group">
-      <span class="filter-label">Window</span>
-      <div class="chip-row" id="windowChips">
-        <button class="chip" data-window="30" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>30d</button>
-        <button class="chip" data-window="90" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>90d</button>
-        <button class="chip" data-window="180" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>180d</button>
-        <button class="chip active" data-window="all" aria-pressed="true"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>All</button>
-      </div>
-    </div>
-    </div>
-    <div class="filters-search">
-    <div class="filter-group filter-group-search">
-      <div class="search-field" id="searchField">
-        <svg class="icon search-icon" aria-hidden="true"><use href="#i-search"></use></svg>
-        <input type="search" id="searchInput" placeholder="Search conferences…" autocomplete="off" aria-label="Search conferences">
-        <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg></button>
-      </div>
       <label class="starred-toggle">
         <input type="checkbox" id="starredOnly">
         <span class="starred-label"><svg class="icon icon-off" aria-hidden="true"><use href="#i-star"></use></svg><svg class="icon icon-on icon-fill" aria-hidden="true"><use href="#i-star-filled"></use></svg> Starred only</span>
       </label>
     </div>
     </div>
-  </section>
+  </details>
 
   <main id="main">
     <section id="view-timeline" class="view" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
@@ -330,6 +335,7 @@ function buildPage(): string {
     <section id="view-table" class="view hidden" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
     <section id="view-map" class="view hidden" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
   </main>
+  </div>
 
   <div id="detailModal" class="modal hidden" aria-hidden="true" aria-modal="true" role="dialog" aria-labelledby="modalTitle">
     <div class="modal-backdrop" data-close></div>
@@ -373,7 +379,7 @@ function buildPage(): string {
     </div>
   </div>
 
-  <footer class="colophon">
+  <footer class="colophon shell">
     <span class="colophon-bit">Onest</span>
     <span class="colophon-sep">/</span>
     <span class="colophon-bit">Data refreshed ${(data.generated || new Date().toISOString()).slice(0, 10)}</span>
@@ -494,7 +500,11 @@ ${DARK_TOKENS}
   --fs-sm: 0.8rem;
   --fs-base: 1rem;
   --fs-display: clamp(2rem, 1.6rem + 1.1vw, 2.441rem);
+  --margin: clamp(var(--space-4), 4vw, var(--space-6));
+  --cols: 12;
 }
+@media (max-width: 1099px) { :root { --cols: 8; } }
+@media (max-width: 599px) { :root { --cols: 4; } }
 /* First paint: the theme script sets data-theme only after it runs, so a light-preference visitor
    would see one dark frame. :root:not([data-theme]) applies light until the script lands. */
 @media (prefers-color-scheme: light) {
@@ -542,17 +552,18 @@ code {
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-/* ------ Masthead ------ */
-.masthead { max-width: 78rem; margin: 0 auto; padding: clamp(var(--space-6), 4vw, var(--space-7)) var(--space-6) var(--space-5); }
-.masthead-row { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); padding-bottom: var(--space-4); }
-.brand { display: flex; align-items: flex-start; gap: var(--space-3); min-width: 0; }
+/* ------ Grid: 12 columns at 1100px and up, 8 from 600px, 4 below. Every region sits on it. ------ */
+.shell { max-width: 80rem; margin: 0 auto; padding-inline: var(--margin); }
+
+/* ------ App bar: one line ------ */
+.appbar { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding-block: var(--space-4) var(--space-3); }
+.brand { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
 .brand-mark {
-  margin-top: var(--space-1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.1rem;
-  height: 2.1rem;
+  width: 2.75rem;
+  height: 2.75rem;
   flex-shrink: 0;
   color: var(--accent);
   background: var(--surface-1);
@@ -560,19 +571,37 @@ code {
   border-radius: var(--radius-2);
 }
 .brand-mark svg { display: block; }
-.brand-titles { min-width: 0; display: flex; flex-direction: column; gap: var(--space-1); }
-/* .brand-eyebrow removed — redundant above h1 and was an AI-ism (mono eyebrow) */
-.brand-title { font-size: var(--fs-display); font-weight: 600; letter-spacing: -0.02em; margin: 0; line-height: 1.1; max-width: 24ch; }
-.masthead-lede { color: var(--text-2); font-size: var(--fs-base); margin: 0 0 var(--space-4); line-height: 1.66; }
+.brand-title { font-size: var(--fs-display); font-weight: 600; letter-spacing: -0.02em; margin: 0; line-height: 1.1; }
+@media (max-width: 599px) {
+  .title-long { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+}
+
+/* ------ Deadline strip: next-deadline readout, counts, year rail ------ */
+.strip { padding-block: 0 var(--space-4); }
+.strip-box { container-type: inline-size; container-name: strip; background: var(--surface-1); box-shadow: var(--elev-1); border-radius: var(--radius-3); padding: clamp(var(--space-4), 3vw, var(--space-5)); }
+.strip-grid { display: grid; gap: var(--space-4) var(--space-6); align-items: center; }
+.strip-side { display: grid; gap: var(--space-3); min-width: 0; }
+@container strip (min-width: 40rem) {
+  .strip-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+}
+.readout { display: flex; align-items: center; gap: var(--space-4); min-width: 0; font-variant-numeric: tabular-nums; }
+.readout-count { display: flex; align-items: baseline; gap: var(--space-2); flex-shrink: 0; }
+.readout-num { font-size: var(--fs-display); font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; color: var(--text-1); }
+.readout-unit { font-size: var(--fs-base); font-weight: 500; color: var(--text-2); }
+.readout[data-tone="urgent"] .readout-num { color: var(--status-urgent); }
+.readout[data-tone="soon"] .readout-num { color: var(--status-soon); }
+.readout-body { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+.readout-venue { font-size: var(--fs-base); font-weight: 600; }
+.readout-date { font-size: var(--fs-sm); color: var(--text-2); }
+.readout[data-tone="urgent"] .readout-tone { color: var(--status-urgent); font-weight: 600; }
+.readout[data-tone="soon"] .readout-tone { color: var(--status-soon); font-weight: 600; }
 .masthead-stats {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3) var(--space-5);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--line);
+  gap: var(--space-1) var(--space-5);
   font-family: var(--sans);
   font-size: var(--fs-sm);
-  color: var(--text-3);
+  color: var(--text-2);
   font-variant-numeric: tabular-nums;
 }
 .stat { display: inline-flex; align-items: baseline; gap: var(--space-2); min-height: 1.5rem; }
@@ -581,14 +610,24 @@ code {
   font-weight: 600;
   color: var(--text-1);
   font-size: var(--fs-base);
-  text-transform: none;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.stat .stat-accent { color: var(--accent); }
-.stat .stat-urgent { color: var(--status-urgent); }
+
+/* ------ Year rail: twelve months from today (six at 375), one tick per deadline ------ */
+.yearrail { margin: 0; display: grid; gap: var(--space-1); min-width: 0; }
+.rail-caption { font-size: var(--fs-sm); color: var(--text-2); font-variant-numeric: tabular-nums; }
+.rail-caption strong { color: var(--text-1); }
+.rail-svg { display: block; width: 100%; height: 3rem; overflow: visible; }
+.rail-axis { stroke: var(--line-strong); stroke-width: 1; }
+.rail-month { stroke: var(--line); stroke-width: 1; }
+.rail-label { font-family: var(--sans); font-size: var(--fs-sm); fill: var(--text-3); }
+.rail-today { stroke: var(--accent); stroke-width: 2; }
+.rail-tick { transform-box: fill-box; transition: transform var(--dur-in) var(--ease-out); }
+.rail-tick.lift { transform: translateY(calc(-1 * var(--space-1))); }
 
 .theme-toggle {
+  flex: 0 0 auto;
   width: 2.75rem;
   height: 2.75rem;
   background: var(--surface-1);
@@ -617,24 +656,32 @@ code {
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .icon { display: block; flex-shrink: 0; width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .icon-fill { fill: currentColor; stroke: none; }
-.icon-on { display: none; }
-.starred .icon-on, .starred-toggle input:checked + .starred-label .icon-on { display: block; }
-.starred .icon-off, .starred-toggle input:checked + .starred-label .icon-off { display: none; }
+.starred-toggle .icon-on { display: none; }
+.starred-toggle input:checked + .starred-label .icon-on { display: block; }
+.starred-toggle input:checked + .starred-label .icon-off { display: none; }
+.star-btn { position: relative; }
+.star-btn .icon-on { position: absolute; top: 50%; left: 50%; margin: -0.625rem 0 0 -0.625rem; opacity: 0; transform: scale(0.6); transition: opacity var(--dur-in) var(--ease-out), transform var(--dur-in) var(--ease-out); }
+.star-btn.starred .icon-on { opacity: 1; transform: none; }
 .starred-label { display: inline-flex; align-items: center; gap: var(--space-2); }
 .theme-icon-dark { display: none; }
 [data-theme="dark"] .theme-icon-light { display: none; }
 [data-theme="dark"] .theme-icon-dark { display: inline-flex; }
 .theme-icon-light { display: inline-flex; }
 
-/* ------ View tabs ------ */
-.viewbar { max-width: 78rem; margin: 0 auto; padding: 0 var(--space-6); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.viewbar-inner { display: flex; gap: var(--space-5); overflow-x: auto; -webkit-overflow-scrolling: touch; padding: var(--space-1); margin: calc(-1 * var(--space-1)); }
-.viewbar-inner::-webkit-scrollbar { display: none; }
+/* ------ View bar: view tabs, search, actions ------ */
+.viewbar { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--space-5); row-gap: var(--space-2); align-items: center; padding-block: var(--space-2) var(--space-3); }
+.view-tabs { grid-column: 1 / span 5; display: flex; gap: var(--space-2); min-width: 0; }
+.viewbar .search-field { grid-column: span 4; }
+.viewbar-actions { grid-column: span 3; display: flex; justify-content: flex-end; gap: var(--space-2); }
+@media (max-width: 1099px) {
+  .view-tabs { grid-column: 1 / -1; }
+  .viewbar .search-field { grid-column: span 5; }
+}
 .view-tab {
   flex: 0 0 auto;
   background: transparent;
   border: 0;
-  padding: var(--space-4) 0 var(--space-3);
+  padding: 0 var(--space-3);
   cursor: pointer;
   font-family: var(--sans);
   font-size: var(--fs-sm);
@@ -642,7 +689,6 @@ code {
   color: var(--text-2);
   opacity: 1;
   border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
   transition:
     color var(--dur-out) var(--ease-out),
     border-color var(--dur-out) var(--ease-out),
@@ -652,11 +698,9 @@ code {
 .view-tab:active { background: var(--surface-2); }
 .view-tab.active { color: var(--text-1); font-weight: 600; border-bottom-color: var(--accent); }
 
-.viewbar-spacer { flex: 1 1 auto; min-width: 0.5rem; }
 .viewbar-action {
   flex: 0 0 auto;
   align-self: center;
-  margin: var(--space-2) 0;
   padding: var(--space-1) var(--space-3);
   font-family: var(--sans);
   font-size: var(--fs-sm);
@@ -826,18 +870,31 @@ code {
 }
 .modal-link-btn-secondary:hover { background: var(--surface-2); color: var(--text-1); border-color: var(--text-2); }
 
-/* ------ Filters ------ */
-.filters { max-width: 78rem; margin: 0 auto; padding: var(--space-4) var(--space-6) var(--space-5); display: flex; gap: var(--space-4) var(--space-6); justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--line); }
-.filters-main { display: flex; flex: 1 1 42rem; flex-wrap: wrap; gap: var(--space-4) var(--space-5); min-width: 0; }
-.filters-search { display: flex; justify-content: flex-end; flex: 0 1 24rem; min-width: min(100%, 20rem); }
-.filter-group { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: var(--space-1) var(--space-3); min-width: min(100%, 13rem); }
-.filter-group-search { display: flex; justify-content: flex-end; align-items: center; gap: var(--space-3); flex-wrap: wrap; width: 100%; min-width: 0; }
+/* ------ Filters: sticky left rail on columns 1 to 3 at 1100px and up, a details block below ------ */
+.workspace { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--space-5); row-gap: var(--space-4); align-items: start; padding-block: var(--space-2) var(--space-8); }
+.filters { grid-column: 1 / span 3; position: sticky; top: var(--space-4); z-index: var(--z-sticky); max-height: calc(100dvh - var(--space-5)); overflow-y: auto; padding: var(--space-4); background: var(--surface-1); box-shadow: var(--elev-1); border-radius: var(--radius-3); }
+.workspace > main { grid-column: 4 / -1; min-width: 0; }
+.filters-summary { display: flex; align-items: center; gap: var(--space-2); min-height: 2.75rem; list-style: none; cursor: pointer; font-size: var(--fs-sm); font-weight: 600; color: var(--text-1); }
+.filters-summary::-webkit-details-marker { display: none; }
+.filters-count { margin-left: auto; font-weight: 400; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.filters-count.on { color: var(--accent); font-weight: 600; }
+.filters-chevron { transition: transform var(--dur-in) var(--ease-out); }
+.filters[open] .filters-chevron { transform: rotate(180deg); }
+.filters-body { display: grid; gap: var(--space-4); margin-top: var(--space-3); }
+@media (min-width: 1100px) {
+  .filters-summary { cursor: default; }
+  .filters-chevron { display: none; }
+}
+@media (max-width: 1099px) {
+  .filters { grid-column: 1 / -1; position: static; max-height: none; overflow: visible; }
+  .workspace > main { grid-column: 1 / -1; }
+  .filters-body { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-4) var(--space-5); }
+}
+.filter-group { display: grid; gap: var(--space-2); align-content: start; min-width: 0; }
 .filter-label {
-  padding-top: var(--space-2);
   font-family: var(--sans);
   font-size: var(--fs-sm);
   color: var(--text-3);
-  white-space: nowrap;
 }
 .chip-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .chip {
@@ -858,7 +915,7 @@ code {
 .chip-check { display: none; width: 1rem; height: 1rem; }
 .chip.active .chip-check { display: block; }
 .chip-dot { width: 0.48rem; height: 0.48rem; border-radius: var(--radius-dot); flex-shrink: 0; background: var(--field-color, var(--text-2)); }
-.search-field { position: relative; flex: 0 1 19rem; width: min(19rem, 100%); }
+.search-field { position: relative; width: 100%; min-width: 0; }
 .search-icon { position: absolute; left: var(--space-3); top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
 #searchInput {
   display: block; width: 100%;
@@ -892,6 +949,7 @@ code {
   border-radius: var(--radius-2);
   cursor: pointer;
   user-select: none;
+  justify-self: start;
 }
 .starred-toggle input { margin: 0; accent-color: var(--accent-solid); }
 .starred-toggle:hover:not(:has(input:disabled)) { color: var(--text-1); background: var(--surface-2); }
@@ -899,8 +957,9 @@ code {
 .starred-toggle:has(input:disabled) { opacity: 0.5; cursor: not-allowed; }
 .starred-toggle input:disabled { cursor: not-allowed; }
 
-/* ------ Main ------ */
-main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) var(--space-8); }
+/* ------ Main and views ------ */
+.view { transition: opacity var(--dur-in) var(--ease-out); }
+.view.entering { opacity: 0; }
 .view.hidden { display: none; }
 
 /* ------ Per-view sub-toolbar (mode toggles, density, etc.) ------ */
@@ -1076,7 +1135,7 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
 .tlcal-empty-msg { grid-column: 2; color: var(--text-3); padding: var(--space-2) 0; font-family: var(--sans); font-size: var(--fs-sm); text-transform: none; }
 
 /* ------ Cards: density modes ------ */
-.cards-grid.density-spacious { grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr)); gap: var(--space-5); }
+.cards-grid.density-spacious { grid-template-columns: repeat(auto-fill, minmax(min(28rem, 100%), 1fr)); gap: var(--space-5); }
 .cards-grid.density-spacious .card { padding: var(--space-5) var(--space-6) var(--space-6); gap: var(--space-3); }
 .cards-grid.density-spacious .card-name { font-size: var(--fs-base); }
 .cards-grid.density-spacious .card-fullname { font-size: var(--fs-base); max-width: 50ch; }
@@ -1102,7 +1161,7 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
 }
 
 /* ------ Cards ------ */
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(20.5rem, 1fr)); gap: var(--space-5); align-items: start; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr)); gap: var(--space-5); align-items: start; }
 .card {
   background: var(--surface-1); border: 0; border-radius: var(--radius-3);
   padding: var(--space-5) var(--space-5) var(--space-5);
@@ -1111,6 +1170,13 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
     box-shadow var(--dur-out) var(--ease-out),
     background-color var(--dur-out) var(--ease-out);
   cursor: pointer; display: flex; flex-direction: column; gap: var(--space-3); position: relative; min-height: 100%;
+  container-type: inline-size; container-name: card;
+}
+.card-spec { margin: 0; font-size: var(--fs-sm); line-height: 1.4; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.card.closed .card-spec { color: var(--text-3); }
+@container card (max-width: 20rem) {
+  .card-meta { grid-template-columns: 1fr; gap: var(--space-1); }
+  .card-row { flex-wrap: wrap; }
 }
 .card:hover {
   background: var(--surface-2);
@@ -1166,7 +1232,7 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
 .card-countdown.soon { background: color-mix(in oklab, var(--status-soon) 16%, var(--surface-1)); color: var(--status-soon); }
 .card-countdown.passed { background: var(--surface-2); color: var(--text-3); }
 .card-countdown.urgent { font-weight: 600; }
-.vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 .card-fit {
   color: var(--text-2); font-size: var(--fs-sm);
   line-height: 1.58; padding-top: var(--space-3);
@@ -1199,12 +1265,21 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
   margin-left: auto;
 }
 
-/* ------ Table ------ */
-.table-wrap { position: relative; overflow-x: auto; padding: var(--space-1) 0 var(--space-1); }
-table.confs { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--fs-sm); font-feature-settings: "kern" 1, "liga" 1; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-table.confs th, table.confs td { padding: var(--space-3) var(--space-4); text-align: left; border-bottom: 1px solid var(--line); }
+/* ------ Table: fixed columns, countdown widest; rows restack by container width ------ */
+.table-wrap { container-type: inline-size; container-name: rows; position: relative; padding: var(--space-1) 0 var(--space-1); }
+table.confs { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; font-size: var(--fs-sm); font-feature-settings: "kern" 1, "liga" 1; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+table.confs th, table.confs td { padding: var(--space-3) var(--space-3); text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+table.confs th.c-star, table.confs td.c-star, table.confs th.c-link, table.confs td.c-link { padding-inline: var(--space-1); }
+table.confs .c-star, table.confs .c-link { width: 3rem; }
+table.confs .c-venue { width: 19%; }
+table.confs .c-field { width: 13%; }
+table.confs .c-tier { width: 4rem; }
+table.confs .c-deadline { width: 22%; text-align: right; }
+table.confs .c-conf { width: 12%; }
+table.confs .c-where { width: 12%; }
 table.confs tbody tr:last-child td { border-bottom: 0; }
-table.confs thead th { background: var(--ground); font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3); cursor: pointer; user-select: none; white-space: nowrap; font-weight: 500; transition: color var(--dur-out) var(--ease-out); }
+table.confs thead th { background: var(--ground); font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3); cursor: pointer; user-select: none; white-space: nowrap; font-weight: 500; transition: color var(--dur-out) var(--ease-out); vertical-align: middle; }
+table.confs thead th.c-star, table.confs thead th.c-link { cursor: default; }
 .th-btn {
   display: inline-flex; align-items: center; gap: var(--space-1); min-height: 2.75rem; min-width: 2.75rem;
   padding: 0; margin: 0; background: transparent; border: 0; border-radius: var(--radius-2);
@@ -1220,8 +1295,46 @@ table.confs tbody tr.closed td { color: var(--text-3); }
 table.confs tbody tr.closed td strong { color: var(--text-2); }
 table.confs td .link-icon { color: var(--accent); }
 table.confs thead th[aria-sort] { color: var(--text-1); font-weight: 600; }
-table.confs td.num { font-variant-numeric: tabular-nums; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.confs td.c-deadline { font-variant-numeric: tabular-nums; }
+table.confs td.c-field { overflow-wrap: break-word; }
+.cd-cell { display: grid; justify-items: end; gap: var(--space-1); }
+.cd-cell .card-countdown { margin-left: 0; font-size: var(--fs-base); font-weight: 600; white-space: normal; text-align: right; }
+.cd-date { font-size: var(--fs-sm); font-weight: 400; color: var(--text-2); }
+table.confs tbody tr.closed .cd-date { color: var(--text-3); }
 .table-wrap .card-tag { margin: 0 var(--space-1) var(--space-1) 0; }
+.spec { display: block; margin-top: var(--space-1); font-size: var(--fs-sm); font-weight: 400; line-height: 1.4; color: var(--text-2); font-variant-numeric: tabular-nums; }
+table.confs tbody tr.closed .spec { color: var(--text-3); }
+@container rows (max-width: 56rem) {
+  table.confs th, table.confs td { padding-inline: var(--space-2); }
+  table.confs th.c-star, table.confs td.c-star, table.confs th.c-link, table.confs td.c-link { padding-inline: 0; }
+  table.confs .c-star, table.confs .c-link { width: 2.75rem; }
+  table.confs .c-venue { width: 24%; }
+  table.confs .c-field { width: 16%; }
+  table.confs .c-tier { width: 3rem; }
+  table.confs .c-deadline { width: 17%; }
+  table.confs .c-conf { width: 12%; }
+  table.confs .c-where { width: 11%; }
+}
+@container rows (max-width: 40rem) {
+  table.confs .c-star, table.confs .c-venue, table.confs .c-field, table.confs .c-tier, table.confs .c-deadline, table.confs .c-conf, table.confs .c-where, table.confs .c-link { width: auto; }
+  table.confs, table.confs tbody, table.confs thead { display: block; }
+  table.confs { border-top: 0; border-bottom: 0; }
+  table.confs thead tr { display: flex; flex-wrap: wrap; gap: var(--space-2); padding-bottom: var(--space-2); }
+  table.confs thead th { display: none; padding: 0; border: 0; }
+  table.confs thead th[data-sort] { display: block; }
+  table.confs tbody tr { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; column-gap: var(--space-2); border-top: 1px solid var(--line); padding: var(--space-2) 0; }
+  table.confs tbody tr:last-child { border-bottom: 1px solid var(--line); }
+  table.confs td { display: block; padding: var(--space-1); border: 0; }
+  table.confs td.c-star { grid-column: 1; grid-row: 1; }
+  table.confs td.c-venue { grid-column: 2; grid-row: 1; }
+  table.confs td.c-deadline { grid-column: 3; grid-row: 1; text-align: right; }
+  table.confs td.c-link { grid-column: 1; grid-row: 2; }
+  table.confs td.c-where { grid-column: 2; grid-row: 2; }
+  table.confs td.c-conf { grid-column: 3; grid-row: 2; text-align: right; }
+  table.confs td.c-field, table.confs td.c-tier { display: none; }
+  table.confs tbody tr.starred td:first-child { box-shadow: none; }
+  table.confs tbody tr.starred { box-shadow: inset 2px 0 0 var(--accent); }
+}
 
 /* ------ Modal ------ */
 .modal { position: fixed; inset: 0; z-index: var(--z-modal); display: flex; align-items: center; justify-content: center; padding: var(--space-5); }
@@ -1304,15 +1417,13 @@ table.confs td.num { font-variant-numeric: tabular-nums; font-variant-numeric: t
 .modal-link-btn:active { background: var(--surface-2); }
 
 /* ------ Footer ------ */
-.colophon { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) var(--space-7); border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: center; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3); }
+.colophon { padding-block: var(--space-5) var(--space-7); display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: center; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3); }
 .colophon-bit { white-space: nowrap; }
 .colophon-sep { color: var(--line); }
 
 /* ------ Touch targets: at least 44 by 44 CSS px, 8px between neighbours ------ */
 .view-tab, .viewbar-action, .chip, .view-toolbar-btn, .star-btn, .select, #searchInput, .modal-close, .card-link, .starred-toggle, .modal-link-btn { min-height: 2.75rem; min-width: 2.75rem; }
 .view-tab, .viewbar-action, .chip, .view-toolbar-btn { display: inline-flex; align-items: center; justify-content: center; }
-.view-tab { padding-top: 0; padding-bottom: 0; padding-left: var(--space-2); padding-right: var(--space-2); }
-.viewbar-inner { gap: var(--space-2); }
 .starred-toggle { display: inline-flex; align-items: center; gap: var(--space-2); }
 .view-toolbar-group { gap: var(--space-2); }
 .card-actions { gap: var(--space-2); }
@@ -1321,35 +1432,22 @@ table.confs td.num { font-variant-numeric: tabular-nums; font-variant-numeric: t
 table.confs td a[href] { display: inline-flex; align-items: center; justify-content: center; min-width: 2.75rem; min-height: 2.75rem; }
 strong { font-weight: 600; }
 
-/* ------ Mobile ------ */
-@media (max-width: 720px) {
-  .masthead { padding: var(--space-6) var(--space-4) var(--space-4); }
-  .brand-title { font-size: var(--fs-display); }
-  .viewbar, .filters, main, .colophon { padding-left: var(--space-4); padding-right: var(--space-4); }
-  .masthead-lede { font-size: var(--fs-base); margin-bottom: var(--space-4); }
-  .masthead-stats { gap: var(--space-2) var(--space-4); }
-  .viewbar-inner { gap: var(--space-2); flex-wrap: wrap; overflow-x: visible; }
-  .viewbar-spacer { flex-basis: 100%; min-width: 0; height: 0; }
-  .filters { padding-top: var(--space-4); gap: var(--space-4); flex-direction: column; align-items: stretch; }
-  .filters-main { width: 100%; gap: var(--space-4); }
-  .filters-search { flex: 0 0 auto; width: 100%; min-width: 0; }
-  .filter-group { grid-template-columns: 1fr; gap: var(--space-1); width: 100%; }
-  .filter-label { padding-top: 0; }
-  .filter-group-search { justify-content: flex-start; align-items: stretch; width: 100%; }
-  .filter-group-search { flex-wrap: wrap; }
-  .search-field { flex: 1 1 100%; min-width: 0; width: 100%; }
+/* ------ Narrow: 4 columns ------ */
+@media (max-width: 599px) {
+  .view-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .viewbar .search-field { grid-column: 1 / -1; }
+  .viewbar-actions { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .viewbar-action { justify-content: center; }
+  .filters-body { grid-template-columns: 1fr; }
   .cards-grid { grid-template-columns: 1fr; gap: var(--space-4); }
   .card { padding: var(--space-4) var(--space-4) var(--space-4); }
-  .card-name { font-size: var(--fs-base); }
-  .card-meta { grid-template-columns: 1fr; gap: var(--space-1); }
-  .card-meta dt { padding-top: var(--space-1); }
-  table.confs { font-size: var(--fs-sm); min-width: 44rem; }
-  table.confs th, table.confs td { padding: var(--space-2) var(--space-3); }
+  .tlcal { grid-template-columns: minmax(3.5rem, max-content) 1fr; }
+}
+@media (max-width: 720px) {
   .modal { padding: var(--space-3); }
   .modal-panel { padding: var(--space-5) var(--space-4) var(--space-5); max-width: 100%; max-height: calc(100dvh - var(--space-5)); }
   .modal-meta { grid-template-columns: 1fr; gap: var(--space-1); }
   .modal-section { padding-top: var(--space-3); }
-  .colophon { padding-top: var(--space-5); padding-bottom: var(--space-6); }
 }
 `;
 }
@@ -1635,7 +1733,29 @@ function getJS(): string {
     v.setAttribute("tabindex", "-1");
     v.focus({ preventScroll: true });
   }
+  // The filters block is a rail at 1100px and up (always open) and a closed details block below that.
+  const filtersEl = document.getElementById("filters");
+  const filtersSummary = document.getElementById("filtersSummary");
+  const filtersCount = document.getElementById("filtersCount");
+  const wideMq = window.matchMedia("(min-width: 1100px)");
+  function syncFiltersOpen() { filtersEl.open = wideMq.matches; filtersSummary.tabIndex = wideMq.matches ? -1 : 0; }
+  syncFiltersOpen();
+  wideMq.addEventListener("change", syncFiltersOpen);
+  filtersSummary.addEventListener("click", (e) => { if (wideMq.matches) e.preventDefault(); });
+  // Rail tick lift: the tick for a venue rises while its row, card or calendar cell is hovered or focused.
+  function liftTicks(node, on) {
+    const ids = (node.getAttribute("data-id") || node.getAttribute("data-ids") || "").split(",").filter(Boolean);
+    ids.forEach(id => document.querySelectorAll('#yearRail .rail-tick[data-id="' + id + '"]').forEach(t => t.classList.toggle("lift", on)));
+  }
+  const mainEl = document.getElementById("main");
+  [["mouseover", "mouseout", true], ["focusin", "focusout", true]].forEach(([inEv, outEv]) => {
+    mainEl.addEventListener(inEv, (e) => { const n = e.target.closest("[data-id], [data-ids]"); if (n && mainEl.contains(n)) liftTicks(n, true); });
+    mainEl.addEventListener(outEv, (e) => { const n = e.target.closest("[data-id], [data-ids]"); if (n && !n.contains(e.relatedTarget)) liftTicks(n, false); });
+  });
   function syncControls() {
+    const nActive = state.fields.size + (state.tier !== "all" ? 1 : 0) + (state.window !== "all" ? 1 : 0) + (state.starredOnly ? 1 : 0);
+    filtersCount.textContent = nActive + " active";
+    filtersCount.classList.toggle("on", nActive > 0);
     document.querySelectorAll("#fieldChips .chip").forEach(b => {
       const k = b.dataset.field;
       const any = CONFS.some(c => (c.fields || []).includes(k) && matches(c, true));
@@ -1658,8 +1778,12 @@ function getJS(): string {
         x.setAttribute("aria-pressed", x === t ? "true" : "false");
       });
       document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
-      document.getElementById("view-" + state.view).classList.remove("hidden");
+      const nv = document.getElementById("view-" + state.view);
+      nv.classList.remove("hidden");
+      nv.classList.add("entering");
       render();
+      void nv.offsetWidth;
+      nv.classList.remove("entering");
     });
   });
   document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
@@ -1712,6 +1836,12 @@ function getJS(): string {
     return sortConfs(CONFS.filter(c => matches(c, false)));
   }
 
+  // 0 = deadline still open, 1 = no deadline recorded, 2 = deadline passed. Default sort lists them in that order.
+  function openRank(c) {
+    const d = parseDate(c.deadline);
+    if (!d) return 1;
+    return d >= TODAY ? 0 : 2;
+  }
   function sortConfs(list) {
     const TIER_ORDER = { "A*": 0, "A": 1, "B": 2, "industry": 3, "journal": 4 };
     const FAR = new Date(8640000000000000);
@@ -1741,9 +1871,11 @@ function getJS(): string {
         }
         case "deadline-asc":
         default: {
+          const ga = openRank(a), gb = openRank(b);
+          if (ga !== gb) return ga - gb;
           const da = parseDate(a.deadline) || parseDate(a.conferenceStart) || FAR;
           const db = parseDate(b.deadline) || parseDate(b.conferenceStart) || FAR;
-          return da - db;
+          return ga === 2 ? db - da : da - db;
         }
       }
     });
@@ -1781,7 +1913,14 @@ function getJS(): string {
     return "in " + days + "d";
   }
 
-  // ------ Stats ------
+  // ------ Stats, next-deadline readout, year rail ------
+  function monthsShown() { return window.matchMedia("(max-width: 599px)").matches ? 6 : 12; }
+  function railEnd(months) { const e = new Date(TODAY); e.setMonth(e.getMonth() + months); return e; }
+  // The rail and its count both come from this list: deadlines from today up to the same date a year (or half a year) on.
+  function railDeadlines(months) {
+    const end = railEnd(months);
+    return CONFS.map(c => ({ c, d: parseDate(c.deadline) })).filter(x => x.d && x.d >= TODAY && x.d < end).sort((a, b) => a.d - b.d);
+  }
   function renderStats() {
     const all = CONFS.length;
     const upcoming = CONFS
@@ -1790,15 +1929,72 @@ function getJS(): string {
     upcoming.sort((a,b) => a.days - b.days);
     const next = upcoming[0];
     const starred = state.starred.size;
-
-    const html = [
-      '<span class="stat"><strong>' + all + '</strong>conferences</span>',
-      next
-        ? '<span class="stat"><strong class="stat-' + (next.days <= 14 ? "urgent" : "accent") + '">' + next.c.name + '</strong>next deadline, ' + countdownText(next.days, next.c.deadline) + '</span>'
-        : '',
+    document.getElementById("stats").innerHTML = [
+      '<span class="stat"><strong>' + all + '</strong>venues</span>',
+      '<span class="stat"><strong>' + upcoming.length + '</strong>open deadlines</span>',
       '<span class="stat"><strong>' + starred + '</strong>starred</span>',
     ].join("");
-    document.getElementById("stats").innerHTML = html;
+    renderReadout(next);
+    renderRail();
+  }
+  function renderReadout(next) {
+    const el = document.getElementById("readout");
+    if (!next) {
+      el.removeAttribute("data-tone");
+      el.innerHTML = '<div class="readout-body"><span class="readout-venue">No open deadlines</span><span class="readout-date">Every recorded deadline has passed.</span></div>';
+      return;
+    }
+    const tone = next.days <= 14 ? "urgent" : (next.days <= 45 ? "soon" : "far");
+    el.setAttribute("data-tone", tone);
+    const word = tone === "urgent" ? "Urgent. " : (tone === "soon" ? "Soon. " : "");
+    el.innerHTML =
+      '<div class="readout-count"><span class="readout-num">' + next.days + '</span><span class="readout-unit">' + (next.days === 1 ? "day" : "days") + '</span></div>' +
+      '<div class="readout-body"><span class="readout-venue">' + escape(next.c.name) + ' ' + escape(next.c.year) + '</span>' +
+      '<span class="readout-date">' + (word ? '<span class="readout-tone">' + word + '</span>' : '') + 'Paper deadline ' + fmtDate(next.c.deadline) + '</span></div>';
+  }
+  let railWidth = 0;
+  function renderRail() {
+    const host = document.getElementById("yearRail");
+    const months = monthsShown();
+    const w = Math.max(host.clientWidth, 200), H = 48, axisY = 30;
+    railWidth = host.clientWidth;
+    const end = railEnd(months), span = end - TODAY;
+    const items = railDeadlines(months);
+    const xOf = d => ((d - TODAY) / span) * (w - 6) + 3;
+    const label = months === 6 ? "next 6 months" : "next 12 months";
+    const urgentN = items.filter(x => daysUntil(x.d) <= 14).length;
+    const names = items.map(x => x.c.name + " " + fmtDate(x.c.deadline)).join("; ");
+    let svg = '<svg class="rail-svg" viewBox="0 0 ' + w + ' ' + H + '" width="' + w + '" height="' + H + '" role="img" aria-labelledby="railTitle railDesc">' +
+      '<title id="railTitle">Deadlines in the ' + label + '</title>' +
+      '<desc id="railDesc">' + (items.length ? items.length + ' deadlines: ' + escape(names) : 'No deadlines') + '</desc>' +
+      '<line class="rail-axis" x1="0" y1="' + axisY + '" x2="' + w + '" y2="' + axisY + '"></line>';
+    for (let i = 0; i < months; i++) {
+      const m = new Date(TODAY.getFullYear(), TODAY.getMonth() + 1 + i, 1);
+      if (m >= end) break;
+      const x = xOf(m);
+      if (x > w - 40) break;
+      svg += '<line class="rail-month" x1="' + x + '" y1="' + (axisY - 6) + '" x2="' + x + '" y2="' + (axisY + 6) + '"></line>' +
+        '<text class="rail-label" x="' + (x + 4) + '" y="' + (H - 4) + '">' + m.toLocaleDateString("en-US", { month: "short" }) + '</text>';
+    }
+    svg += '<line class="rail-today" x1="2" y1="' + (axisY - 22) + '" x2="2" y2="' + (axisY + 6) + '"></line>';
+    const used = {};
+    items.forEach(x => {
+      const bucket = Math.round(xOf(x.d) / 4);
+      const n = used[bucket] || 0; used[bucket] = n + 1;
+      const urgent = daysUntil(x.d) <= 14;
+      const h = urgent ? 20 : 14;
+      const meta = FIELDS[(x.c.fields || [])[0]] || { color: "var(--text-2)" };
+      const fill = urgent ? "var(--status-urgent)" : meta.color;
+      svg += '<rect class="rail-tick' + (urgent ? ' urgent' : '') + '" data-id="' + x.c.id + '" x="' + (xOf(x.d) - 1.5 + n * 4) + '" y="' + (axisY - h) + '" width="3" height="' + h + '" rx="1" style="fill:' + fill + '"></rect>';
+    });
+    svg += '</svg>';
+    host.innerHTML = '<figcaption class="rail-caption" id="railCount" data-count="' + items.length + '"><strong>' + items.length + '</strong> deadline' + (items.length === 1 ? '' : 's') + ' in the ' + label + (urgentN ? ', ' + urgentN + ' urgent' : '') + '</figcaption>' + svg;
+  }
+  if (typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(() => {
+      const h = document.getElementById("yearRail");
+      if (dataOk && h.clientWidth && Math.abs(h.clientWidth - railWidth) > 1) renderRail();
+    }).observe(document.getElementById("yearRail"));
   }
 
   // ------ Region states: loading skeleton is static markup, empty and error are drawn here ------
@@ -1873,11 +2069,49 @@ function getJS(): string {
     });
   }
 
+  // ------ Re-sort motion (FLIP): measure rows, redraw, play each surviving row from its old place to its new one ------
+  const FLIP_SEL = ".card[data-id], tbody tr[data-id]";
+  function flipCapture() {
+    const m = new Map();
+    const el = document.getElementById("view-" + state.view);
+    if (!el || el.classList.contains("hidden")) return m;
+    el.querySelectorAll(FLIP_SEL).forEach(n => m.set(n.dataset.id, n.getBoundingClientRect()));
+    return m;
+  }
+  function flipPlay(before) {
+    if (!before.size) return;
+    const dur = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--dur-move")) || 0;
+    if (dur <= 0) return;
+    const el = document.getElementById("view-" + state.view);
+    const moved = [];
+    el.querySelectorAll(FLIP_SEL).forEach(n => {
+      const o = before.get(n.dataset.id);
+      if (!o) return;
+      const r = n.getBoundingClientRect();
+      const dx = o.left - r.left, dy = o.top - r.top;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+      n.style.transition = "none";
+      n.style.transform = "translate(" + dx + "px," + dy + "px)";
+      moved.push(n);
+    });
+    if (!moved.length) return;
+    void document.body.offsetWidth;
+    moved.forEach(n => {
+      n.style.transition = "transform var(--dur-move) var(--ease-out)";
+      n.style.transform = "";
+      n.addEventListener("transitionend", () => { n.style.transition = ""; }, { once: true });
+    });
+  }
+  let lastView = null;
+
   // ------ Render router ------
   function render() {
+    const before = lastView === state.view ? flipCapture() : new Map();
     state.shown = null;
     if (!dataOk) {
       document.getElementById("stats").innerHTML = '<span>Counts unavailable.</span>';
+      document.getElementById("readout").innerHTML = '<div class="readout-body"><span class="readout-venue">Next deadline unavailable</span></div>';
+      document.getElementById("yearRail").innerHTML = '';
       document.querySelectorAll(".view").forEach(v => setRegion(v, errorHtml(VIEW_LABEL[v.id.replace("view-", "")], "The venue data did not load. Your stars and notes are still saved in this browser.")));
       return;
     }
@@ -1895,6 +2129,8 @@ function getJS(): string {
       setRegion(el, errorHtml(VIEW_LABEL[state.view] || "view", "Something failed while drawing this view. " + escape(err && err.message ? err.message : "")));
     }
     syncControls();
+    flipPlay(before);
+    lastView = state.view;
   }
 
   // ------ Timeline view (dispatcher) ------
@@ -2225,6 +2461,15 @@ function getJS(): string {
       return '<span class="card-tag" style="--tag-bg:' + meta.color + '">' + escape(meta.label) + '</span>';
     }).join("");
   }
+  // Spec line under a venue: type, tier, format. A value the data does not have is left out, never a dash.
+  function specLine(c) {
+    const parts = [];
+    const type = c.tier === "journal" ? "Journal" : ((c.conferenceStart || (c.location && c.location.city && c.location.city !== "N/A")) ? "Conference" : "");
+    if (type) parts.push(type);
+    if (c.tier && c.tier !== "journal") parts.push(c.tier === "industry" ? "Industry" : "Tier " + c.tier);
+    if (c.format) parts.push(c.format);
+    return parts.join(" · ");
+  }
   function isClosed(c) { const d = daysUntil(parseDate(c.deadline)); return d !== null && d < 0; }
   function countdownHtml(c) {
     if (!c.deadline) return '<span class="card-countdown">no deadline</span>';
@@ -2290,13 +2535,13 @@ function getJS(): string {
           '<h3 class="card-name">' + escape(c.name) + '<span class="year">' + escape(c.year) + '</span></h3>' +
           '<span class="card-tier">' + escape(c.tier) + '</span>' +
         '</div>' +
+        (specLine(c) ? '<p class="card-spec">' + escape(specLine(c)) + '</p>' : '') +
         '<p class="card-fullname">' + escape(c.fullName) + '</p>' +
         '<div class="card-tags">' + fieldTags(c) + '</div>' +
         '<dl class="card-meta">' +
           '<dt>Deadline</dt><dd>' + deadlineHtml(c) + '</dd>' +
           '<dt>Conf</dt><dd>' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</dd>' +
           '<dt>Where</dt><dd>' + whereText(c) + '</dd>' +
-          (c.format ? '<dt>Format</dt><dd>' + escape(c.format) + '</dd>' : '') +
         '</dl>' +
         (c.fit ? '<p class="card-fit">' + escape(c.fit) + '</p>' : '') +
         '<div class="card-actions">' +
@@ -2338,39 +2583,42 @@ function getJS(): string {
       conferenceStart: "conference-asc",
     };
     const sortCol = { "name-asc": ["name", "ascending"], "tier-asc": ["tier", "ascending"], "deadline-asc": ["deadline", "ascending"], "deadline-desc": ["deadline", "descending"], "conference-asc": ["conferenceStart", "ascending"] }[state.sort] || [];
+    const thClass = { name: "c-venue", tier: "c-tier", deadline: "c-deadline", conferenceStart: "c-conf" };
     const th = (key, label) => {
       const sorted = sortCol[0] === key;
       const dir = sorted ? sortCol[1] : "";
-      return '<th data-sort="' + key + '"' + (sorted ? ' aria-sort="' + dir + '"' : '') + '><button type="button" class="th-btn" data-dir="' + (dir === "ascending" ? "asc" : dir === "descending" ? "desc" : "") + '">' + label + (sorted ? icon("chevron-down") : icon("arrows-sort")) + '</button></th>';
+      return '<th class="' + thClass[key] + '" data-sort="' + key + '"' + (sorted ? ' aria-sort="' + dir + '"' : '') + '><button type="button" class="th-btn" data-dir="' + (dir === "ascending" ? "asc" : dir === "descending" ? "desc" : "") + '">' + label + (sorted ? icon("chevron-down") : icon("arrows-sort")) + '</button></th>';
     };
     const rows = list.map(c => {
       const isStarred = state.starred.has(c.id);
       const status = state.status[c.id] || "";
       const cls = (isStarred ? "starred " : "") + (isClosed(c) ? "closed" : "");
+      const cdCell = !c.deadline ? countdownHtml(c) : countdownHtml(c) + (isClosed(c) ? '' : '<span class="cd-date">' + fmtDate(c.deadline) + '</span>');
       return '<tr class="' + cls + '" data-id="' + c.id + '" tabindex="0">' +
-        '<td>' + starBtn(c) + '</td>' +
-        '<td><strong>' + escape(c.name) + '</strong><span class="year">' + escape(c.year) + '</span>' +
+        '<td class="c-star">' + starBtn(c) + '</td>' +
+        '<td class="c-venue"><strong>' + escape(c.name) + '</strong><span class="year">' + escape(c.year) + '</span>' +
           (status ? ' <span class="status-pill status-' + status + '">' + escape(STATUS_LABEL[status] || status) + '</span>' : '') +
+          (specLine(c) ? '<span class="spec">' + escape(specLine(c)) + '</span>' : '') +
         '</td>' +
-        '<td>' + fieldTags(c) + '</td>' +
-        '<td>' + escape(c.tier || "") + '</td>' +
-        '<td class="num">' + deadlineHtml(c) + '</td>' +
-        '<td class="num">' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</td>' +
-        '<td>' + whereText(c) + '</td>' +
-        '<td><a class="link-icon" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" aria-label="CFP for ' + escapeAttr(c.name) + ', opens in a new tab" onclick="event.stopPropagation()">' + icon("external-link") + '</a></td>' +
+        '<td class="c-field">' + fieldTags(c) + '</td>' +
+        '<td class="c-tier">' + escape(c.tier || "") + '</td>' +
+        '<td class="c-deadline"><div class="cd-cell">' + cdCell + '</div></td>' +
+        '<td class="c-conf">' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</td>' +
+        '<td class="c-where">' + whereText(c) + '</td>' +
+        '<td class="c-link"><a class="link-icon" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" aria-label="CFP for ' + escapeAttr(c.name) + ', opens in a new tab" onclick="event.stopPropagation()">' + icon("external-link") + '</a></td>' +
       '</tr>';
     }).join("");
 
     setRegion(el, '<div class="table-wrap"><table class="confs">' +
       '<thead><tr>' +
-        '<th><span class="vh">Star</span></th>' +
+        '<th class="c-star"><span class="vh">Star</span></th>' +
         th("name", "Conf") +
-        '<th>Field</th>' +
+        '<th class="c-field">Field</th>' +
         th("tier", "Tier") +
         th("deadline", "Deadline") +
         th("conferenceStart", "Conference") +
-        '<th>Where</th>' +
-        '<th><span class="vh">Call for papers</span></th>' +
+        '<th class="c-where">Where</th>' +
+        '<th class="c-link"><span class="vh">Call for papers</span></th>' +
       '</tr></thead>' +
       '<tbody>' + rows + '</tbody>' +
     '</table></div>');
@@ -2515,6 +2763,8 @@ function getJS(): string {
     else state.starred.add(id);
     localStorage.setItem("ct.starred", JSON.stringify([...state.starred]));
     render();
+    // Star fill: restart from the outline so the filled star eases in.
+    if (state.starred.has(id)) document.querySelectorAll('.star-btn[data-star="' + id + '"]').forEach(b => { b.classList.remove("starred"); void b.offsetWidth; b.classList.add("starred"); });
   }
   function setNote(id, text) {
     if (text) state.notes[id] = text;

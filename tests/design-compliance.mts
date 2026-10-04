@@ -36,6 +36,14 @@ for (const w of [375, 768, 1440]) for (const theme of ["light","dark"]) {
     if (r.phClipped.length) failures.push(tag+": placeholder clipped "+r.phClipped.join(","));
     if (r.clipped.length) failures.push(tag+": clipped text");
     if (ax.violations.length) failures.push(tag+": axe "+ax.violations.map(x=>x.id).join(","));
+    if (w === 1440) {
+      const top = await p.evaluate((view) => {
+        const sel = { timeline: ".tlcal-row, .timeline-svg", cards: ".card", table: "tbody tr", map: ".map-svg" }[view]!;
+        const e = document.querySelector(sel.split(", ").map(x => "#view-" + view + " " + x).join(", ")); return e ? Math.round(e.getBoundingClientRect().top) : -1;
+      }, v);
+      console.log("  first data top at 1440x900:", v, top);
+      if (top < 0 || top >= 900) failures.push(tag + ": first data element top " + top + " is not above y=900");
+    }
     if (shots && theme==="light") await p.screenshot({ path: `${shots}/${v}-${w}.png`, fullPage: false });
   }
   await ctx.close();
@@ -84,7 +92,7 @@ for (const w of [375, 768, 1440]) for (const theme of ["light","dark"]) {
     });
     seen.push(r.tag); if (!r.ring && r.tag !== "BODY") ringBad++;
   }
-  const order = ["themeBtn","view:timeline","view:cards","view:table","view:map","viewbar-action","submitConfBtn","field:HCI","tier:all","tier:A*","tier:industry","tier:journal","sortSelect","win:30","win:90","win:180","win:all","searchInput","mode:calendar","mode:gantt"];
+  const order = ["themeBtn","view:timeline","view:cards","view:table","view:map","searchInput","viewbar-action","submitConfBtn","field:HCI","tier:all","tier:A*","tier:industry","tier:journal","win:30","win:90","win:180","win:all","sortSelect","mode:calendar","mode:gantt"];
   let at = -1; const missing: string[] = [];
   for (const o of order) { const i = seen.indexOf(o, at + 1); if (i < 0) missing.push(o); else at = i; }
   if (!(await p.locator("#starredOnly").isDisabled())) failures.push("starred-only should be disabled while nothing is starred");
@@ -140,6 +148,116 @@ for (const w of [375, 768, 1440]) for (const theme of ["light","dark"]) {
   const regionErr = await ep.evaluate(() => [...document.querySelectorAll(".view")].map(v => !!v.querySelector(".region-error [data-retry]")));
   if (regionErr.length !== 4 || regionErr.some(x => !x)) failures.push("error state with Retry missing: " + JSON.stringify(regionErr));
   await ectx.close();
+}
+
+// ---- Layout and motion assertions (packet 3): rail, readout, sort, rows, container queries, FLIP, reduced motion, ledger at 375 ----
+{
+  const api = await (await fetch(new URL("/api/conferences", url))).json();
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const parse = (d: string | null) => d ? new Date(d.replace(/X/g, "1") + "T00:00:00") : null;
+  const inNext = (months: number) => { const end = new Date(today); end.setMonth(end.getMonth() + months); return api.conferences.filter((c: any) => { const d = parse(c.deadline); return d && d >= today && d < end; }).length; };
+  const openIds = new Set(api.conferences.filter((c: any) => { const d = parse(c.deadline); return d && d >= today; }).map((c: any) => c.id));
+
+  // 1440: layout, rail, readout, default sort, spec line, countdown column, containers
+  const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "no-preference" });
+  const p = await ctx.newPage(); await p.goto(url, { waitUntil: "networkidle" });
+  await p.evaluate(() => { localStorage.clear(); }); await p.reload({ waitUntil: "networkidle" });
+  const lay = await p.evaluate(() => {
+    const r = (s: string) => document.querySelector(s)!.getBoundingClientRect();
+    const f = document.getElementById("filters") as HTMLDetailsElement;
+    return {
+      appbar: r(".appbar").height,
+      sticky: getComputedStyle(f).position, open: f.open, filtersRight: Math.round(r("#filters").right), mainLeft: Math.round(r("#main").left),
+      ticks: document.querySelectorAll("#yearRail .rail-tick").length, railCount: Number(document.getElementById("railCount")!.dataset.count),
+      svgText: !!document.querySelector("#yearRail svg title") && !!document.querySelector("#yearRail svg desc"),
+      stripType: getComputedStyle(document.querySelector(".strip-box")!).containerType, stripPad: parseFloat(getComputedStyle(document.querySelector(".strip-box")!).paddingLeft),
+      searchInBar: !!document.querySelector(".viewbar #searchInput"), actionsInBar: document.querySelectorAll(".viewbar .viewbar-action").length,
+    };
+  });
+  console.log("layout 1440", JSON.stringify(lay));
+  if (lay.sticky !== "sticky" || !lay.open) failures.push("1440: filters are not an open sticky rail");
+  if (lay.filtersRight > lay.mainLeft) failures.push("1440: filter rail overlaps the data column");
+  if (lay.appbar > 90) failures.push("1440: app bar is not one line (" + lay.appbar + "px)");
+  if (lay.ticks !== inNext(12) || lay.railCount !== lay.ticks) failures.push("year rail ticks " + lay.ticks + " / reported " + lay.railCount + " vs " + inNext(12) + " deadlines in the next 12 months");
+  if (!lay.svgText) failures.push("year rail has no text alternative");
+  if (lay.stripType !== "inline-size") failures.push("deadline strip is not a container");
+  if (lay.stripPad !== 24) failures.push("1440: strip padding " + lay.stripPad + " expected clamp max 24");
+  if (!lay.searchInBar || lay.actionsInBar !== 2) failures.push("search or actions missing from the view bar");
+  const readPx = await p.evaluate(() => { const probe = document.createElement("i"); probe.style.fontSize = "var(--fs-display)"; document.body.appendChild(probe); const v = getComputedStyle(probe).fontSize; probe.remove(); return [getComputedStyle(document.querySelector(".readout-num")!).fontSize, v]; });
+  if (readPx[0] !== readPx[1]) failures.push("readout number is not at --fs-display: " + readPx.join(" vs "));
+
+  await p.click('button[data-view="table"]'); await p.waitForTimeout(300);
+  const tab = await p.evaluate(() => {
+    const first = document.querySelector("tbody tr") as HTMLElement; const cells = [...first.querySelectorAll("td")];
+    const dl = first.querySelector("td.c-deadline") as HTMLElement; const cd = dl.querySelector(".card-countdown") as HTMLElement;
+    return {
+      id: first.dataset.id, closed: first.classList.contains("closed"), cdText: cd.textContent, dlW: dl.getBoundingClientRect().width, maxOther: Math.max(...cells.filter(c => c !== dl).map(c => c.getBoundingClientRect().width)),
+      align: getComputedStyle(dl).textAlign, weight: getComputedStyle(cd).fontWeight, rowsType: getComputedStyle(document.querySelector(".table-wrap")!).containerType,
+      specs: [...document.querySelectorAll("tbody .spec")].map(e => e.textContent || ""),
+    };
+  });
+  if (!openIds.has(tab.id) || tab.closed || /^closed/.test(tab.cdText || "")) failures.push("default sort: first table row is not an open deadline (" + tab.id + ")");
+  if (!(tab.dlW > tab.maxOther)) failures.push("countdown column is not the widest cell: " + tab.dlW + " vs " + tab.maxOther);
+  if (tab.align !== "right" || tab.weight !== "600") failures.push("countdown not right-aligned weight 600: " + tab.align + " " + tab.weight);
+  if (tab.rowsType !== "inline-size") failures.push("table is not a container");
+  if (tab.specs.some(t => /^\s*·|·\s*·|·\s*$/.test(t)) || !tab.specs.length) failures.push("spec line has empty values or is missing in the table");
+  await p.click('button[data-view="cards"]'); await p.waitForTimeout(300);
+  const cardFacts = await p.evaluate(() => ({ spec: document.querySelectorAll(".card .card-spec").length, type: getComputedStyle(document.querySelector(".card")!).containerType, journal: [...document.querySelectorAll(".card")].filter(c => /Journal/.test(c.querySelector(".card-spec")?.textContent || "")).every(c => !/Tier/.test(c.querySelector(".card-spec")!.textContent!)) }));
+  if (cardFacts.spec < 1 || cardFacts.type !== "inline-size" || !cardFacts.journal) failures.push("cards: spec line or container missing " + JSON.stringify(cardFacts));
+
+  // FLIP: a filter change moves surviving rows with a 160ms transform transition
+  await p.click('button[data-view="table"]'); await p.waitForTimeout(300);
+  await p.evaluate(() => { (window as any).__tr = []; document.addEventListener("transitionrun", (e) => { const t = e as TransitionEvent; const el = t.target as Element; if (t.propertyName === "transform" && el.closest("tbody tr, .card")) (window as any).__tr.push(getComputedStyle(el).transitionDuration); }, true); });
+  await p.click('#tierChips .chip[data-tier="A*"]'); await p.waitForTimeout(450);
+  const tr = await p.evaluate(() => (window as any).__tr as string[]);
+  console.log("flip transitions", tr.length, [...new Set(tr)].join(","));
+  if (!tr.length || tr.some(d => d !== "0.16s")) failures.push("re-sort did not run 160ms transform transitions: " + tr.length + " " + [...new Set(tr)].join(","));
+  await p.click('#tierChips .chip[data-tier="all"]');
+  await ctx.close();
+
+  // reduced motion: no transition or animation runs on a filter change, a view switch or a star
+  const rctx = await b.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
+  const rp = await rctx.newPage(); await rp.goto(url, { waitUntil: "networkidle" });
+  await rp.click('button[data-view="table"]'); await rp.waitForTimeout(300);
+  await rp.evaluate(() => { (window as any).__any = 0; for (const ev of ["transitionrun", "animationstart"]) document.addEventListener(ev, () => { (window as any).__any++; }, true); });
+  await rp.click('#tierChips .chip[data-tier="A*"]'); await rp.waitForTimeout(300);
+  await rp.click('button[data-view="cards"]'); await rp.waitForTimeout(300);
+  await rp.locator(".card .star-btn").first().click(); await rp.waitForTimeout(300);
+  const ran = await rp.evaluate(() => (window as any).__any as number);
+  if (ran) failures.push("reduced motion: " + ran + " transitions or animations ran");
+  await rctx.close();
+
+  // 768 and 375: details block, table restack, rail months, ledger with the filters block opened
+  for (const w of [768, 375]) {
+    const c2 = await b.newContext({ viewport: { width: w, height: 900 }, reducedMotion: "reduce" });
+    const q = await c2.newPage(); await q.goto(url, { waitUntil: "networkidle" });
+    await q.evaluate(() => { localStorage.clear(); }); await q.reload({ waitUntil: "networkidle" });
+    const f = await q.evaluate(() => ({ open: (document.getElementById("filters") as HTMLDetailsElement).open, count: document.getElementById("filtersCount")!.textContent, sticky: getComputedStyle(document.getElementById("filters")!).position, ticks: document.querySelectorAll("#yearRail .rail-tick").length, pad: parseFloat(getComputedStyle(document.querySelector(".strip-box")!).paddingLeft), hs: document.documentElement.scrollWidth - document.documentElement.clientWidth }));
+    const want = w === 375 ? inNext(6) : inNext(12);
+    if (f.open || f.sticky === "sticky" || f.count !== "0 active") failures.push(w + ": filters should be a closed details block with a count: " + JSON.stringify(f));
+    if (f.ticks !== want) failures.push(w + ": rail ticks " + f.ticks + " vs " + want);
+    if (f.hs !== 0) failures.push(w + ": scrollWidth differs from clientWidth");
+    if (w === 375 && f.pad !== 16) failures.push("375: strip padding " + f.pad + " expected 16");
+    await q.click("#filtersSummary"); await q.waitForTimeout(100);
+    await q.click('#tierChips .chip[data-tier="A*"]');
+    if ((await q.locator("#filtersCount").innerText()) !== "1 active") failures.push(w + ": active count did not update");
+    await q.click('#tierChips .chip[data-tier="all"]');
+    const need: Record<string, number> = { "#themeBtn": 1, ".view-tab": 4, 'a.viewbar-action[href="/cal.ics"]': 1, "#submitConfBtn": 1, "#fieldChips .chip": 14, "#tierChips .chip": 6, "#sortSelect": 1, "#windowChips .chip": 4, "#searchInput": 1, "#starredOnly": 1 };
+    for (const [sel, n] of Object.entries(need)) {
+      const vis = await q.locator(sel).evaluateAll((els) => els.filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; }).length);
+      if (vis !== n) failures.push(w + ": ledger control " + sel + " visible " + vis + " of " + n);
+    }
+    await q.click('button[data-view="cards"]'); await q.waitForTimeout(250);
+    if ((await q.locator("#cardDensityGroup [data-density]").count()) !== 3 || (await q.locator(".card .star-btn").count()) < 1) failures.push(w + ": cards controls missing");
+    await q.click('button[data-view="timeline"]'); await q.waitForTimeout(250);
+    if ((await q.locator("#tlModeGroup [data-mode]").count()) !== 2) failures.push(w + ": calendar and gantt switch missing");
+    if (w === 375) {
+      await q.click('button[data-view="table"]'); await q.waitForTimeout(250);
+      const rs = await q.evaluate(() => { const tr = document.querySelector("tbody tr")!; const t = (tr.querySelector(".c-venue") as HTMLElement).getBoundingClientRect(); const d = (tr.querySelector(".c-deadline") as HTMLElement).getBoundingClientRect(); return { display: getComputedStyle(tr).display, sameLine: Math.abs(t.top - d.top) < 8 }; });
+      if (rs.display !== "grid" || !rs.sameLine) failures.push("375: table rows did not restack " + JSON.stringify(rs));
+    }
+    await c2.close();
+  }
 }
 await b.close();
 if (failures.length) { console.error(failures.join(", ")); process.exit(1); }
