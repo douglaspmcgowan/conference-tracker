@@ -1227,7 +1227,7 @@ strong { font-weight: 600; }
   .masthead-stats { gap: 0.5rem 1rem; }
   .viewbar-inner { gap: 0.5rem; flex-wrap: wrap; overflow-x: visible; }
   .viewbar-spacer { flex-basis: 100%; min-width: 0; height: 0; }
-  .filters { padding-top: 1rem; gap: 0.95rem; }
+  .filters { padding-top: 1rem; gap: 0.95rem; flex-direction: column; align-items: stretch; }
   .filters-main { width: 100%; gap: 0.9rem; }
   .filters-search { width: 100%; min-width: 0; }
   .filter-group { grid-template-columns: 1fr; gap: 0.35rem; width: 100%; }

@@ -21,7 +21,8 @@ for (const w of [375, 768, 1440]) for (const theme of ["light","dark"]) {
       for (const e of document.querySelectorAll("button, a[href], select, input, label.starred-toggle, [role=button]")) { const r=e.getBoundingClientRect(); const s=getComputedStyle(e); if(!r.width||s.visibility==="hidden"||e.closest(".hidden")||e.closest(".grain")) continue; if((e as HTMLInputElement).type==="checkbox") continue; if (r.width<43.5||r.height<43.5) small.push((e.className||e.tagName)+" "+Math.round(r.width)+"x"+Math.round(r.height)); }
       const clipped = vis.filter(e=>{const s=getComputedStyle(e); return e.scrollWidth>e.clientWidth+1 && (s.overflow==="hidden"||s.textOverflow==="ellipsis") && e.clientWidth>0;}).map(e=>e.className||e.tagName).slice(0,5);
       const upper = vis.filter(e=>getComputedStyle(e).textTransform==="uppercase").length;
-      return { hs: document.documentElement.scrollWidth>document.documentElement.clientWidth, sizes:[...sizes], wts:[...wts], fams:[...fams], small:[...new Set(small)].slice(0,8), nsmall: small.length, clipped, upper };
+      const phClipped = [...document.querySelectorAll("input[placeholder], textarea[placeholder]")].filter(e => { const i = e as HTMLInputElement; const st = getComputedStyle(i); if (!i.getBoundingClientRect().width || i.closest(".hidden")) return false; const c = document.createElement("canvas").getContext("2d")!; c.font = st.fontWeight + " " + st.fontSize + " " + st.fontFamily; return c.measureText(i.placeholder).width > i.clientWidth - parseFloat(st.paddingLeft) - parseFloat(st.paddingRight) && i.tagName === "INPUT"; }).map(e => e.id || e.tagName);
+      return { phClipped, hs: document.documentElement.scrollWidth>document.documentElement.clientWidth, sizes:[...sizes], wts:[...wts], fams:[...fams], small:[...new Set(small)].slice(0,8), nsmall: small.length, clipped, upper };
     });
     const ax = await new AxeBuilder({ page: p }).withTags(["wcag2a","wcag2aa","wcag21aa"]).analyze();
     console.log(w, theme, v, JSON.stringify(r), "axe:", ax.violations.map(x=>x.id+"x"+x.nodes.length).join(","));
@@ -32,6 +33,7 @@ for (const w of [375, 768, 1440]) for (const theme of ["light","dark"]) {
     if (r.fams.length>1) failures.push(tag+": "+r.fams.length+" font families");
     if (r.upper) failures.push(tag+": uppercase text");
     if (r.nsmall) failures.push(tag+": "+r.nsmall+" targets under 44px");
+    if (r.phClipped.length) failures.push(tag+": placeholder clipped "+r.phClipped.join(","));
     if (r.clipped.length) failures.push(tag+": clipped text");
     if (ax.violations.length) failures.push(tag+": axe "+ax.violations.map(x=>x.id).join(","));
     if (shots && theme==="light") await p.screenshot({ path: `${shots}/${v}-${w}.png`, fullPage: false });
