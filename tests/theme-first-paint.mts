@@ -22,7 +22,7 @@ const read = () => ({
   fg: getComputedStyle(document.body).color,
 });
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ channel: "chrome" });
 for (const scheme of ["light", "dark"] as const) {
   const noJsCtx = await browser.newContext({ colorScheme: scheme, javaScriptEnabled: false });
   const noJsPage = await noJsCtx.newPage();

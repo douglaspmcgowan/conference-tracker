@@ -36,7 +36,7 @@ const PROPS = [
   "box-shadow", "opacity", "outline-color", "fill", "stroke",
 ];
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ channel: "chrome" });
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1, reducedMotion: "reduce" });
 const page = await ctx.newPage();
 await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });

@@ -14,10 +14,10 @@ import { AxeBuilder } from "@axe-core/playwright";
 
 const url = process.argv[2] || "http://localhost:3010/";
 const blocking = new Set(["serious", "critical"]);
-const CONTRAST_BASELINE: Record<string, number> = { light: 36, dark: 3 };
+const CONTRAST_BASELINE: Record<string, number> = { light: 0, dark: 0 };
 const failures: string[] = [];
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ channel: "chrome" });
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
 const page = await ctx.newPage();
 await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });

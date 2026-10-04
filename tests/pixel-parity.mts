@@ -16,7 +16,7 @@ if (!before || !after) {
   process.exit(2);
 }
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ channel: "chrome" });
 const shoot = async (url: string, theme: string): Promise<string> => {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1, reducedMotion: "reduce" });
   const page: Page = await ctx.newPage();

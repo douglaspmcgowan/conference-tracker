@@ -93,12 +93,16 @@ The full universal rules are `~/.agents/DESIGN.md`. Where a library entry and a 
 
 ## Product-specific typography
 
-- Body: the existing proportional interface face used for labels, prose, names, dates, and controls.
-- Display: the existing masthead and section-display role defined in `server.ts`.
-- Monospace: code, machine-readable identifiers, and the existing `var(--mono)` treatment for timeline/table dates and genuinely tabular numeric metadata.
+- Body and labels: Hanken Grotesk (`--sans`), the only family on screen. Dates, counts and columns use `font-variant-numeric: tabular-nums`, never monospace.
+- Display: the same family at `--fs-display` for the page and modal titles.
+- Monospace: `--mono` exists for the `code` element only; no screen renders code.
+- Scale: three sizes (`--fs-sm` 13px, `--fs-base` 16px, `--fs-display` 32 to 36px) and three weights (400, 500, 600). Sentence case everywhere; no uppercase text.
+- Icons: inline SVG, one stroke style (theme toggle, star); no emoji.
+- Date format: short month, day and year (for example Mar 4, 2026) via `fmtDate`; ranges share the month and year. Numbers use plain digits.
 
 ## Tokens and components
 
+- Field tags derive their fill from the field colour with `color-mix` toward near-black (`--tag-bg` set inline), so white tag text holds 4.5:1 for every field colour. `--accent-ink` is the accent for text on tinted surfaces.
 - Preserve the existing `--accent: #2D5BFF`, low-contrast hairlines, warm-dark palette, restrained grain, and four established timeline/card/table/map views.
 - Reuse the existing filters, viewbar, status pills, countdown chips, modal, and responsive layouts before adding variants.
 
@@ -108,5 +112,8 @@ The full universal rules are `~/.agents/DESIGN.md`. Where a library entry and a 
 - Status and tier meaning must remain understandable without color alone.
 
 ## Exceptions
+
+- Gate: `npm run design` (tests/design-compliance.mts) checks all four views, both themes and 375, 768 and 1440 px.
+- Open: spacing is still rem literals rather than a 4/8/12/16/24/32/48/64 token scale; no `@container` queries; no og:image (needs a raster asset).
 
 - Record a universal-rule exception only with the evidence and verifier that justify it.

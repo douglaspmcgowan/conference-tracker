@@ -21,7 +21,7 @@ const ok = (msg: string) => log("  ✓", msg);
 const fail = (msg: string) => { errors.push(msg); log("  ✗", msg); };
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ channel: "chrome" });
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
   const page = await ctx.newPage();
 

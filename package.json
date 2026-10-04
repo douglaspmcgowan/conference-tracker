@@ -15,7 +15,8 @@
     "theme-paint": "node tests/theme-first-paint.mts",
     "floor": "node tests/floor-measure.mts",
     "oracle": "node tests/computed-style-oracle.mts",
-    "refresh-data": "node scripts/refresh-data.ts"
+    "refresh-data": "node scripts/refresh-data.ts",
+    "design": "node tests/design-compliance.mts"
   },
   "dependencies": {
     "express": "4.22.3"
