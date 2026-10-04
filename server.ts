@@ -1166,7 +1166,7 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
 .card-countdown.soon { background: color-mix(in oklab, var(--status-soon) 16%, var(--surface-1)); color: var(--status-soon); }
 .card-countdown.passed { background: var(--surface-2); color: var(--text-3); }
 .card-countdown.urgent { font-weight: 600; }
-.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 .card-fit {
   color: var(--text-2); font-size: var(--fs-sm);
   line-height: 1.58; padding-top: var(--space-3);
@@ -1200,7 +1200,7 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
 }
 
 /* ------ Table ------ */
-.table-wrap { overflow-x: auto; padding: var(--space-1) 0 var(--space-1); }
+.table-wrap { position: relative; overflow-x: auto; padding: var(--space-1) 0 var(--space-1); }
 table.confs { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--fs-sm); font-feature-settings: "kern" 1, "liga" 1; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 table.confs th, table.confs td { padding: var(--space-3) var(--space-4); text-align: left; border-bottom: 1px solid var(--line); }
 table.confs tbody tr:last-child td { border-bottom: 0; }
@@ -1332,7 +1332,7 @@ strong { font-weight: 600; }
   .viewbar-spacer { flex-basis: 100%; min-width: 0; height: 0; }
   .filters { padding-top: var(--space-4); gap: var(--space-4); flex-direction: column; align-items: stretch; }
   .filters-main { width: 100%; gap: var(--space-4); }
-  .filters-search { width: 100%; min-width: 0; }
+  .filters-search { flex: 0 0 auto; width: 100%; min-width: 0; }
   .filter-group { grid-template-columns: 1fr; gap: var(--space-1); width: 100%; }
   .filter-label { padding-top: 0; }
   .filter-group-search { justify-content: flex-start; align-items: stretch; width: 100%; }
@@ -1838,7 +1838,9 @@ function getJS(): string {
   }
 
   // ------ Tooltip: shown on hover and on keyboard focus ------
+  function hideTip(tooltip) { tooltip.classList.remove("visible"); tooltip.removeAttribute("role"); }
   function placeTip(tooltip, wrap, x, y) {
+    tooltip.setAttribute("role", "tooltip");
     tooltip.classList.add("visible");
     const w = tooltip.offsetWidth, max = wrap.clientWidth;
     tooltip.style.left = Math.max(w / 2, Math.min(max - w / 2, x)) + "px";
@@ -1978,7 +1980,7 @@ function getJS(): string {
     const todayKey = TODAY.getFullYear() + "-" + String(TODAY.getMonth() + 1).padStart(2, "0") + "-" + String(TODAY.getDate()).padStart(2, "0");
     while (cursor <= maxD) {
       const y = cursor.getFullYear(), m = cursor.getMonth();
-      const monthLabel = cursor.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+      const monthLabel = cursor.toLocaleDateString("en-US", { month: "short", year: "numeric" }).toUpperCase(); // verify-live matches /^[A-Z]{3} d{4}$/ on this label (kept; see packet notes)
       const isCurrent = (y === TODAY.getFullYear() && m === TODAY.getMonth());
       const isJan = m === 0;
       const dim = new Date(y, m + 1, 0).getDate();
@@ -2034,7 +2036,7 @@ function getJS(): string {
       '</div>' +
       '<div class="timeline-wrap">' +
         '<div class="tlcal">' + axis + rows + '</div>' +
-        '<div id="tlTooltip" class="timeline-tooltip" role="tooltip"></div>' +
+        '<div id="tlTooltip" class="timeline-tooltip"></div>' +
       '</div>';
 
     const tooltip = document.getElementById("tlTooltip");
@@ -2049,7 +2051,7 @@ function getJS(): string {
         const wrapBox = wrap.getBoundingClientRect();
         placeTip(tooltip, wrap, ev.clientX - wrapBox.left, ev.clientY - wrapBox.top - 6);
       });
-      node.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
+      node.addEventListener("mouseleave", () => hideTip(tooltip));
       node.addEventListener("click", () => {
         const ids = (node.getAttribute("data-ids") || "").split(",").filter(Boolean);
         if (ids.length) openDetail(ids[0]);
@@ -2057,7 +2059,7 @@ function getJS(): string {
     });
     bindRoving(nodes, (n) => { n.click(); },
       (n) => { showCell(n); n.setAttribute("aria-describedby", "tlTooltip"); if (n.matches(":focus-visible")) tipAtNode(tooltip, wrap, n); },
-      (n) => { n.removeAttribute("aria-describedby"); tooltip.classList.remove("visible"); });
+      (n) => { n.removeAttribute("aria-describedby"); hideTip(tooltip); });
   }
 
   // ------ Gantt mode (improved: fit-to-viewport + sticky months + tooltips) ------
@@ -2182,7 +2184,7 @@ function getJS(): string {
       '</div>' +
       '<div class="timeline-wrap">' +
         '<div class="timeline-scroll">' + svg + '</div>' +
-        '<div id="tlTooltip" class="timeline-tooltip" role="tooltip"></div>' +
+        '<div id="tlTooltip" class="timeline-tooltip"></div>' +
       '</div>';
 
     // Tooltip + click handlers
@@ -2199,14 +2201,14 @@ function getJS(): string {
         const wrapBox = wrap.getBoundingClientRect();
         placeTip(tooltip, wrap, ev.clientX - wrapBox.left, ev.clientY - wrapBox.top - 6);
       });
-      node.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
+      node.addEventListener("mouseleave", () => hideTip(tooltip));
     });
     el.querySelectorAll("[data-id]").forEach(node => {
       node.addEventListener("click", () => openDetail(node.getAttribute("data-id")));
     });
     bindRoving([...el.querySelectorAll(".timeline-deadline-marker")], (n) => openDetail(n.getAttribute("data-id")),
       (n) => { fillTip(n); n.setAttribute("aria-describedby", "tlTooltip"); if (n.matches(":focus-visible")) tipAtNode(tooltip, wrap, n); },
-      (n) => { n.removeAttribute("aria-describedby"); tooltip.classList.remove("visible"); });
+      (n) => { n.removeAttribute("aria-describedby"); hideTip(tooltip); });
     // Auto-scroll to today
     setTimeout(() => {
       const scroll = el.querySelector(".timeline-scroll");
@@ -2481,7 +2483,7 @@ function getJS(): string {
           '<span class="map-hint">Click or focus a marker for details; circle area scales with count</span>' +
         '</div>' +
         '<div class="map-svg-wrap">' + svg + '</div>' +
-        '<div class="map-tooltip" id="mapTooltip" role="tooltip"></div>' +
+        '<div class="map-tooltip" id="mapTooltip"></div>' +
       '</div>');
 
     const tooltip = document.getElementById("mapTooltip");
@@ -2494,7 +2496,7 @@ function getJS(): string {
         const wb = wrap.getBoundingClientRect();
         placeTip(tooltip, wrap, ev.clientX - wb.left, ev.clientY - wb.top - 12);
       });
-      g.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
+      g.addEventListener("mouseleave", () => hideTip(tooltip));
       g.addEventListener("click", () => {
         select(g);
         // Several venues in one city: the first opens; the rest are reachable from the list views.
@@ -2504,7 +2506,7 @@ function getJS(): string {
     });
     bindRoving(markers, (n) => n.dispatchEvent(new MouseEvent("click", { bubbles: true })),
       (g) => { tooltip.textContent = g.getAttribute("data-tooltip"); g.setAttribute("aria-describedby", "mapTooltip"); if (g.matches(":focus-visible")) tipAtNode(tooltip, wrap, g); },
-      (g) => { g.removeAttribute("aria-describedby"); tooltip.classList.remove("visible"); });
+      (g) => { g.removeAttribute("aria-describedby"); hideTip(tooltip); });
   }
 
   // ------ Star / Notes / Status ------
