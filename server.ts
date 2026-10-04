@@ -191,6 +191,46 @@ function buildPage(): string {
 <style>${getCSS()}</style>
 </head>
 <body>
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+<symbol id="i-sun" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+  <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" /></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" /></symbol>
+<symbol id="i-star-filled" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" /></symbol>
+<symbol id="i-external-link" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
+  <path d="M11 13l9 -9" />
+  <path d="M15 4h5v5" /></symbol>
+<symbol id="i-calendar-down" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+  <path d="M19 16v6" />
+  <path d="M22 19l-3 3l-3 -3" />
+  <path d="M16 3v4" />
+  <path d="M8 3v4" />
+  <path d="M4 11h16" /></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 5l0 14" />
+  <path d="M5 12l14 0" /></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" /></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 6l-12 12" />
+  <path d="M6 6l12 12" /></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 12l5 5l10 -10" /></symbol>
+<symbol id="i-chevron-down" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 9l6 6l6 -6" /></symbol>
+<symbol id="i-arrows-sort" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9l4 -4l4 4m-4 -4v14" />
+  <path d="M21 15l-4 4l-4 -4m4 4v-14" /></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227" /></symbol>
+</svg>
   <header class="masthead">
     <div class="masthead-row">
       <div class="brand">
@@ -207,14 +247,14 @@ function buildPage(): string {
         </div>
       </div>
       <div class="masthead-actions">
-        <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
-          <span class="theme-icon-light"><svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
-          <span class="theme-icon-dark"><svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></span>
+        <button class="theme-toggle" id="themeBtn" aria-label="Dark theme" aria-pressed="false" title="Toggle theme">
+          <span class="theme-icon-light"><svg class="icon" aria-hidden="true"><use href="#i-sun"></use></svg></span>
+          <span class="theme-icon-dark"><svg class="icon" aria-hidden="true"><use href="#i-moon"></use></svg></span>
         </button>
       </div>
     </div>
     <p class="masthead-lede">Submission deadlines, locations, and requirements for conferences and journals at the intersection of AI and engineering design — spanning HCI, design science, AI / ML, visualization, manufacturing, and cognitive science.</p>
-    <div class="masthead-stats" id="stats" aria-live="polite"></div>
+    <div class="masthead-stats" id="stats" aria-live="polite"><span class="skeleton skeleton-text" aria-hidden="true"></span><span class="skeleton skeleton-text" aria-hidden="true"></span></div>
   </header>
 
   <nav class="viewbar" aria-label="View">
@@ -224,8 +264,8 @@ function buildPage(): string {
       <button class="view-tab" data-view="table" aria-pressed="false">Table</button>
       <button class="view-tab" data-view="map" aria-pressed="false">Map</button>
       <span class="viewbar-spacer"></span>
-      <a class="viewbar-action" href="/cal.ics" download="conferences.ics" title="Download all deadlines as iCal">.ics</a>
-      <button class="viewbar-action" id="submitConfBtn" title="Suggest a missing conference">+ suggest</button>
+      <a class="viewbar-action" href="/cal.ics" download="conferences.ics" title="Download all deadlines as iCal"><svg class="icon" aria-hidden="true"><use href="#i-calendar-down"></use></svg>.ics</a>
+      <button class="viewbar-action" id="submitConfBtn" title="Suggest a missing conference"><svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>Suggest</button>
     </div>
   </nav>
 
@@ -238,57 +278,98 @@ function buildPage(): string {
     <div class="filter-group">
       <span class="filter-label">Tier</span>
       <div class="chip-row" id="tierChips">
-        <button class="chip" data-tier="all">All</button>
-        <button class="chip" data-tier="A*">A*</button>
-        <button class="chip" data-tier="A">A</button>
-        <button class="chip" data-tier="B">B</button>
-        <button class="chip" data-tier="industry">Industry</button>
-        <button class="chip" data-tier="journal">Journal</button>
+        <button class="chip" data-tier="all" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>All</button>
+        <button class="chip" data-tier="A*" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>A*</button>
+        <button class="chip" data-tier="A" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>A</button>
+        <button class="chip" data-tier="B" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>B</button>
+        <button class="chip" data-tier="industry" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>Industry</button>
+        <button class="chip" data-tier="journal" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>Journal</button>
       </div>
     </div>
     <div class="filter-group">
       <label class="filter-label" for="sortSelect">Sort</label>
-      <select class="select" id="sortSelect">
-        <option value="deadline-asc">Deadline ↑</option>
-        <option value="deadline-desc">Deadline ↓</option>
-        <option value="conference-asc">Conf date ↑</option>
-        <option value="name-asc">Name A→Z</option>
-        <option value="tier-asc">Tier (A* first)</option>
-      </select>
+      <div class="select-wrap">
+        <select class="select" id="sortSelect">
+          <option value="deadline-asc">Deadline, soonest first</option>
+          <option value="deadline-desc">Deadline, latest first</option>
+          <option value="conference-asc">Conference date, soonest first</option>
+          <option value="name-asc">Name, A to Z</option>
+          <option value="tier-asc">Tier, A* first</option>
+        </select>
+        <svg class="icon select-icon" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+      </div>
     </div>
     <div class="filter-group">
       <span class="filter-label">Window</span>
       <div class="chip-row" id="windowChips">
-        <button class="chip" data-window="30">30d</button>
-        <button class="chip" data-window="90">90d</button>
-        <button class="chip" data-window="180">180d</button>
-        <button class="chip active" data-window="all">All</button>
+        <button class="chip" data-window="30" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>30d</button>
+        <button class="chip" data-window="90" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>90d</button>
+        <button class="chip" data-window="180" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>180d</button>
+        <button class="chip active" data-window="all" aria-pressed="true"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>All</button>
       </div>
     </div>
     </div>
     <div class="filters-search">
     <div class="filter-group filter-group-search">
-      <input type="search" id="searchInput" placeholder="Search conferences…" autocomplete="off" aria-label="Search conferences">
+      <div class="search-field" id="searchField">
+        <svg class="icon search-icon" aria-hidden="true"><use href="#i-search"></use></svg>
+        <input type="search" id="searchInput" placeholder="Search conferences…" autocomplete="off" aria-label="Search conferences">
+        <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg></button>
+      </div>
       <label class="starred-toggle">
         <input type="checkbox" id="starredOnly">
-        <span class="starred-label"><svg class="icon icon-star" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg> Starred only</span>
+        <span class="starred-label"><svg class="icon icon-off" aria-hidden="true"><use href="#i-star"></use></svg><svg class="icon icon-on icon-fill" aria-hidden="true"><use href="#i-star-filled"></use></svg> Starred only</span>
       </label>
     </div>
     </div>
   </section>
 
   <main id="main">
-    <section id="view-timeline" class="view"></section>
-    <section id="view-cards" class="view hidden"></section>
-    <section id="view-table" class="view hidden"></section>
-    <section id="view-map" class="view hidden"></section>
+    <section id="view-timeline" class="view" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
+    <section id="view-cards" class="view hidden" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
+    <section id="view-table" class="view hidden" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
+    <section id="view-map" class="view hidden" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
   </main>
 
-  <div id="detailModal" class="modal hidden" aria-hidden="true" aria-modal="true" role="dialog">
+  <div id="detailModal" class="modal hidden" aria-hidden="true" aria-modal="true" role="dialog" aria-labelledby="modalTitle">
     <div class="modal-backdrop" data-close></div>
     <div class="modal-panel" role="document">
-      <button class="modal-close" data-close aria-label="Close">×</button>
+      <button class="modal-close" data-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg></button>
       <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="suggestModal" class="modal hidden" aria-hidden="true" aria-modal="true" role="dialog" aria-labelledby="suggestTitle">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel" role="document">
+      <button class="modal-close" data-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg></button>
+      <h2 class="modal-name" id="suggestTitle">Suggest a venue</h2>
+      <p class="modal-fullname">Name a conference or journal the tracker is missing. This opens a prefilled issue on GitHub.</p>
+      <form id="suggestForm" class="suggest-form" novalidate>
+        <div class="field">
+          <label for="sg-name">Venue name</label>
+          <input class="input" id="sg-name" name="name" type="text" autocomplete="off" aria-describedby="sg-name-msg" required>
+          <p class="field-msg" id="sg-name-msg" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="sg-link">Call for papers link</label>
+          <input class="input" id="sg-link" name="link" type="url" inputmode="url" autocomplete="off" placeholder="https://" aria-describedby="sg-link-msg" required>
+          <p class="field-msg" id="sg-link-msg" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="sg-deadline">Paper deadline, if known</label>
+          <input class="input" id="sg-deadline" name="deadline" type="date">
+        </div>
+        <div class="field">
+          <label for="sg-why">Why it fits</label>
+          <textarea class="notes-area" id="sg-why" name="why" rows="3"></textarea>
+        </div>
+        <p class="form-status" id="suggestStatus" role="status"></p>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" id="suggestSubmit">Open draft on GitHub</button>
+          <button type="button" class="btn" data-close>Cancel</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -329,7 +410,6 @@ const DARK_TOKENS = `  color-scheme: dark;
   --scrim: rgb(6 5 12 / 0.64);
   --elev-2: 0 8px 24px rgb(0 0 0 / 0.32);
   --elev-3: 0 24px 64px rgb(0 0 0 / 0.48);
-  --chevron: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%23B6B3CA' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
   --field-hci: #B994E4;
   --field-ai-for-design: #E59EE0;
   --field-ml: #E287AE;
@@ -365,7 +445,6 @@ const LIGHT_TOKENS = `  color-scheme: light;
   --scrim: rgb(18 16 28 / 0.40);
   --elev-2: 0 8px 24px rgb(18 16 28 / 0.12);
   --elev-3: 0 24px 64px rgb(18 16 28 / 0.20);
-  --chevron: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%234A4761' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
   --field-hci: #865EB1;
   --field-ai-for-design: #8A4487;
   --field-ml: #AC507B;
@@ -444,7 +523,7 @@ html {
 }
 body { margin: 0; background: var(--ground); color: var(--text-1); min-height: 100dvh; }
 button, input, textarea, select { font: inherit; }
-p, .masthead-lede, .card-fullname, .card-fit, .modal-fullname, .timeline-empty {
+p, .masthead-lede, .card-fullname, .card-fit, .modal-fullname {
   max-width: var(--measure);
   text-wrap: pretty;
   font-variant-numeric: tabular-nums;
@@ -527,6 +606,7 @@ code {
     background-color var(--dur-out) var(--ease-out),
     box-shadow var(--dur-out) var(--ease-out);
 }
+.theme-toggle:active { background: var(--surface-3); }
 .theme-toggle:hover {
   color: var(--text-1);
   background: var(--surface-2);
@@ -534,11 +614,13 @@ code {
   transition-duration: var(--dur-in);
   transition-timing-function: var(--ease-in);
 }
-.icon { display: block; }
-.icon-star { fill: none; }
-.starred .icon-star, .starred-toggle input:checked + .starred-label .icon-star { fill: currentColor; }
-.starred-label { display: inline-flex; align-items: center; gap: var(--space-1); }
-.starred-label .icon { width: 1rem; height: 1rem; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.icon { display: block; flex-shrink: 0; width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.icon-fill { fill: currentColor; stroke: none; }
+.icon-on { display: none; }
+.starred .icon-on, .starred-toggle input:checked + .starred-label .icon-on { display: block; }
+.starred .icon-off, .starred-toggle input:checked + .starred-label .icon-off { display: none; }
+.starred-label { display: inline-flex; align-items: center; gap: var(--space-2); }
 .theme-icon-dark { display: none; }
 [data-theme="dark"] .theme-icon-light { display: none; }
 [data-theme="dark"] .theme-icon-dark { display: inline-flex; }
@@ -546,7 +628,7 @@ code {
 
 /* ------ View tabs ------ */
 .viewbar { max-width: 78rem; margin: 0 auto; padding: 0 var(--space-6); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.viewbar-inner { display: flex; gap: var(--space-5); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.viewbar-inner { display: flex; gap: var(--space-5); overflow-x: auto; -webkit-overflow-scrolling: touch; padding: var(--space-1); margin: calc(-1 * var(--space-1)); }
 .viewbar-inner::-webkit-scrollbar { display: none; }
 .view-tab {
   flex: 0 0 auto;
@@ -566,8 +648,9 @@ code {
     border-color var(--dur-out) var(--ease-out),
     opacity var(--dur-out) var(--ease-out);
 }
-.view-tab:hover { color: var(--text-2); opacity: 1; transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
-.view-tab.active { color: var(--text-1); opacity: 1; border-bottom-color: var(--accent); }
+.view-tab:hover { color: var(--text-1); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.view-tab:active { background: var(--surface-2); }
+.view-tab.active { color: var(--text-1); font-weight: 600; border-bottom-color: var(--accent); }
 
 .viewbar-spacer { flex: 1 1 auto; min-width: 0.5rem; }
 .viewbar-action {
@@ -585,7 +668,23 @@ code {
   cursor: pointer;
   transition: color var(--dur-out) var(--ease-out), border-color var(--dur-out) var(--ease-out);
 }
-.viewbar-action:hover { color: var(--text-1); border-color: var(--text-2); transition-duration: var(--dur-in); }
+.viewbar-action { display: inline-flex; align-items: center; gap: var(--space-2); font-weight: 500; }
+.viewbar-action:hover:not(:disabled) { color: var(--text-1); border-color: var(--text-2); transition-duration: var(--dur-in); }
+.viewbar-action:active:not(:disabled) { background: var(--surface-3); }
+:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 2.75rem; min-width: 2.75rem; padding: var(--space-2) var(--space-4);
+  font-family: var(--sans); font-size: var(--fs-sm); font-weight: 500; line-height: 1.3;
+  color: var(--text-1); background: transparent; border: 0; box-shadow: var(--elev-1-strong);
+  border-radius: var(--radius-2); cursor: pointer; text-decoration: none;
+  transition: color var(--dur-out) var(--ease-out), background-color var(--dur-out) var(--ease-out);
+}
+.btn:hover:not(:disabled) { background: var(--surface-3); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.btn:active:not(:disabled) { background: var(--surface-2); }
+.btn-primary { background: var(--accent-solid); color: var(--on-accent); box-shadow: none; }
+.btn-primary:hover:not(:disabled) { background: color-mix(in oklab, var(--accent-solid) 92%, var(--text-1)); }
+.btn-primary:active:not(:disabled) { background: color-mix(in oklab, var(--accent-solid) 84%, var(--text-1)); }
 
 /* ------ Select (sort + status) ------ */
 .select {
@@ -595,17 +694,16 @@ code {
   background: var(--surface-2);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-2);
-  padding: var(--space-1) var(--space-5) var(--space-1) var(--space-3);
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-3);
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
-  background-image: var(--chevron);
-  background-repeat: no-repeat;
-  background-position: right var(--space-2) center;
-  background-size: 0.6rem;
   transition: border-color var(--dur-out) var(--ease-out), background var(--dur-out) var(--ease-out);
 }
-.select:hover { border-color: var(--text-2); transition-duration: var(--dur-in); }
+.select:hover:not(:disabled) { border-color: var(--text-2); transition-duration: var(--dur-in); }
+.select-wrap { position: relative; display: inline-flex; align-items: center; justify-self: start; }
+.select-wrap .select { padding-right: var(--space-6); }
+.select-icon { position: absolute; right: var(--space-2); width: 1rem; height: 1rem; color: var(--text-2); pointer-events: none; }
 
 /* ------ Status pill (per-conf state) ------ */
 .status-pill {
@@ -668,7 +766,8 @@ code {
 .map-svg { display: block; max-width: 100%; height: auto; }
 .map-marker { cursor: pointer; }
 .map-marker:hover { transition-duration: var(--dur-in); }
-.map-marker:hover circle:nth-child(1) { fill-opacity: 0.20; }
+.map-marker:hover circle:nth-child(1), .map-marker:focus-visible circle:nth-child(1) { fill-opacity: 0.20; }
+.map-marker.selected circle:nth-child(2) { stroke: var(--text-1); stroke-width: 2.5; }
 .map-tooltip {
   position: absolute;
   pointer-events: none;
@@ -753,18 +852,33 @@ code {
   display: inline-flex; align-items: center; gap: var(--space-1);
   font-feature-settings: "kern" 1, "liga" 1;
 }
-.chip:hover { color: var(--text-1); background: var(--surface-2); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.chip:hover:not(:disabled) { color: var(--text-1); background: var(--surface-2); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.chip:active:not(:disabled):not(.active) { background: var(--surface-3); }
 .chip.active { background: var(--accent-solid); color: var(--on-accent); font-weight: 600; box-shadow: none; }
+.chip-check { display: none; width: 1rem; height: 1rem; }
+.chip.active .chip-check { display: block; }
 .chip-dot { width: 0.48rem; height: 0.48rem; border-radius: var(--radius-dot); flex-shrink: 0; background: var(--field-color, var(--text-2)); }
+.search-field { position: relative; flex: 0 1 19rem; width: min(19rem, 100%); }
+.search-icon { position: absolute; left: var(--space-3); top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
 #searchInput {
+  display: block; width: 100%;
   background: var(--surface-1); border: 0; border-radius: var(--radius-2);
   box-shadow: var(--elev-1-strong);
-  padding: var(--space-2) var(--space-4) var(--space-2); font: inherit; font-size: var(--fs-sm); color: var(--text-1); width: min(19rem, 100%);
+  padding: var(--space-2) calc(var(--space-6) + var(--space-3)); font: inherit; font-size: var(--fs-sm); color: var(--text-1);
   transition: box-shadow var(--dur-out) var(--ease-out), background-color var(--dur-out) var(--ease-out);
 }
+#searchInput::-webkit-search-cancel-button, #searchInput::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
 #searchInput::placeholder { color: var(--text-3); }
-#searchInput:hover { box-shadow: var(--elev-1-strong); }
-#searchInput:focus-visible { background: var(--surface-1); }
+#searchInput:hover { background: var(--surface-2); }
+.search-field.no-results #searchInput { box-shadow: inset 0 0 0 1px var(--status-urgent); }
+.search-clear {
+  position: absolute; right: 0; top: 0; width: 2.75rem; height: 2.75rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: 0; border-radius: var(--radius-2); color: var(--text-2); cursor: pointer;
+  transition: color var(--dur-out) var(--ease-out), background-color var(--dur-out) var(--ease-out);
+}
+.search-clear[hidden] { display: none; }
+.search-clear:hover { color: var(--text-1); background: var(--surface-3); transition-duration: var(--dur-in); }
 .starred-toggle {
   display: inline-flex;
   align-items: center;
@@ -779,7 +893,11 @@ code {
   cursor: pointer;
   user-select: none;
 }
-.starred-toggle input { margin: 0; accent-color: var(--accent); }
+.starred-toggle input { margin: 0; accent-color: var(--accent-solid); }
+.starred-toggle:hover:not(:has(input:disabled)) { color: var(--text-1); background: var(--surface-2); }
+.starred-toggle:has(input:checked) { color: var(--text-1); font-weight: 600; background: var(--surface-3); }
+.starred-toggle:has(input:disabled) { opacity: 0.5; cursor: not-allowed; }
+.starred-toggle input:disabled { cursor: not-allowed; }
 
 /* ------ Main ------ */
 main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) var(--space-8); }
@@ -811,8 +929,8 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
   cursor: pointer;
   transition: background-color var(--dur-out) var(--ease-out), color var(--dur-out) var(--ease-out);
 }
-.view-toolbar-btn:hover { color: var(--text-1); transition-duration: var(--dur-in); }
-.view-toolbar-btn.active { background: var(--surface-3); color: var(--text-1); box-shadow: var(--elev-1-strong); }
+.view-toolbar-btn:hover:not(:disabled):not(.active) { color: var(--text-1); background: var(--surface-1); transition-duration: var(--dur-in); }
+.view-toolbar-btn.active { background: var(--surface-3); color: var(--text-1); font-weight: 600; box-shadow: var(--elev-1-strong); }
 .view-toolbar-spacer { flex: 1 1 auto; }
 .view-toolbar-hint { color: var(--text-3); text-transform: none; font-family: var(--sans); font-size: var(--fs-sm); }
 
@@ -822,7 +940,6 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
 .timeline-scroll::-webkit-scrollbar { height: 8px; }
 .timeline-scroll::-webkit-scrollbar-track { background: transparent; }
 .timeline-scroll::-webkit-scrollbar-thumb { background: var(--line); border-radius: var(--radius-1); }
-.timeline-empty { color: var(--text-3); padding: var(--space-8) 0; text-align: center; }
 .timeline-svg { display: block; }
 .timeline-svg text { font-kerning: normal; text-rendering: geometricPrecision; }
 .timeline-svg text[text-anchor="end"] {
@@ -884,6 +1001,7 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
   content: ""; position: absolute; inset: 0; border-radius: inherit;
   border: 2px solid var(--accent);
 }
+.legend-mark.today-line { width: 0.9rem; height: 0; border-top: 2px dashed var(--accent); }
 .legend-mark.estimated { width: 0.6rem; height: 0.6rem; border-radius: var(--radius-dot); background: transparent; border: 1.5px solid var(--text-2); }
 
 /* ------ Timeline calendar mode (month-grid heatmap) ------ */
@@ -930,6 +1048,8 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
   border: 2px solid var(--accent);
 }
 .tlcal-cell.has-deadline { cursor: pointer; }
+.tlcal-cell.passed .tlcal-stack { opacity: 0.5; }
+.tlcal-cell.has-deadline:focus-visible { z-index: 1; }
 .tlcal-cell.has-deadline:hover { outline: 2px solid var(--text-1); outline-offset: -2px; transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
 .tlcal-cell .tlcal-stack {
   position: absolute; inset: 0; display: flex; flex-direction: column;
@@ -998,17 +1118,20 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
   transition-duration: var(--dur-in);
   transition-timing-function: var(--ease-in);
 }
+.card.starred { box-shadow: inset 0 0 0 1px var(--accent); }
+.card.closed .card-name { color: var(--text-2); }
+.card:focus-visible { background: var(--surface-2); }
 .card-row { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3); }
 .card-name { font-size: var(--fs-base); font-weight: 600; letter-spacing: -0.02em; margin: 0; line-height: 1.15; font-feature-settings: "kern" 1, "liga" 1; }
-.card-name .year { display: inline-block; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); font-weight: 400; color: var(--text-3); margin-left: var(--space-2); font-variant-numeric: tabular-nums; vertical-align: 0.14em; }
+.year { display: inline-block; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); font-weight: 400; color: var(--text-3); margin-left: var(--space-2); }
+.modal-name .year { font-size: var(--fs-base); }
 .card-tier {
   display: inline-flex;
   align-items: center;
   min-height: 1.7rem;
   font-variant-numeric: tabular-nums; font-size: var(--fs-sm); padding: var(--space-1) var(--space-2) var(--space-1);
-  border-radius: var(--radius-2); background: var(--surface-2); color: var(--text-2);
-  flex-shrink: 0; font-weight: 500; line-height: 1.35;
-  box-shadow: var(--elev-1);
+  border-radius: var(--radius-1); background: var(--surface-2); color: var(--text-2);
+  flex-shrink: 0; font-weight: 600; line-height: 1.35;
 }
 .card-fullname { color: var(--text-2); font-size: var(--fs-sm); line-height: 1.55; margin: 0; max-width: 38ch; text-wrap: pretty; }
 .card-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
@@ -1017,7 +1140,7 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
   align-items: center;
   gap: var(--space-2);
   font-variant-numeric: tabular-nums; font-size: var(--fs-sm); padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-2); color: var(--text-1); font-weight: 500;
+  border-radius: var(--radius-1); color: var(--text-1); font-weight: 500;
   line-height: 1.4;
   background: var(--surface-2);
 }
@@ -1042,6 +1165,8 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
 .card-countdown.urgent { background: color-mix(in oklab, var(--status-urgent) 16%, var(--surface-1)); color: var(--status-urgent); }
 .card-countdown.soon { background: color-mix(in oklab, var(--status-soon) 16%, var(--surface-1)); color: var(--status-soon); }
 .card-countdown.passed { background: var(--surface-2); color: var(--text-3); }
+.card-countdown.urgent { font-weight: 600; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .card-fit {
   color: var(--text-2); font-size: var(--fs-sm);
   line-height: 1.58; padding-top: var(--space-3);
@@ -1060,19 +1185,19 @@ main { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) 
 .star-btn {
   background: transparent; border: 0; cursor: pointer;
   border-radius: var(--radius-2);
-  font-size: var(--fs-base); color: var(--text-3); padding: var(--space-1); line-height: 1;
+  color: var(--text-3); padding: var(--space-1); line-height: 1;
   transition:
     color var(--dur-out) var(--ease-out),
     background-color var(--dur-out) var(--ease-out);
 }
-.star-btn:hover { color: var(--accent); background: var(--surface-2); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.star-btn:hover:not(:disabled) { color: var(--accent); background: var(--surface-2); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.star-btn:active:not(:disabled) { background: var(--surface-3); }
 .star-btn.starred { color: var(--accent); }
 .card-actions .star-btn:last-child { margin-left: auto; }
 .confidence-mark {
   font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3);
   margin-left: auto;
 }
-.confidence-mark.estimated::before { content: "≈ "; opacity: 0.6; }
 
 /* ------ Table ------ */
 .table-wrap { overflow-x: auto; padding: var(--space-1) 0 var(--space-1); }
@@ -1080,16 +1205,66 @@ table.confs { width: 100%; border-collapse: separate; border-spacing: 0; font-si
 table.confs th, table.confs td { padding: var(--space-3) var(--space-4); text-align: left; border-bottom: 1px solid var(--line); }
 table.confs tbody tr:last-child td { border-bottom: 0; }
 table.confs thead th { background: var(--ground); font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3); cursor: pointer; user-select: none; white-space: nowrap; font-weight: 500; transition: color var(--dur-out) var(--ease-out); }
+.th-btn {
+  display: inline-flex; align-items: center; gap: var(--space-1); min-height: 2.75rem; min-width: 2.75rem;
+  padding: 0; margin: 0; background: transparent; border: 0; border-radius: var(--radius-2);
+  font: inherit; color: inherit; cursor: pointer;
+}
+.th-btn .icon { width: 1rem; height: 1rem; }
+.th-btn[data-dir="asc"] .icon { transform: rotate(180deg); }
 table.confs thead th:hover { color: var(--text-1); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
 table.confs tbody tr { transition: background-color var(--dur-out) var(--ease-out); }
-table.confs tbody tr:hover { background: var(--surface-2); cursor: pointer; }
+table.confs tbody tr:hover, table.confs tbody tr:focus-visible { background: var(--surface-2); cursor: pointer; }
+table.confs tbody tr.starred td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+table.confs tbody tr.closed td { color: var(--text-3); }
+table.confs tbody tr.closed td strong { color: var(--text-2); }
+table.confs td .link-icon { color: var(--accent); }
+table.confs thead th[aria-sort] { color: var(--text-1); font-weight: 600; }
 table.confs td.num { font-variant-numeric: tabular-nums; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .table-wrap .card-tag { margin: 0 var(--space-1) var(--space-1) 0; }
 
 /* ------ Modal ------ */
 .modal { position: fixed; inset: 0; z-index: var(--z-modal); display: flex; align-items: center; justify-content: center; padding: var(--space-5); }
 .modal.hidden { display: none; }
-.modal-backdrop { position: absolute; inset: 0; background: var(--scrim); }
+.modal-backdrop { position: absolute; inset: 0; background: var(--scrim); opacity: 0; transition: opacity var(--dur-in) var(--ease-in); }
+.modal.open .modal-backdrop { opacity: 1; transition-duration: var(--dur-move); transition-timing-function: var(--ease-out); }
+.modal-panel { opacity: 0; transform: translateY(var(--space-2)); transition: opacity var(--dur-in) var(--ease-in), transform var(--dur-in) var(--ease-in); }
+.modal.open .modal-panel { opacity: 1; transform: none; transition-duration: var(--dur-move); transition-timing-function: var(--ease-out); }
+@media (prefers-reduced-motion: reduce) { .modal-panel { transform: none; } }
+.modal-tags { display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center; }
+.modal-lead { margin: 0; color: var(--text-2); line-height: 1.55; }
+.saved { color: var(--status-ok); font-size: var(--fs-sm); font-weight: 500; min-height: 1.3em; }
+.tracking-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
+.tracking-head h3 { margin: 0; }
+.suggest-form { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+.field { display: grid; gap: var(--space-1); }
+.field label { font-size: var(--fs-sm); font-weight: 500; color: var(--text-2); }
+.input {
+  min-height: 2.75rem; width: 100%; padding: var(--space-2) var(--space-3);
+  font: inherit; font-size: var(--fs-sm); color: var(--text-1);
+  background: var(--surface-1); border: 0; border-radius: var(--radius-2); box-shadow: var(--elev-1-strong);
+  transition: background-color var(--dur-out) var(--ease-out), box-shadow var(--dur-out) var(--ease-out);
+}
+.input:hover { background: var(--surface-3); }
+.input::placeholder { color: var(--text-3); }
+.field[data-invalid] .input { box-shadow: inset 0 0 0 1px var(--status-urgent); }
+.field-msg { margin: 0; min-height: 1.3em; font-size: var(--fs-sm); color: var(--status-urgent); font-weight: 500; }
+.form-status { margin: 0; min-height: 1.3em; font-size: var(--fs-sm); font-weight: 500; color: var(--text-2); display: flex; align-items: center; gap: var(--space-2); }
+.form-status.sent { color: var(--status-ok); }
+.form-status.error { color: var(--status-urgent); }
+
+/* ------ Region states: loading, empty, error ------ */
+.skeleton-region { display: grid; gap: var(--space-3); }
+.skeleton-row { position: relative; height: 4.5rem; background: var(--surface-1); box-shadow: var(--elev-1); border-radius: var(--radius-3); }
+.skeleton-row::before, .skeleton-row::after { content: ""; position: absolute; left: var(--space-4); background: var(--surface-2); border-radius: var(--radius-1); }
+.skeleton-row::before { top: var(--space-4); width: 40%; height: 1rem; }
+.skeleton-row::after { top: var(--space-6); margin-top: var(--space-3); width: 70%; height: 0.8rem; }
+.skeleton-text { display: inline-block; width: 8rem; height: 1rem; background: var(--surface-2); border-radius: var(--radius-1); }
+.region-state { display: grid; justify-items: start; gap: var(--space-3); max-width: var(--measure); padding: var(--space-5); background: var(--surface-1); box-shadow: var(--elev-1); border-radius: var(--radius-3); }
+.region-state h3 { margin: 0; font-size: var(--fs-base); font-weight: 600; }
+.region-state p { margin: 0; color: var(--text-2); }
+.region-error { box-shadow: inset 0 0 0 1px var(--status-urgent); }
+.region-error h3 { color: var(--status-urgent); }
 .modal-panel {
   position: relative; background: var(--surface-2); border: 0;
   border-radius: var(--radius-4); max-width: 38rem; width: min(38rem, 100%);
@@ -1100,8 +1275,9 @@ table.confs td.num { font-variant-numeric: tabular-nums; font-variant-numeric: t
 .modal-close {
   position: absolute; top: var(--space-3); right: var(--space-3); background: var(--surface-1); border: 0;
   box-shadow: var(--elev-1-strong);
-  font-size: var(--fs-base); line-height: 1; cursor: pointer; color: var(--text-3); padding: 0;
-  width: 2.25rem; height: 2.25rem; transition:
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-2); padding: 0;
+  width: 2.75rem; height: 2.75rem; transition:
     color var(--dur-out) var(--ease-out),
     background-color var(--dur-out) var(--ease-out); border-radius: var(--radius-2);
 }
@@ -1125,6 +1301,7 @@ table.confs td.num { font-variant-numeric: tabular-nums; font-variant-numeric: t
   font-family: var(--sans);
 }
 .modal-link-btn:hover { color: var(--accent); background: var(--surface-3); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.modal-link-btn:active { background: var(--surface-2); }
 
 /* ------ Footer ------ */
 .colophon { max-width: 78rem; margin: 0 auto; padding: var(--space-5) var(--space-6) var(--space-7); border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: center; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3); }
@@ -1132,7 +1309,7 @@ table.confs td.num { font-variant-numeric: tabular-nums; font-variant-numeric: t
 .colophon-sep { color: var(--line); }
 
 /* ------ Touch targets: at least 44 by 44 CSS px, 8px between neighbours ------ */
-.view-tab, .viewbar-action, .chip, .view-toolbar-btn, .star-btn, .select, #searchInput, .modal-close, .card-link, .starred-toggle { min-height: 2.75rem; min-width: 2.75rem; }
+.view-tab, .viewbar-action, .chip, .view-toolbar-btn, .star-btn, .select, #searchInput, .modal-close, .card-link, .starred-toggle, .modal-link-btn { min-height: 2.75rem; min-width: 2.75rem; }
 .view-tab, .viewbar-action, .chip, .view-toolbar-btn { display: inline-flex; align-items: center; justify-content: center; }
 .view-tab { padding-top: 0; padding-bottom: 0; padding-left: var(--space-2); padding-right: var(--space-2); }
 .viewbar-inner { gap: var(--space-2); }
@@ -1140,7 +1317,7 @@ table.confs td.num { font-variant-numeric: tabular-nums; font-variant-numeric: t
 .view-toolbar-group { gap: var(--space-2); }
 .card-actions { gap: var(--space-2); }
 .star-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
-.card-link { display: inline-flex; align-items: center; }
+.card-link { display: inline-flex; align-items: center; gap: var(--space-1); }
 table.confs td a[href] { display: inline-flex; align-items: center; justify-content: center; min-width: 2.75rem; min-height: 2.75rem; }
 strong { font-weight: 600; }
 
@@ -1160,7 +1337,7 @@ strong { font-weight: 600; }
   .filter-label { padding-top: 0; }
   .filter-group-search { justify-content: flex-start; align-items: stretch; width: 100%; }
   .filter-group-search { flex-wrap: wrap; }
-  #searchInput { flex: 1 1 100%; min-width: 0; width: 100%; }
+  .search-field { flex: 1 1 100%; min-width: 0; width: 100%; }
   .cards-grid { grid-template-columns: 1fr; gap: var(--space-4); }
   .card { padding: var(--space-4) var(--space-4) var(--space-4); }
   .card-name { font-size: var(--fs-base); }
@@ -1180,9 +1357,12 @@ strong { font-weight: 600; }
 function getJS(): string {
   return `
 (function(){
+  // Tabler outline symbols live in one inline sprite; icon() draws one at 20px.
+  function icon(n, cls) { return '<svg class="icon' + (cls ? " " + cls : "") + '" aria-hidden="true"><use href="#i-' + n + '"></use></svg>'; }
   const DATA = window.__DATA__;
-  const CONFS = DATA.conferences.slice();
-  const FIELDS = DATA.fields;
+  const dataOk = !!(DATA && Array.isArray(DATA.conferences) && DATA.fields);
+  const CONFS = dataOk ? DATA.conferences.slice() : [];
+  const FIELDS = dataOk ? DATA.fields : {};
   const TODAY = new Date(); TODAY.setHours(0,0,0,0);
 
   // ------ City geocoding (lat, lng). Hand-curated for the cities the data uses. ------
@@ -1291,7 +1471,7 @@ function getJS(): string {
 
   const STATUSES = ["", "interested", "drafting", "submitted", "accepted", "rejected"];
   const STATUS_LABEL = {
-    "": "—",
+    "": "No status",
     "interested": "interested",
     "drafting": "drafting",
     "submitted": "submitted",
@@ -1313,6 +1493,7 @@ function getJS(): string {
     sort: "deadline-asc",
     timelineMode: localStorage.getItem("ct.timelineMode") || "calendar",   // "calendar" | "gantt"
     cardDensity: localStorage.getItem("ct.cardDensity") || "comfortable",  // "compact" | "comfortable" | "spacious"
+    shown: null,                     // venues in the current view after filtering
   };
 
   // ------ Hash state (sharable URL) ------
@@ -1347,25 +1528,33 @@ function getJS(): string {
   const initialTheme = localStorage.getItem("ct.theme") ||
     (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   document.documentElement.setAttribute("data-theme", initialTheme);
+  themeBtn.setAttribute("aria-pressed", initialTheme === "dark" ? "true" : "false");
   themeBtn.addEventListener("click", () => {
     const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", cur);
+    themeBtn.setAttribute("aria-pressed", cur === "dark" ? "true" : "false");
     localStorage.setItem("ct.theme", cur);
     render();
   });
+  function setChipActive(btn, on) {
+    btn.classList.toggle("active", on);
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+  }
 
   // ------ Field chips ------
   const fieldChipsEl = document.getElementById("fieldChips");
   Object.entries(FIELDS).forEach(([key, f]) => {
     const btn = document.createElement("button");
-    btn.className = "chip" + (state.fields.has(key) ? " active" : "");
+    btn.type = "button";
+    btn.className = "chip";
     btn.dataset.field = key;
     btn.style.setProperty("--field-color", f.color);
-    btn.innerHTML = '<span class="chip-dot" style="background:' + f.color + '"></span>' + f.label;
+    btn.innerHTML = icon("check", "chip-check") + '<span class="chip-dot" style="background:' + f.color + '"></span>' + escape(f.label);
+    setChipActive(btn, state.fields.has(key));
     btn.addEventListener("click", () => {
       if (state.fields.has(key)) state.fields.delete(key);
       else state.fields.add(key);
-      btn.classList.toggle("active", state.fields.has(key));
+      setChipActive(btn, state.fields.has(key));
       writeHash(); render();
     });
     fieldChipsEl.appendChild(btn);
@@ -1373,20 +1562,22 @@ function getJS(): string {
 
   // ------ Tier chips ------
   document.querySelectorAll("#tierChips .chip").forEach(b => {
-    b.classList.toggle("active", b.dataset.tier === state.tier);
+    b.type = "button";
+    setChipActive(b, b.dataset.tier === state.tier);
     b.addEventListener("click", () => {
       state.tier = b.dataset.tier;
-      document.querySelectorAll("#tierChips .chip").forEach(x => x.classList.toggle("active", x === b));
+      document.querySelectorAll("#tierChips .chip").forEach(x => setChipActive(x, x === b));
       writeHash(); render();
     });
   });
 
   // ------ Window chips ------
   document.querySelectorAll("#windowChips .chip").forEach(b => {
-    b.classList.toggle("active", b.dataset.window === state.window);
+    b.type = "button";
+    setChipActive(b, b.dataset.window === state.window);
     b.addEventListener("click", () => {
       state.window = b.dataset.window;
-      document.querySelectorAll("#windowChips .chip").forEach(x => x.classList.toggle("active", x === b));
+      document.querySelectorAll("#windowChips .chip").forEach(x => setChipActive(x, x === b));
       writeHash(); render();
     });
   });
@@ -1403,14 +1594,24 @@ function getJS(): string {
 
   // ------ Search ------
   const searchEl = document.getElementById("searchInput");
+  const searchField = document.getElementById("searchField");
+  const searchClear = document.getElementById("searchClear");
   if (state.search) searchEl.value = state.search;
   let searchTimer;
   searchEl.addEventListener("input", () => {
+    searchClear.hidden = !searchEl.value;
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => {
       state.search = searchEl.value.trim().toLowerCase();
       writeHash(); render();
     }, 140);
+  });
+  searchClear.addEventListener("click", () => {
+    clearTimeout(searchTimer);
+    searchEl.value = "";
+    state.search = "";
+    writeHash(); render();
+    searchEl.focus();
   });
 
   // ------ Starred toggle ------
@@ -1421,17 +1622,28 @@ function getJS(): string {
     writeHash(); render();
   });
 
-  // ------ Submit a conference (opens prefilled GitHub issue in new tab) ------
-  const submitBtn = document.getElementById("submitConfBtn");
-  if (submitBtn) {
-    submitBtn.addEventListener("click", () => {
-      const tmpl = "Conference name (acronym + full):\\n\\nField(s):\\n\\nTier (A* / A / B / industry / journal):\\n\\nDeadline (YYYY-MM-DD):\\nNotification (YYYY-MM-DD):\\nConference dates (YYYY-MM-DD to YYYY-MM-DD):\\n\\nLocation (city, country):\\n\\nFormat / page limit / blind:\\n\\nCFP link:\\n\\nWhy it fits Doug's research (1 line):\\n\\nSources (≥2 URLs):\\n";
-      const url = "https://github.com/douglaspmcgowan/conference-tracker/issues/new?title=" +
-        encodeURIComponent("Suggest conference: ") +
-        "&body=" + encodeURIComponent(tmpl.replace(/\\\\n/g, "\\n")) +
-        "&labels=conference-suggestion";
-      window.open(url, "_blank", "noopener");
+  // ------ Clear filters, and keep the controls in step with the data ------
+  function clearFilters() {
+    clearTimeout(searchTimer);
+    state.fields.clear(); state.tier = "all"; state.window = "all"; state.search = ""; state.starredOnly = false;
+    searchEl.value = ""; starredOnlyEl.checked = false;
+    document.querySelectorAll("#fieldChips .chip").forEach(x => setChipActive(x, false));
+    document.querySelectorAll("#tierChips .chip").forEach(x => setChipActive(x, x.dataset.tier === "all"));
+    document.querySelectorAll("#windowChips .chip").forEach(x => setChipActive(x, x.dataset.window === "all"));
+    writeHash(); render();
+    const v = document.getElementById("view-" + state.view);
+    v.setAttribute("tabindex", "-1");
+    v.focus({ preventScroll: true });
+  }
+  function syncControls() {
+    document.querySelectorAll("#fieldChips .chip").forEach(b => {
+      const k = b.dataset.field;
+      const any = CONFS.some(c => (c.fields || []).includes(k) && matches(c, true));
+      b.disabled = !any && !state.fields.has(k);
     });
+    starredOnlyEl.disabled = state.starred.size === 0 && !state.starredOnly;
+    searchClear.hidden = !searchEl.value;
+    searchField.classList.toggle("no-results", !!state.search && state.shown === 0);
   }
 
   // ------ View tabs ------
@@ -1478,9 +1690,9 @@ function getJS(): string {
     if (!date) return null;
     return Math.round((date - TODAY) / (1000 * 60 * 60 * 24));
   }
-  function visibleConfs() {
-    const list = CONFS.filter(c => {
-      if (state.fields.size && !c.fields.some(f => state.fields.has(f))) return false;
+  // skipFields: ignore the field filter, so a field chip can tell whether it would show anything
+  function matches(c, skipFields) {
+      if (!skipFields && state.fields.size && !c.fields.some(f => state.fields.has(f))) return false;
       if (state.tier !== "all" && c.tier !== state.tier) return false;
       if (state.starredOnly && !state.starred.has(c.id)) return false;
       if (state.window !== "all") {
@@ -1495,8 +1707,9 @@ function getJS(): string {
         if (!blob.includes(state.search)) return false;
       }
       return true;
-    });
-    return sortConfs(list);
+  }
+  function visibleConfs() {
+    return sortConfs(CONFS.filter(c => matches(c, false)));
   }
 
   function sortConfs(list) {
@@ -1539,13 +1752,13 @@ function getJS(): string {
 
   function fmtDate(s) {
     const d = parseDate(s);
-    if (!d) return "—";
+    if (!d) return "TBA";
     return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
   }
-  function fmtMonth(d) { return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" }); }
+  function fmtMonth(d) { return d.toLocaleDateString("en-US", { month: "short", year: "numeric" }); }
   function fmtRange(a, b) {
     const da = parseDate(a), db = parseDate(b);
-    if (!da) return "—";
+    if (!da) return "TBA";
     if (!db) return fmtDate(a);
     if (da.getMonth() === db.getMonth() && da.getFullYear() === db.getFullYear()) {
       return da.toLocaleDateString("en-US", { month: "short", day: "numeric" }) + "–" + db.getDate() + ", " + db.getFullYear();
@@ -1557,14 +1770,14 @@ function getJS(): string {
     if (days === null) return "";
     if (days < 0) return "passed";
     if (days <= 14) return "urgent";
-    if (days <= 60) return "soon";
+    if (days <= 45) return "soon";
     return "";
   }
-  function countdownText(days) {
+  // Future: "in 14d". Past: "closed Mar 4, 2026". The unit and the word are always written out.
+  function countdownText(days, deadline) {
     if (days === null) return "no deadline";
-    if (days < 0) return Math.abs(days) + "d ago";
+    if (days < 0) return "closed " + fmtDate(deadline);
     if (days === 0) return "today";
-    if (days === 1) return "tomorrow";
     return "in " + days + "d";
   }
 
@@ -1581,48 +1794,133 @@ function getJS(): string {
     const html = [
       '<span class="stat"><strong>' + all + '</strong>conferences</span>',
       next
-        ? '<span class="stat"><strong class="stat-' + (next.days <= 14 ? "urgent" : "accent") + '">' + next.c.name + '</strong>next deadline, ' + countdownText(next.days) + '</span>'
+        ? '<span class="stat"><strong class="stat-' + (next.days <= 14 ? "urgent" : "accent") + '">' + next.c.name + '</strong>next deadline, ' + countdownText(next.days, next.c.deadline) + '</span>'
         : '',
       '<span class="stat"><strong>' + starred + '</strong>starred</span>',
     ].join("");
     document.getElementById("stats").innerHTML = html;
   }
 
+  // ------ Region states: loading skeleton is static markup, empty and error are drawn here ------
+  const VIEW_LABEL = { timeline: "timeline", cards: "cards", table: "table", map: "map" };
+  function filtersActive() {
+    return !!(state.fields.size || state.tier !== "all" || state.window !== "all" || state.search || state.starredOnly);
+  }
+  function loosenHint() {
+    if (state.search) return "Shorten or remove the search “" + escape(state.search) + "”.";
+    if (state.starredOnly) return state.starred.size ? "Turn off Starred only to see every venue." : "Nothing is starred yet. Turn off Starred only, or star a venue first.";
+    if (state.window !== "all") return "Widen the " + escape(state.window) + "d window.";
+    if (state.tier !== "all") return "Pick a tier other than " + escape(state.tier) + ".";
+    if (state.fields.size) return "Remove a field.";
+    return "";
+  }
+  function emptyHtml(title, sentence) {
+    const clear = filtersActive()
+      ? '<button type="button" class="btn" data-clear-filters>' + icon("filter") + 'Clear filters</button>'
+      : '';
+    return '<div class="region-state region-empty"><h3>' + title + '</h3><p>' + sentence + '</p>' + clear + '</div>';
+  }
+  function noMatchHtml() { return emptyHtml("No venues match", loosenHint() || "There is nothing to show yet."); }
+  function errorHtml(what, detail) {
+    return '<div class="region-state region-error" role="alert"><h3>Could not load the ' + what + '</h3><p>' + detail + '</p>' +
+      '<button type="button" class="btn btn-primary" data-retry>Retry</button></div>';
+  }
+  function bindRegion(el) {
+    el.querySelectorAll("[data-clear-filters]").forEach(b => b.addEventListener("click", clearFilters));
+    el.querySelectorAll("[data-retry]").forEach(b => b.addEventListener("click", () => {
+      if (!dataOk) location.reload(); else render();
+    }));
+  }
+  function setRegion(el, html) {
+    el.setAttribute("aria-busy", "false");
+    el.innerHTML = html;
+    bindRegion(el);
+  }
+
+  // ------ Tooltip: shown on hover and on keyboard focus ------
+  function placeTip(tooltip, wrap, x, y) {
+    tooltip.classList.add("visible");
+    const w = tooltip.offsetWidth, max = wrap.clientWidth;
+    tooltip.style.left = Math.max(w / 2, Math.min(max - w / 2, x)) + "px";
+    tooltip.style.top = y + "px";
+  }
+  function tipAtNode(tooltip, wrap, node) {
+    const wb = wrap.getBoundingClientRect(), nb = node.getBoundingClientRect();
+    placeTip(tooltip, wrap, nb.left - wb.left + nb.width / 2, nb.top - wb.top);
+  }
+  // Roving tabindex: one Tab stop for a whole field of marks, arrows move between them.
+  function bindRoving(nodes, activate, onFocus, onBlur) {
+    nodes.forEach((n, i) => {
+      n.setAttribute("tabindex", i === 0 ? "0" : "-1");
+      n.addEventListener("focus", () => {
+        nodes.forEach(x => x.setAttribute("tabindex", x === n ? "0" : "-1"));
+        if (onFocus) onFocus(n);
+      });
+      n.addEventListener("blur", () => { if (onBlur) onBlur(n); });
+      n.addEventListener("keydown", (e) => {
+        const k = e.key; let j = -1;
+        if (k === "ArrowRight" || k === "ArrowDown") j = Math.min(nodes.length - 1, i + 1);
+        else if (k === "ArrowLeft" || k === "ArrowUp") j = Math.max(0, i - 1);
+        else if (k === "Home") j = 0;
+        else if (k === "End") j = nodes.length - 1;
+        else if (k === "Enter" || k === " ") { e.preventDefault(); activate(n); return; }
+        else return;
+        e.preventDefault();
+        nodes[j].focus();
+      });
+    });
+  }
+
   // ------ Render router ------
   function render() {
-    renderStats();
-    const list = visibleConfs();
-    if (state.view === "timeline") renderTimeline(list);
-    else if (state.view === "cards") renderCards(list);
-    else if (state.view === "map") renderMap(list);
-    else renderTable(list);
+    state.shown = null;
+    if (!dataOk) {
+      document.getElementById("stats").innerHTML = '<span>Counts unavailable.</span>';
+      document.querySelectorAll(".view").forEach(v => setRegion(v, errorHtml(VIEW_LABEL[v.id.replace("view-", "")], "The venue data did not load. Your stars and notes are still saved in this browser.")));
+      return;
+    }
+    try { renderStats(); } catch (err) { document.getElementById("stats").innerHTML = '<span>Counts unavailable.</span> <button type="button" class="btn" data-retry>Retry</button>'; bindRegion(document.getElementById("stats")); }
+    const el = document.getElementById("view-" + state.view);
+    try {
+      const list = visibleConfs();
+      state.shown = list.length;
+      if (state.view === "timeline") renderTimeline(list);
+      else if (state.view === "cards") renderCards(list);
+      else if (state.view === "map") renderMap(list);
+      else renderTable(list);
+      el.setAttribute("aria-busy", "false");
+    } catch (err) {
+      setRegion(el, errorHtml(VIEW_LABEL[state.view] || "view", "Something failed while drawing this view. " + escape(err && err.message ? err.message : "")));
+    }
+    syncControls();
   }
 
   // ------ Timeline view (dispatcher) ------
   function renderTimeline(list) {
     const el = document.getElementById("view-timeline");
+    const cal = state.timelineMode === "calendar";
     const toolbar =
       '<div class="view-toolbar">' +
         '<span class="view-toolbar-label">Timeline</span>' +
         '<div class="view-toolbar-group" id="tlModeGroup">' +
-          '<button class="view-toolbar-btn ' + (state.timelineMode === "calendar" ? "active" : "") + '" data-mode="calendar">Calendar</button>' +
-          '<button class="view-toolbar-btn ' + (state.timelineMode === "gantt" ? "active" : "") + '" data-mode="gantt">Gantt</button>' +
+          '<button type="button" class="view-toolbar-btn ' + (cal ? "active" : "") + '" data-mode="calendar" aria-pressed="' + cal + '">Calendar</button>' +
+          '<button type="button" class="view-toolbar-btn ' + (!cal ? "active" : "") + '" data-mode="gantt" aria-pressed="' + (!cal) + '">Gantt</button>' +
         '</div>' +
         '<span class="view-toolbar-spacer"></span>' +
         '<span class="view-toolbar-hint">' +
-          (state.timelineMode === "calendar"
-            ? "Each cell is a day. Filled cells have deadlines; hover for details."
-            : "Horizontal bars span deadline → notification → conference dates.") +
+          (cal
+            ? "Each cell is a day. Filled cells have deadlines; hover or focus for details."
+            : "Horizontal bars span the deadline, the notification and the conference dates.") +
         '</span>' +
       '</div>';
 
-    if (!list.length) { el.innerHTML = toolbar + '<div class="timeline-empty">No conferences match the current filters.</div>'; bindTlMode(el); return; }
+    if (!list.length) { setRegion(el, toolbar + noMatchHtml()); bindTlMode(el); return; }
 
-    el.innerHTML = toolbar + '<div id="tlBody"></div>';
+    setRegion(el, toolbar + '<div id="tlBody"></div>');
     bindTlMode(el);
 
     const body = document.getElementById("tlBody");
-    if (state.timelineMode === "calendar") renderTimelineCalendar(body, list);
+    if (cal) renderTimelineCalendar(body, list);
     else renderTimelineGantt(body, list);
   }
 
@@ -1632,14 +1930,16 @@ function getJS(): string {
         state.timelineMode = btn.dataset.mode;
         localStorage.setItem("ct.timelineMode", state.timelineMode);
         render();
+        const again = document.querySelector('#tlModeGroup [data-mode="' + state.timelineMode + '"]');
+        if (again) again.focus();
       });
     });
   }
 
   // ------ Calendar mode ------
   // Compact month-grid heatmap. Each row is a month, each cell is a day.
-  // Cells with deadlines are colored by dominant field; hover reveals
-  // conference name + countdown; click opens detail (or first if multiple).
+  // Cells with deadlines are colored by dominant field; hover or focus reveals
+  // conference name + countdown; click or Enter opens detail (or first if multiple).
   function renderTimelineCalendar(el, list) {
     // Bucket deadlines by YYYY-MM-DD
     const byDay = new Map();
@@ -1661,7 +1961,8 @@ function getJS(): string {
     });
 
     if (!byDay.size) {
-      el.innerHTML = '<div class="timeline-empty">No deadlines in the current filter set.</div>';
+      el.innerHTML = emptyHtml("No deadlines in view", (loosenHint() || "None of these venues has a paper deadline."));
+      bindRegion(el);
       return;
     }
 
@@ -1674,10 +1975,10 @@ function getJS(): string {
 
     let rows = "";
     const cursor = new Date(minD.getFullYear(), minD.getMonth(), 1);
-    const todayKey = TODAY.toISOString().slice(0, 10);
+    const todayKey = TODAY.getFullYear() + "-" + String(TODAY.getMonth() + 1).padStart(2, "0") + "-" + String(TODAY.getDate()).padStart(2, "0");
     while (cursor <= maxD) {
       const y = cursor.getFullYear(), m = cursor.getMonth();
-      const monthLabel = cursor.toLocaleDateString("en-US", { month: "short", year: "numeric" }).toUpperCase();
+      const monthLabel = cursor.toLocaleDateString("en-US", { month: "short", year: "numeric" });
       const isCurrent = (y === TODAY.getFullYear() && m === TODAY.getMonth());
       const isJan = m === 0;
       const dim = new Date(y, m + 1, 0).getDate();
@@ -1698,6 +1999,7 @@ function getJS(): string {
         if (isWeekend && !dls) cls.push("weekend");
         if (isToday) cls.push("today");
         if (dls && dls.length) cls.push("has-deadline");
+        if (dls && dls.length && key < todayKey) cls.push("passed");
 
         if (dls && dls.length) {
           // Stack horizontal stripes per field
@@ -1709,7 +2011,7 @@ function getJS(): string {
           const dateLabel = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
           const tipLines = dls.map(c => c.name + " " + c.year + (c.confidence === "estimated" ? " (est.)" : "")).join(" / ");
           const count = dls.length > 1 ? '<span class="tlcal-count">' + dls.length + '</span>' : "";
-          cells += '<div class="' + cls.join(" ") + '" data-ids="' + escapeAttr(ids) + '" data-tip-title="' + escapeAttr(tipLines) + '" data-tip-date="' + escapeAttr(dateLabel) + '" data-day="' + d + '">' +
+          cells += '<div class="' + cls.join(" ") + '" role="group" aria-label="' + escapeAttr(tipLines + ", " + dateLabel + (key < todayKey ? ", closed" : "")) + '" data-ids="' + escapeAttr(ids) + '" data-tip-title="' + escapeAttr(tipLines) + '" data-tip-date="' + escapeAttr(dateLabel) + '" data-day="' + d + '">' +
             '<div class="tlcal-stack">' + stripes + '</div>' + count +
           '</div>';
         } else {
@@ -1728,24 +2030,24 @@ function getJS(): string {
       '<div class="timeline-legend">' +
         '<span class="legend-item"><span class="legend-mark cal-deadline"></span>Paper deadline (stripe = field)</span>' +
         '<span class="legend-item"><span class="legend-mark today-mark"></span>Today</span>' +
-        '<span class="legend-item">Hover to preview; click to open</span>' +
+        '<span class="legend-item">Hover or focus to preview; click or press Enter to open</span>' +
       '</div>' +
       '<div class="timeline-wrap">' +
         '<div class="tlcal">' + axis + rows + '</div>' +
-        '<div id="tlTooltip" class="timeline-tooltip"></div>' +
+        '<div id="tlTooltip" class="timeline-tooltip" role="tooltip"></div>' +
       '</div>';
 
     const tooltip = document.getElementById("tlTooltip");
     const wrap = el.querySelector(".timeline-wrap");
-    el.querySelectorAll(".tlcal-cell.has-deadline").forEach(node => {
+    const showCell = (node) => {
+      tooltip.innerHTML = '<strong>' + escape(node.getAttribute("data-tip-title") || "") + '</strong><span class="tt-date">' + escape(node.getAttribute("data-tip-date") || "") + '</span>';
+    };
+    const nodes = [...el.querySelectorAll(".tlcal-cell.has-deadline")];
+    nodes.forEach(node => {
       node.addEventListener("mousemove", (ev) => {
-        const title = node.getAttribute("data-tip-title") || "";
-        const dateStr = node.getAttribute("data-tip-date") || "";
-        tooltip.innerHTML = '<strong>' + escape(title) + '</strong><span class="tt-date">' + escape(dateStr) + '</span>';
+        showCell(node);
         const wrapBox = wrap.getBoundingClientRect();
-        tooltip.style.left = (ev.clientX - wrapBox.left) + "px";
-        tooltip.style.top = (ev.clientY - wrapBox.top - 6) + "px";
-        tooltip.classList.add("visible");
+        placeTip(tooltip, wrap, ev.clientX - wrapBox.left, ev.clientY - wrapBox.top - 6);
       });
       node.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
       node.addEventListener("click", () => {
@@ -1753,6 +2055,9 @@ function getJS(): string {
         if (ids.length) openDetail(ids[0]);
       });
     });
+    bindRoving(nodes, (n) => { n.click(); },
+      (n) => { showCell(n); n.setAttribute("aria-describedby", "tlTooltip"); if (n.matches(":focus-visible")) tipAtNode(tooltip, wrap, n); },
+      (n) => { n.removeAttribute("aria-describedby"); tooltip.classList.remove("visible"); });
   }
 
   // ------ Gantt mode (improved: fit-to-viewport + sticky months + tooltips) ------
@@ -1763,7 +2068,7 @@ function getJS(): string {
       .filter(r => r.sortDate)
       .sort((a,b) => a.sortDate - b.sortDate);
 
-    if (!rows.length) { el.innerHTML = '<div class="timeline-empty">No conferences with parseable dates match.</div>'; return; }
+    if (!rows.length) { el.innerHTML = emptyHtml("No dated venues in view", loosenHint() || "None of these venues has a date yet."); bindRegion(el); return; }
 
     // Date range: today - 30d → max(any date) + 30d, capped at +18mo from today
     const minD = new Date(TODAY); minD.setDate(minD.getDate() - 30);
@@ -1788,7 +2093,7 @@ function getJS(): string {
 
     const xFor = (d) => labelW + ((d - minD) / (1000*60*60*24)) * dayPx;
 
-    let svg = '<svg class="timeline-svg" width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Conference timeline">';
+    let svg = '<svg class="timeline-svg" width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Conference timeline">';
 
     // Month gridlines + labels
     const cursor = new Date(minD.getFullYear(), minD.getMonth(), 1);
@@ -1811,11 +2116,14 @@ function getJS(): string {
       const fieldColor = (FIELDS[c.fields[0]] || {}).color || "var(--text-2)";
       const isEstimated = c.confidence === "estimated";
 
+      // Row hit zone (click-to-detail), drawn first so marks above it keep their own hover and focus
+      svg += '<rect x="0" y="' + (y - rowH/2) + '" width="' + width + '" height="' + rowH + '" fill="transparent" data-id="' + c.id + '" class="tl-row"/>';
+
       // Label
-      svg += '<text x="' + (labelW - 12) + '" y="' + (y + 4) + '" text-anchor="end" font-size="13" font-weight="500" fill="var(--text-1)" font-family="var(--sans)">' + escape(c.name) + ' <tspan font-family="var(--sans)" font-size="11" fill="var(--text-3)" font-weight="400">' + c.year + '</tspan></text>';
+      svg += '<text x="' + (labelW - 12) + '" y="' + (y + 4) + '" text-anchor="end" font-size="13" font-weight="500" fill="var(--text-1)" font-family="var(--sans)" pointer-events="none">' + escape(c.name) + ' <tspan font-family="var(--sans)" font-size="11" fill="var(--text-3)" font-weight="400">' + escape(c.year) + '</tspan></text>';
 
       // Field tag dot
-      svg += '<circle cx="' + (labelW - 4) + '" cy="' + y + '" r="3" fill="' + fieldColor + '"/>';
+      svg += '<circle cx="' + (labelW - 4) + '" cy="' + y + '" r="3" fill="' + fieldColor + '" pointer-events="none"/>';
 
       // Conference dates as bar
       const cs = parseDate(c.conferenceStart);
@@ -1830,13 +2138,13 @@ function getJS(): string {
       const ntfD = parseDate(c.notification);
       if (dlD && ntfD) {
         const dx = xFor(dlD), nx = xFor(ntfD);
-        svg += '<line x1="' + dx + '" y1="' + y + '" x2="' + nx + '" y2="' + y + '" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>';
+        svg += '<line x1="' + dx + '" y1="' + y + '" x2="' + nx + '" y2="' + y + '" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3" pointer-events="none"/>';
       }
 
       // Notification marker
       if (ntfD) {
         const nx = xFor(ntfD);
-        svg += '<circle cx="' + nx + '" cy="' + y + '" r="3" fill="var(--text-3)" data-tooltip="' + escapeAttr(c.name + '; notification ' + fmtDate(c.notification)) + '" data-id="' + c.id + '" class="tl-ntf"/>';
+        svg += '<circle cx="' + nx + '" cy="' + y + '" r="3" fill="var(--text-3)" data-tooltip="' + escapeAttr(c.name + ' · notification ' + fmtDate(c.notification)) + '" data-id="' + c.id + '" class="tl-ntf"/>';
       }
 
       // Deadline marker (the main one)
@@ -1845,10 +2153,12 @@ function getJS(): string {
         const days = daysUntil(dlD);
         const cls = countdownClass(days);
         const fill = cls === "urgent" ? "var(--status-urgent)" : (cls === "passed" ? "var(--text-3)" : "var(--text-1)");
+        const tip = c.name + ' deadline · ' + fmtDate(c.deadline) + ' · ' + countdownText(days, c.deadline) + (isEstimated ? ' · est.' : '');
+        const common = ' class="timeline-deadline-marker" role="graphics-symbol" aria-label="' + escapeAttr(tip.split(" · ").join(", ")) + '" data-id="' + c.id + '" data-tooltip="' + escapeAttr(tip) + '"';
         if (isEstimated) {
-          svg += '<circle cx="' + dx + '" cy="' + y + '" r="5" fill="var(--ground)" stroke="' + fill + '" stroke-width="1.6" class="timeline-deadline-marker" data-id="' + c.id + '" data-tooltip="' + escapeAttr(c.name + ' deadline · ' + fmtDate(c.deadline) + ' · ' + countdownText(days) + ' · est.') + '"/>';
+          svg += '<circle cx="' + dx + '" cy="' + y + '" r="5" fill="var(--ground)" stroke="' + fill + '" stroke-width="1.6"' + common + '/>';
         } else {
-          svg += '<circle cx="' + dx + '" cy="' + y + '" r="5" fill="' + fill + '" class="timeline-deadline-marker" data-id="' + c.id + '" data-tooltip="' + escapeAttr(c.name + ' deadline · ' + fmtDate(c.deadline) + ' · ' + countdownText(days)) + '"/>';
+          svg += '<circle cx="' + dx + '" cy="' + y + '" r="5" fill="' + fill + '"' + common + '/>';
         }
       }
 
@@ -1858,9 +2168,6 @@ function getJS(): string {
         const ax = xFor(abD);
         svg += '<rect x="' + (ax-2.5) + '" y="' + (y-4.5) + '" width="5" height="9" fill="' + fieldColor + '" data-tooltip="' + escapeAttr(c.name + ' abstract · ' + fmtDate(c.abstractDeadline)) + '" data-id="' + c.id + '" class="tl-abs"/>';
       }
-
-      // Row hit zone (for click-to-detail)
-      svg += '<rect x="0" y="' + (y - rowH/2) + '" width="' + width + '" height="' + rowH + '" fill="transparent" data-id="' + c.id + '" class="tl-row"/>';
     });
 
     svg += '</svg>';
@@ -1871,34 +2178,35 @@ function getJS(): string {
         '<span class="legend-item"><span class="legend-mark estimated"></span>Estimated (no official date yet)</span>' +
         '<span class="legend-item"><span class="legend-mark notification"></span>Notification</span>' +
         '<span class="legend-item"><span class="legend-mark conference"></span>Conference dates</span>' +
-        '<span class="legend-item" style="color:var(--accent)">— TODAY</span>' +
+        '<span class="legend-item"><span class="legend-mark today-line"></span>Today</span>' +
       '</div>' +
       '<div class="timeline-wrap">' +
         '<div class="timeline-scroll">' + svg + '</div>' +
-        '<div id="tlTooltip" class="timeline-tooltip"></div>' +
+        '<div id="tlTooltip" class="timeline-tooltip" role="tooltip"></div>' +
       '</div>';
 
     // Tooltip + click handlers
     const tooltip = document.getElementById("tlTooltip");
     const wrap = el.querySelector(".timeline-wrap");
+    const fillTip = (node) => {
+      const parts = (node.getAttribute("data-tooltip") || "").split(" · ");
+      const tail = parts.slice(1).map(escape).join("; ");
+      tooltip.innerHTML = '<strong>' + escape(parts[0] || "") + '</strong>' + (tail ? '<span class="tt-date">' + tail + '</span>' : '');
+    };
     el.querySelectorAll("[data-tooltip]").forEach(node => {
       node.addEventListener("mousemove", (ev) => {
-        const raw = node.getAttribute("data-tooltip") || "";
-        const parts = raw.split(" · ");
-        const head = escape(parts[0] || "");
-        const tail = parts.slice(1).map(escape).join("; ");
-        tooltip.innerHTML = '<strong>' + head + '</strong>' + (tail ? '<span class="tt-date">' + tail + '</span>' : '');
+        fillTip(node);
         const wrapBox = wrap.getBoundingClientRect();
-        const scrollEl = el.querySelector(".timeline-scroll");
-        tooltip.style.left = (ev.clientX - wrapBox.left + (scrollEl ? scrollEl.scrollLeft : 0)) + "px";
-        tooltip.style.top = (ev.clientY - wrapBox.top - 6) + "px";
-        tooltip.classList.add("visible");
+        placeTip(tooltip, wrap, ev.clientX - wrapBox.left, ev.clientY - wrapBox.top - 6);
       });
       node.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
     });
     el.querySelectorAll("[data-id]").forEach(node => {
       node.addEventListener("click", () => openDetail(node.getAttribute("data-id")));
     });
+    bindRoving([...el.querySelectorAll(".timeline-deadline-marker")], (n) => openDetail(n.getAttribute("data-id")),
+      (n) => { fillTip(n); n.setAttribute("aria-describedby", "tlTooltip"); if (n.matches(":focus-visible")) tipAtNode(tooltip, wrap, n); },
+      (n) => { n.removeAttribute("aria-describedby"); tooltip.classList.remove("visible"); });
     // Auto-scroll to today
     setTimeout(() => {
       const scroll = el.querySelector(".timeline-scroll");
@@ -1906,74 +2214,101 @@ function getJS(): string {
     }, 0);
   }
 
-  // ------ Cards view ------
-  // List is pre-sorted by visibleConfs(). No local sort here.
-  function renderCards(list) {
-    const el = document.getElementById("view-cards");
-    const toolbar =
-      '<div class="view-toolbar">' +
-        '<span class="view-toolbar-label">Density</span>' +
-        '<div class="view-toolbar-group" id="cardDensityGroup">' +
-          '<button class="view-toolbar-btn ' + (state.cardDensity === "compact" ? "active" : "") + '" data-density="compact">Compact</button>' +
-          '<button class="view-toolbar-btn ' + (state.cardDensity === "comfortable" ? "active" : "") + '" data-density="comfortable">Comfortable</button>' +
-          '<button class="view-toolbar-btn ' + (state.cardDensity === "spacious" ? "active" : "") + '" data-density="spacious">Spacious</button>' +
-        '</div>' +
-        '<span class="view-toolbar-spacer"></span>' +
-        '<span class="view-toolbar-hint">' + list.length + ' conference' + (list.length === 1 ? "" : "s") + ' in view</span>' +
-      '</div>';
-    if (!list.length) { el.innerHTML = toolbar + '<div class="timeline-empty">No conferences match the current filters.</div>'; bindCardDensity(el); return; }
-
-    const cardsHtml = list.map(c => {
-      const days = daysUntil(parseDate(c.deadline));
-      const cdCls = countdownClass(days);
-      const cdTxt = c.deadline ? countdownText(days) : "no deadline";
-      const tags = c.fields.map(f => {
-        const meta = FIELDS[f] || { color: "var(--text-2)", label: f };
-        return '<span class="card-tag" style="--tag-bg:' + meta.color + '">' + escape(meta.label) + '</span>';
-      }).join("");
-      const tierClass = c.tier === "A*" ? "tier-a-star" : "tier-" + c.tier;
-      const isStarred = state.starred.has(c.id);
-      const status = state.status[c.id] || "";
-      const noteCount = (state.notes[c.id] || "").length;
-
-      return '<article class="card" data-id="' + c.id + '">' +
-        '<div class="card-row">' +
-          '<h3 class="card-name">' + escape(c.name) + '<span class="year">′' + String(c.year).slice(-2) + '</span></h3>' +
-          '<span class="card-tier ' + tierClass + '">' + escape(c.tier) + '</span>' +
-        '</div>' +
-        '<p class="card-fullname">' + escape(c.fullName) + '</p>' +
-        '<div class="card-tags">' + tags + '</div>' +
-        '<dl class="card-meta">' +
-          '<dt>Deadline</dt><dd>' + fmtDate(c.deadline) + ' <span class="card-countdown ' + cdCls + '">' + cdTxt + '</span></dd>' +
-          '<dt>Conf</dt><dd>' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</dd>' +
-          '<dt>Where</dt><dd>' + escape((c.location?.city || "TBA") + (c.location?.country ? ", " + c.location.country : "")) + '</dd>' +
-          '<dt>Format</dt><dd>' + escape(c.format || "—") + '</dd>' +
-        '</dl>' +
-        (c.fit ? '<p class="card-fit">' + escape(c.fit) + '</p>' : '') +
-        '<div class="card-actions">' +
-          '<a class="card-link" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">CFP ↗</a>' +
-          (status ? '<span class="status-pill status-' + status + '">' + escape(STATUS_LABEL[status] || status) + '</span>' : '') +
-          (noteCount ? '<span class="note-mark" title="You\\'ve added notes">⊝</span>' : '') +
-          (c.confidence === "estimated" ? '<span class="confidence-mark estimated">est.</span>' : '') +
-          '<button class="star-btn ' + (isStarred ? "starred" : "") + '" data-star="' + c.id + '" aria-label="Star" title="Star"><svg class="icon icon-star" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></button>' +
-        '</div>' +
-      '</article>';
+  // ------ Shared row and card pieces ------
+  const STAR_ICONS = icon("star", "icon-off") + icon("star-filled", "icon-on icon-fill");
+  function whereText(c) { return escape((c.location?.city || "TBA") + (c.location?.country ? ", " + c.location.country : "")); }
+  function fieldTags(c) {
+    return (c.fields || []).map(f => {
+      const meta = FIELDS[f] || { color: "var(--text-2)", label: f };
+      return '<span class="card-tag" style="--tag-bg:' + meta.color + '">' + escape(meta.label) + '</span>';
     }).join("");
-    el.innerHTML = toolbar + '<div class="cards-grid density-' + state.cardDensity + '">' + cardsHtml + '</div>';
-    bindCardDensity(el);
-
-    el.querySelectorAll(".card").forEach(card => {
-      card.addEventListener("click", (e) => {
+  }
+  function isClosed(c) { const d = daysUntil(parseDate(c.deadline)); return d !== null && d < 0; }
+  function countdownHtml(c) {
+    if (!c.deadline) return '<span class="card-countdown">no deadline</span>';
+    const days = daysUntil(parseDate(c.deadline));
+    const cls = countdownClass(days);
+    const word = cls === "urgent" ? '<span class="vh">Urgent: </span>' : (cls === "soon" ? '<span class="vh">Soon: </span>' : '');
+    return '<span class="card-countdown ' + cls + '">' + word + countdownText(days, c.deadline) + '</span>';
+  }
+  // A closed deadline already names its date in the countdown, so the date is not written twice.
+  function deadlineHtml(c) {
+    if (!c.deadline) return countdownHtml(c);
+    return (isClosed(c) ? '' : fmtDate(c.deadline) + ' ') + countdownHtml(c);
+  }
+  function starBtn(c) {
+    const on = state.starred.has(c.id);
+    return '<button type="button" class="star-btn ' + (on ? "starred" : "") + '" data-star="' + c.id + '" aria-pressed="' + on + '" aria-label="Star ' + escapeAttr(c.name) + '" title="Star">' + STAR_ICONS + '</button>';
+  }
+  function bindOpen(el, selector) {
+    el.querySelectorAll(selector).forEach(node => {
+      node.addEventListener("click", (e) => {
         if (e.target.closest("a") || e.target.closest("button")) return;
-        openDetail(card.dataset.id);
+        openDetail(node.dataset.id);
+      });
+      node.addEventListener("keydown", (e) => {
+        if (e.target !== node) return;
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDetail(node.dataset.id); }
       });
     });
     el.querySelectorAll(".star-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        toggleStar(btn.getAttribute("data-star"));
+        const id = btn.getAttribute("data-star");
+        toggleStar(id);
+        const again = document.querySelector('.star-btn[data-star="' + id + '"]');
+        if (again) again.focus();
       });
     });
+  }
+
+  // ------ Cards view ------
+  // List is pre-sorted by visibleConfs(). No local sort here.
+  function renderCards(list) {
+    const el = document.getElementById("view-cards");
+    const dn = state.cardDensity;
+    const seg = (v, label) => '<button type="button" class="view-toolbar-btn ' + (dn === v ? "active" : "") + '" data-density="' + v + '" aria-pressed="' + (dn === v) + '">' + label + '</button>';
+    const toolbar =
+      '<div class="view-toolbar">' +
+        '<span class="view-toolbar-label">Density</span>' +
+        '<div class="view-toolbar-group" id="cardDensityGroup">' + seg("compact", "Compact") + seg("comfortable", "Comfortable") + seg("spacious", "Spacious") + '</div>' +
+        '<span class="view-toolbar-spacer"></span>' +
+        '<span class="view-toolbar-hint">' + list.length + ' venue' + (list.length === 1 ? "" : "s") + ' in view</span>' +
+      '</div>';
+    if (!list.length) { setRegion(el, toolbar + noMatchHtml()); bindCardDensity(el); return; }
+
+    const cardsHtml = list.map(c => {
+      const isStarred = state.starred.has(c.id);
+      const status = state.status[c.id] || "";
+      const noteCount = (state.notes[c.id] || "").length;
+      const cls = "card" + (isStarred ? " starred" : "") + (isClosed(c) ? " closed" : "");
+
+      return '<article class="' + cls + '" data-id="' + c.id + '" tabindex="0">' +
+        '<div class="card-row">' +
+          '<h3 class="card-name">' + escape(c.name) + '<span class="year">' + escape(c.year) + '</span></h3>' +
+          '<span class="card-tier">' + escape(c.tier) + '</span>' +
+        '</div>' +
+        '<p class="card-fullname">' + escape(c.fullName) + '</p>' +
+        '<div class="card-tags">' + fieldTags(c) + '</div>' +
+        '<dl class="card-meta">' +
+          '<dt>Deadline</dt><dd>' + deadlineHtml(c) + '</dd>' +
+          '<dt>Conf</dt><dd>' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</dd>' +
+          '<dt>Where</dt><dd>' + whereText(c) + '</dd>' +
+          (c.format ? '<dt>Format</dt><dd>' + escape(c.format) + '</dd>' : '') +
+        '</dl>' +
+        (c.fit ? '<p class="card-fit">' + escape(c.fit) + '</p>' : '') +
+        '<div class="card-actions">' +
+          '<a class="card-link" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" aria-label="CFP for ' + escapeAttr(c.name) + ', opens in a new tab" onclick="event.stopPropagation()">CFP' + icon("external-link") + '</a>' +
+          (status ? '<span class="status-pill status-' + status + '">' + escape(STATUS_LABEL[status] || status) + '</span>' : '') +
+          (noteCount ? '<span class="note-mark">Has notes</span>' : '') +
+          (c.confidence === "estimated" ? '<span class="confidence-mark estimated">est.</span>' : '') +
+          starBtn(c) +
+        '</div>' +
+      '</article>';
+    }).join("");
+    setRegion(el, toolbar + '<div class="cards-grid density-' + state.cardDensity + '">' + cardsHtml + '</div>');
+    bindCardDensity(el);
+    bindOpen(el, ".card");
   }
 
   function bindCardDensity(el) {
@@ -1982,6 +2317,8 @@ function getJS(): string {
         state.cardDensity = btn.dataset.density;
         localStorage.setItem("ct.cardDensity", state.cardDensity);
         render();
+        const again = document.querySelector('#cardDensityGroup [data-density="' + state.cardDensity + '"]');
+        if (again) again.focus();
       });
     });
   }
@@ -1991,68 +2328,67 @@ function getJS(): string {
   // to one of the central keys, then trigger render() — which re-sorts globally.
   function renderTable(list) {
     const el = document.getElementById("view-table");
-    if (!list.length) { el.innerHTML = '<div class="timeline-empty">No conferences match the current filters.</div>'; return; }
+    if (!list.length) { setRegion(el, noMatchHtml()); return; }
     const colSortMap = {
       name: "name-asc",
       tier: "tier-asc",
       deadline: "deadline-asc",
       conferenceStart: "conference-asc",
     };
+    const sortCol = { "name-asc": ["name", "ascending"], "tier-asc": ["tier", "ascending"], "deadline-asc": ["deadline", "ascending"], "deadline-desc": ["deadline", "descending"], "conference-asc": ["conferenceStart", "ascending"] }[state.sort] || [];
+    const th = (key, label) => {
+      const sorted = sortCol[0] === key;
+      const dir = sorted ? sortCol[1] : "";
+      return '<th data-sort="' + key + '"' + (sorted ? ' aria-sort="' + dir + '"' : '') + '><button type="button" class="th-btn" data-dir="' + (dir === "ascending" ? "asc" : dir === "descending" ? "desc" : "") + '">' + label + (sorted ? icon("chevron-down") : icon("arrows-sort")) + '</button></th>';
+    };
     const rows = list.map(c => {
-      const days = daysUntil(parseDate(c.deadline));
-      const cdCls = countdownClass(days);
-      const cdTxt = c.deadline ? countdownText(days) : "—";
       const isStarred = state.starred.has(c.id);
       const status = state.status[c.id] || "";
-      return '<tr data-id="' + c.id + '">' +
-        '<td><button class="star-btn ' + (isStarred ? "starred" : "") + '" data-star="' + c.id + '" aria-label="Star"><svg class="icon icon-star" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></button></td>' +
-        '<td><strong>' + escape(c.name) + '</strong> <span style="color:var(--text-3);font-variant-numeric: tabular-nums;font-size:var(--fs-sm);font-variant-numeric:tabular-nums">′' + String(c.year).slice(-2) + '</span>' +
+      const cls = (isStarred ? "starred " : "") + (isClosed(c) ? "closed" : "");
+      return '<tr class="' + cls + '" data-id="' + c.id + '" tabindex="0">' +
+        '<td>' + starBtn(c) + '</td>' +
+        '<td><strong>' + escape(c.name) + '</strong><span class="year">' + escape(c.year) + '</span>' +
           (status ? ' <span class="status-pill status-' + status + '">' + escape(STATUS_LABEL[status] || status) + '</span>' : '') +
         '</td>' +
-        '<td>' + (c.fields||[]).map(f => '<span class="card-tag" style="--tag-bg:' + ((FIELDS[f]||{}).color||"var(--text-2)") + ';margin-right:3px">' + escape((FIELDS[f]||{}).label || f) + '</span>').join("") + '</td>' +
-        '<td>' + escape(c.tier || "—") + '</td>' +
-        '<td class="num">' + fmtDate(c.deadline) + ' <span class="card-countdown ' + cdCls + '" style="font-size:var(--fs-sm)">' + cdTxt + '</span></td>' +
+        '<td>' + fieldTags(c) + '</td>' +
+        '<td>' + escape(c.tier || "") + '</td>' +
+        '<td class="num">' + deadlineHtml(c) + '</td>' +
         '<td class="num">' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</td>' +
-        '<td>' + escape((c.location?.city || "TBA") + (c.location?.country ? ", " + c.location.country : "")) + '</td>' +
-        '<td><a href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--accent);font-variant-numeric: tabular-nums;font-size:var(--fs-sm)">↗</a></td>' +
+        '<td>' + whereText(c) + '</td>' +
+        '<td><a class="link-icon" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" aria-label="CFP for ' + escapeAttr(c.name) + ', opens in a new tab" onclick="event.stopPropagation()">' + icon("external-link") + '</a></td>' +
       '</tr>';
     }).join("");
 
-    el.innerHTML = '<div class="table-wrap"><table class="confs">' +
+    setRegion(el, '<div class="table-wrap"><table class="confs">' +
       '<thead><tr>' +
-        '<th></th>' +
-        '<th data-sort="name">Conf</th>' +
+        '<th><span class="vh">Star</span></th>' +
+        th("name", "Conf") +
         '<th>Field</th>' +
-        '<th data-sort="tier">Tier</th>' +
-        '<th data-sort="deadline">Deadline</th>' +
-        '<th data-sort="conferenceStart">Conference</th>' +
+        th("tier", "Tier") +
+        th("deadline", "Deadline") +
+        th("conferenceStart", "Conference") +
         '<th>Where</th>' +
-        '<th></th>' +
+        '<th><span class="vh">Call for papers</span></th>' +
       '</tr></thead>' +
       '<tbody>' + rows + '</tbody>' +
-    '</table></div>';
+    '</table></div>');
 
     el.querySelectorAll("th[data-sort]").forEach(th => {
       th.addEventListener("click", () => {
-        const target = colSortMap[th.dataset.sort];
+        const key = th.dataset.sort;
+        const target = colSortMap[key];
         if (target) {
           // Toggle asc/desc for deadline; everything else just sets the key.
           if (target === "deadline-asc" && state.sort === "deadline-asc") state.sort = "deadline-desc";
           else state.sort = target;
           if (sortSel) sortSel.value = state.sort;
           writeHash(); render();
+          const again = document.querySelector('th[data-sort="' + key + '"] .th-btn');
+          if (again) again.focus();
         }
       });
     });
-    el.querySelectorAll("tbody tr").forEach(tr => {
-      tr.addEventListener("click", (e) => {
-        if (e.target.closest("a") || e.target.closest("button")) return;
-        openDetail(tr.dataset.id);
-      });
-    });
-    el.querySelectorAll(".star-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => { e.stopPropagation(); toggleStar(btn.getAttribute("data-star")); });
-    });
+    bindOpen(el, "tbody tr");
   }
 
   // ------ Map view ------
@@ -2060,7 +2396,7 @@ function getJS(): string {
   // Conferences without a known city are bucketed at the bottom as "no location".
   function renderMap(list) {
     const el = document.getElementById("view-map");
-    if (!list.length) { el.innerHTML = '<div class="timeline-empty">No conferences match the current filters.</div>'; return; }
+    if (!list.length) { setRegion(el, noMatchHtml()); return; }
 
     const W = 1120, H = 560, MX = 30, MY = 30;
     const innerW = W - 2 * MX, innerH = H - 2 * MY;
@@ -2079,8 +2415,12 @@ function getJS(): string {
       if (!byCity.has(k)) byCity.set(k, { city: c.location.city, country: c.location.country, lat: g[0], lng: g[1], confs: [] });
       byCity.get(k).confs.push(c);
     }
+    if (!byCity.size) {
+      setRegion(el, emptyHtml("No venues with a known city", (loosenHint() || "These venues have no city on record yet.")));
+      return;
+    }
 
-    let svg = '<svg class="map-svg" viewBox="0 0 ' + W + ' ' + H + '" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="World map of conference locations">';
+    let svg = '<svg class="map-svg" viewBox="0 0 ' + W + ' ' + H + '" width="100%" preserveAspectRatio="xMidYMid meet" role="group" aria-label="World map of conference locations">';
     // Hairline frame
     svg += '<rect x="' + MX + '" y="' + MY + '" width="' + innerW + '" height="' + innerH + '" fill="none" stroke="var(--line)" stroke-width="1"/>';
     // Continent landmasses (simplified outlines, drawn before grid + markers)
@@ -2102,9 +2442,9 @@ function getJS(): string {
     svg += '<line x1="' + pmX + '" y1="' + MY + '" x2="' + pmX + '" y2="' + (H-MY) + '" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>';
     // Continent labels — minimal, faint
     const labels = [
-      ["NORTH AMERICA", 45, -100], ["SOUTH AMERICA", -15, -60],
-      ["EUROPE", 52, 18], ["AFRICA", 5, 22],
-      ["ASIA", 38, 90], ["OCEANIA", -25, 140],
+      ["North America", 45, -100], ["South America", -15, -60],
+      ["Europe", 52, 18], ["Africa", 5, 22],
+      ["Asia", 38, 90], ["Oceania", -25, 140],
     ];
     labels.forEach(([t, lat, lng]) => {
       const [x, y] = project(lat, lng);
@@ -2123,7 +2463,7 @@ function getJS(): string {
       const color = (FIELDS[dominantField] || {}).color || "var(--text-2)";
       const ids = cluster.confs.map(c => c.id).join(",");
       const tooltip = cluster.city + (cluster.country ? ", " + cluster.country : "") + "; " + n + (n === 1 ? " conference" : " conferences");
-      svg += '<g class="map-marker" data-ids="' + escapeAttr(ids) + '" data-tooltip="' + escapeAttr(tooltip) + '">' +
+      svg += '<g class="map-marker" role="graphics-symbol" aria-label="' + escapeAttr(tooltip) + '" data-ids="' + escapeAttr(ids) + '" data-tooltip="' + escapeAttr(tooltip) + '">' +
         '<circle cx="' + x + '" cy="' + y + '" r="' + (r + 4) + '" fill="' + color + '" fill-opacity="0.10"/>' +
         '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + color + '" fill-opacity="0.78" stroke="var(--ground)" stroke-width="1.5"/>' +
         (n > 1 ? '<text x="' + x + '" y="' + (y + 3.5) + '" text-anchor="middle" font-family="var(--sans)" font-size="13" font-weight="600" fill="var(--on-accent)">' + n + '</text>' : '') +
@@ -2133,36 +2473,38 @@ function getJS(): string {
     svg += '</svg>';
 
     const knownCount = [...byCity.values()].reduce((a, c) => a + c.confs.length, 0);
-    el.innerHTML =
+    setRegion(el,
       '<div class="map-wrap">' +
         '<div class="map-meta">' +
           '<span><strong>' + knownCount + '</strong> with known city</span>' +
           (noLoc.length ? '<span><strong>' + noLoc.length + '</strong> TBA / virtual</span>' : '') +
-          '<span class="map-hint">Click a marker for details; circle area scales with count</span>' +
+          '<span class="map-hint">Click or focus a marker for details; circle area scales with count</span>' +
         '</div>' +
         '<div class="map-svg-wrap">' + svg + '</div>' +
-        '<div class="map-tooltip" id="mapTooltip"></div>' +
-      '</div>';
+        '<div class="map-tooltip" id="mapTooltip" role="tooltip"></div>' +
+      '</div>');
 
     const tooltip = document.getElementById("mapTooltip");
-    el.querySelectorAll(".map-marker").forEach(g => {
+    const wrap = el.querySelector(".map-wrap");
+    const markers = [...el.querySelectorAll(".map-marker")];
+    const select = (g) => { markers.forEach(m => m.classList.toggle("selected", m === g)); };
+    markers.forEach(g => {
       g.addEventListener("mousemove", (ev) => {
         tooltip.textContent = g.getAttribute("data-tooltip");
-        const wrap = el.querySelector(".map-svg-wrap").getBoundingClientRect();
-        tooltip.style.left = (ev.clientX - wrap.left) + "px";
-        tooltip.style.top = (ev.clientY - wrap.top - 12) + "px";
-        tooltip.classList.add("visible");
+        const wb = wrap.getBoundingClientRect();
+        placeTip(tooltip, wrap, ev.clientX - wb.left, ev.clientY - wb.top - 12);
       });
       g.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
       g.addEventListener("click", () => {
+        select(g);
+        // Several venues in one city: the first opens; the rest are reachable from the list views.
         const ids = (g.getAttribute("data-ids") || "").split(",");
-        if (ids.length === 1) openDetail(ids[0]);
-        else {
-          // Multiple at one city: open the first; user can iterate.
-          openDetail(ids[0]);
-        }
+        openDetail(ids[0]);
       });
     });
+    bindRoving(markers, (n) => n.dispatchEvent(new MouseEvent("click", { bubbles: true })),
+      (g) => { tooltip.textContent = g.getAttribute("data-tooltip"); g.setAttribute("aria-describedby", "mapTooltip"); if (g.matches(":focus-visible")) tipAtNode(tooltip, wrap, g); },
+      (g) => { g.removeAttribute("aria-describedby"); tooltip.classList.remove("visible"); });
   }
 
   // ------ Star / Notes / Status ------
@@ -2184,53 +2526,93 @@ function getJS(): string {
     render();
   }
 
-  // ------ Modal ------
+  // ------ Modals: open, closing, focus trapped, Escape closes the top one ------
   const modal = document.getElementById("detailModal");
   const modalBody = document.getElementById("modalBody");
-  let _lastFocused = null;
+  const suggestModal = document.getElementById("suggestModal");
+  function durIn() {
+    const v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--dur-in"));
+    return isNaN(v) ? 0 : v;
+  }
+  function showModal(m, focusEl) {
+    clearTimeout(m._t);
+    m._last = document.activeElement;
+    m.classList.remove("hidden");
+    m.setAttribute("aria-hidden", "false");
+    void m.offsetWidth;
+    m.classList.add("open");
+    requestAnimationFrame(() => {
+      const target = focusEl || m.querySelector(".modal-close");
+      if (target) target.focus();
+    });
+  }
+  function hideModal(m) {
+    if (m.classList.contains("hidden")) return;
+    m.classList.remove("open");
+    m.setAttribute("aria-hidden", "true");
+    const finish = () => m.classList.add("hidden");
+    const d = durIn();
+    if (d > 0) m._t = setTimeout(finish, d); else finish();
+    const back = m._last;
+    if (back && typeof back.focus === "function" && document.contains(back)) back.focus();
+  }
+  function topModal() {
+    return [suggestModal, modal].find(m => !m.classList.contains("hidden") && m.classList.contains("open")) || null;
+  }
+  [modal, suggestModal].forEach(m => m.addEventListener("click", (e) => {
+    if (e.target.closest("[data-close]")) hideModal(m);
+  }));
+  document.addEventListener("keydown", (e) => {
+    const m = topModal();
+    if (!m) return;
+    if (e.key === "Escape") { hideModal(m); return; }
+    if (e.key !== "Tab") return;
+    const items = [...m.querySelectorAll("a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled)")].filter(x => x.offsetParent !== null);
+    if (!items.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if (!m.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  function closeDetail() { hideModal(modal); }
+
   function openDetail(id) {
-    _lastFocused = document.activeElement;
     const c = CONFS.find(x => x.id === id);
     if (!c) return;
-    const days = daysUntil(parseDate(c.deadline));
-    const tags = c.fields.map(f => {
-      const meta = FIELDS[f] || { color: "var(--text-2)", label: f };
-      return '<span class="card-tag" style="--tag-bg:' + meta.color + '">' + escape(meta.label) + '</span>';
-    }).join(" ");
     const status = state.status[c.id] || "";
     const notes = state.notes[c.id] || "";
     const statusOpts = STATUSES.map(s =>
       '<option value="' + s + '"' + (s === status ? ' selected' : '') + '>' + escape(STATUS_LABEL[s] || s) + '</option>'
     ).join("");
     const calIcs = "/cal.ics?ids=" + encodeURIComponent(c.id);
+    const section = (title, rows) => rows.length ? '<div class="modal-section"><h3>' + title + '</h3><dl class="modal-meta">' + rows.join("") + '</dl></div>' : '';
+    const row = (dt, dd) => '<dt>' + dt + '</dt><dd>' + dd + '</dd>';
 
     modalBody.innerHTML =
-      '<h2 class="modal-name">' + escape(c.name) + ' <span style="color:var(--text-3);font-variant-numeric: tabular-nums;font-size:var(--fs-base);font-weight:400;font-variant-numeric:tabular-nums">&prime;' + String(c.year).slice(-2) + '</span></h2>' +
+      '<h2 class="modal-name" id="modalTitle">' + escape(c.name) + '<span class="year">' + escape(c.year) + '</span></h2>' +
       '<p class="modal-fullname">' + escape(c.fullName) + '</p>' +
-      '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center">' + tags +
-        ' <span class="card-tier" style="font-variant-numeric:tabular-nums;">' + escape(c.tier) + '</span>' +
-        (c.confidence === "estimated" ? ' <span class="confidence-mark estimated">est.</span>' : '') +
+      '<div class="modal-tags">' + fieldTags(c) +
+        '<span class="card-tier">' + escape(c.tier) + '</span>' +
+        (c.confidence === "estimated" ? '<span class="confidence-mark estimated">est.</span>' : '') +
       '</div>' +
-      '<div class="modal-section"><h3>Schedule</h3><dl class="modal-meta">' +
-        (c.abstractDeadline ? '<dt>Abstract</dt><dd>' + fmtDate(c.abstractDeadline) + '</dd>' : '') +
-        '<dt>Paper deadline</dt><dd>' + fmtDate(c.deadline) + ' <span class="card-countdown ' + countdownClass(days) + '">' + (c.deadline ? countdownText(days) : "—") + '</span></dd>' +
-        (c.notification ? '<dt>Notification</dt><dd>' + fmtDate(c.notification) + '</dd>' : '') +
-        '<dt>Conference</dt><dd>' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</dd>' +
-      '</dl></div>' +
-      '<div class="modal-section"><h3>Where</h3><dl class="modal-meta">' +
-        '<dt>Location</dt><dd>' + escape((c.location?.city || "TBA") + (c.location?.country ? ", " + c.location.country : "")) + '</dd>' +
-      '</dl></div>' +
-      '<div class="modal-section"><h3>Submission</h3><dl class="modal-meta">' +
-        '<dt>Format</dt><dd>' + escape(c.format || "—") + '</dd>' +
-        (c.pageLimit ? '<dt>Page limit</dt><dd>' + escape(c.pageLimit) + '</dd>' : '') +
-        '<dt>Blind</dt><dd>' + escape(c.blind || "—") + '</dd>' +
-        (c.acceptanceRate != null ? '<dt>Accept rate</dt><dd>' + Math.round(c.acceptanceRate * 100) + '%</dd>' : '') +
-      '</dl></div>' +
-      (c.fit ? '<div class="modal-section"><h3>Fit for you</h3><p style="margin:0;color:var(--text-2);line-height:1.55">' + escape(c.fit) + '</p></div>' : '') +
-      '<div class="modal-section"><h3>Your tracking</h3>' +
+      section("Schedule", [
+        c.abstractDeadline ? row("Abstract", fmtDate(c.abstractDeadline)) : "",
+        row("Paper deadline", deadlineHtml(c)),
+        c.notification ? row("Notification", fmtDate(c.notification)) : "",
+        row("Conference", fmtRange(c.conferenceStart, c.conferenceEnd)),
+      ].filter(Boolean)) +
+      section("Where", [row("Location", whereText(c))]) +
+      section("Submission", [
+        c.format ? row("Format", escape(c.format)) : "",
+        c.pageLimit ? row("Page limit", escape(c.pageLimit)) : "",
+        c.blind ? row("Blind", escape(c.blind)) : "",
+        c.acceptanceRate != null ? row("Accept rate", Math.round(c.acceptanceRate * 100) + "%") : "",
+      ].filter(Boolean)) +
+      (c.fit ? '<div class="modal-section"><h3>Fit for you</h3><p class="modal-lead">' + escape(c.fit) + '</p></div>' : '') +
+      '<div class="modal-section"><div class="tracking-head"><h3>Your tracking</h3><span class="saved" id="trackSaved" role="status"></span></div>' +
         '<div class="modal-tracking">' +
           '<label class="tracking-row"><span class="tracking-label">Status</span>' +
-            '<select class="select" id="modal-status">' + statusOpts + '</select>' +
+            '<span class="select-wrap"><select class="select" id="modal-status">' + statusOpts + '</select>' + icon("chevron-down", "select-icon") + '</span>' +
           '</label>' +
           '<label class="tracking-row tracking-row-stack"><span class="tracking-label">Notes</span>' +
             '<textarea class="notes-area" id="modal-notes" rows="3" placeholder="Draft progress, co-authors, blockers…">' + escape(notes) + '</textarea>' +
@@ -2238,38 +2620,114 @@ function getJS(): string {
         '</div>' +
       '</div>' +
       '<div class="modal-actions">' +
-        '<a class="modal-link-btn" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener">Open CFP ↗</a>' +
-        '<a class="modal-link-btn modal-link-btn-secondary" href="' + escapeAttr(calIcs) + '" download="' + escape(c.id) + '.ics">+ Calendar (.ics)</a>' +
+        '<a class="modal-link-btn" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener">Open CFP' + icon("external-link") + '</a>' +
+        '<a class="modal-link-btn modal-link-btn-secondary" href="' + escapeAttr(calIcs) + '" download="' + escape(c.id) + '.ics">' + icon("calendar-down") + 'Add to calendar (.ics)</a>' +
       '</div>';
 
+    const saved = document.getElementById("trackSaved");
     const statusEl = document.getElementById("modal-status");
-    if (statusEl) statusEl.addEventListener("change", () => setStatus(c.id, statusEl.value));
+    if (statusEl) statusEl.addEventListener("change", () => { setStatus(c.id, statusEl.value); saved.textContent = "Saved"; });
     const notesEl = document.getElementById("modal-notes");
     if (notesEl) {
       let nt;
       notesEl.addEventListener("input", () => {
+        saved.textContent = "";
         clearTimeout(nt);
-        nt = setTimeout(() => setNote(c.id, notesEl.value), 300);
+        nt = setTimeout(() => { setNote(c.id, notesEl.value); saved.textContent = "Saved"; }, 300);
       });
     }
-    modal.classList.remove("hidden");
-    modal.setAttribute("aria-hidden", "false");
-    // Move focus into modal for keyboard accessibility
+    showModal(modal);
+  }
+
+  // ------ Suggest modal: default, invalid, submitting, error, sent ------
+  const sgForm = document.getElementById("suggestForm");
+  const sgStatus = document.getElementById("suggestStatus");
+  const sgSubmit = document.getElementById("suggestSubmit");
+  function sgField(id, msg) {
+    const input = document.getElementById(id);
+    const wrap = input.closest(".field");
+    const out = document.getElementById(id + "-msg");
+    if (msg) { wrap.setAttribute("data-invalid", ""); input.setAttribute("aria-invalid", "true"); }
+    else { wrap.removeAttribute("data-invalid"); input.removeAttribute("aria-invalid"); }
+    if (out) out.textContent = msg || "";
+  }
+  function sgSet(kind, html) {
+    sgStatus.className = "form-status" + (kind ? " " + kind : "");
+    sgStatus.innerHTML = html || "";
+  }
+  function openSuggest() {
+    sgForm.reset();
+    sgField("sg-name", ""); sgField("sg-link", "");
+    sgSet("", "");
+    sgSubmit.disabled = false;
+    sgSubmit.textContent = "Open draft on GitHub";
+    showModal(suggestModal, document.getElementById("sg-name"));
+  }
+  const submitBtn = document.getElementById("submitConfBtn");
+  if (submitBtn) submitBtn.addEventListener("click", openSuggest);
+  sgForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("sg-name").value.trim();
+    const link = document.getElementById("sg-link").value.trim();
+    const deadline = document.getElementById("sg-deadline").value;
+    const why = document.getElementById("sg-why").value.trim();
+    let linkMsg = "";
+    if (!link) linkMsg = "Enter the call for papers link.";
+    else if (!/^https?:[/][/][^ ]+[.][^ ]+$/i.test(link)) linkMsg = "Enter a full link that starts with https://";
+    sgField("sg-name", name ? "" : "Enter the venue name.");
+    sgField("sg-link", linkMsg);
+    const missing = [!name ? "sg-name" : "", linkMsg ? "sg-link" : ""].filter(Boolean);
+    if (missing.length) {
+      sgSet("error", "Fix " + (missing.length === 1 ? "the field" : "the " + missing.length + " fields") + " marked above, then try again.");
+      document.getElementById(missing[0]).focus();
+      return;
+    }
+    sgSubmit.disabled = true;
+    sgSubmit.textContent = "Opening GitHub…";
+    sgSet("", "Opening the draft issue…");
+    const body = [
+      "Conference name (acronym + full): " + name,
+      "",
+      "Field(s):",
+      "",
+      "Tier (A* / A / B / industry / journal):",
+      "",
+      "Deadline (YYYY-MM-DD): " + deadline,
+      "Notification (YYYY-MM-DD):",
+      "Conference dates (YYYY-MM-DD to YYYY-MM-DD):",
+      "",
+      "Location (city, country):",
+      "",
+      "Format / page limit / blind:",
+      "",
+      "CFP link: " + link,
+      "",
+      "Why it fits Doug's research (1 line): " + why,
+      "",
+      "Sources (2 or more URLs):",
+      "",
+    ].join("\\n");
+    const url = "https://github.com/douglaspmcgowan/conference-tracker/issues/new?title=" +
+      encodeURIComponent("Suggest conference: " + name) +
+      "&body=" + encodeURIComponent(body) +
+      "&labels=conference-suggestion";
     requestAnimationFrame(() => {
-      const closeBtn = modal.querySelector(".modal-close");
-      if (closeBtn) closeBtn.focus();
+      let w = null;
+      try { w = window.open(url, "_blank"); } catch (err) { w = null; }
+      sgSubmit.disabled = false;
+      if (w) {
+        try { w.opener = null; } catch (err) { /* cross-origin window, nothing to detach */ }
+        sgSubmit.textContent = "Open draft again";
+        sgSet("sent", icon("check") + "Draft issue opened on GitHub. Submit it there to finish.");
+      } else {
+        sgSubmit.textContent = "Retry";
+        sgSet("error", "Your browser blocked the new tab, so nothing was opened. Allow pop-ups for this site, then select Retry.");
+      }
     });
-  }
-  modal.addEventListener("click", (e) => {
-    if (e.target.matches("[data-close]")) closeDetail();
   });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDetail(); });
-  function closeDetail() {
-    modal.classList.add("hidden");
-    modal.setAttribute("aria-hidden", "true");
-    // Restore focus to the element that triggered the modal
-    if (_lastFocused && typeof _lastFocused.focus === "function") _lastFocused.focus();
-  }
+  [["sg-name", "Enter the venue name."], ["sg-link", ""]].forEach(([id]) => {
+    document.getElementById(id).addEventListener("input", () => { sgField(id, ""); if (sgStatus.classList.contains("error")) sgSet("", ""); });
+  });
 
   // ------ Helpers ------
   function escape(s) { return String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
