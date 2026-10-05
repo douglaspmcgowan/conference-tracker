@@ -32,3 +32,4 @@ themes — identical SHA-256 for each. The computed-style oracle's hash DID move
 measured rather than assumed: exactly one element of 869 differs, element 77, `SPAN` to `LABEL`,
 with all sixteen paint properties byte-identical. That element is the Sort control's label, which
 became a real `<label for="sortSelect">` to fix an axe `select-name` critical.
+2026-10-04 | Task state consolidated into TASK.md; legacy task and verification sources retained under .agents/archive/task-state-migration.
