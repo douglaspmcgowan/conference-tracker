@@ -2,38 +2,30 @@
 
 ## Goal
 
-Adopt and verify the portable harness-v3 project contract without changing application behavior.
+Record the active outcome.
 
 ## Active
 
-<!-- Move the item currently being worked here. -->
 
 ## Queue
 
-<!-- Add required work extracted from the request here. -->
 
 ## Blocked
 
-<!-- Record externally blocked work here. -->
 
 ## Needs decision
 
-<!-- Record items requiring a user decision here. -->
 
 ## Completed
 
-- [x] Add the portable Claude, Codex, Cursor, task-state, manifest, hook, and skill-projection files | evidence: `SyncProject` completed on isolated branch `codex/harness-v3-onboarding`.
-- [x] Replace generated project metadata placeholders with repository-backed identity, commands, architecture, and durable status | evidence: `README.md`, `package.json`, application paths, and manifests inspected.
-- [x] Verify harness adoption without application regressions | evidence: `VerifyProject`, `git diff --check`, both Node syntax checks, and the deployed Playwright verifier passed; Gitleaks found no leaks.
+- [x] Read corpus: feedback_ai_isms, reference_motion_interaction_defaults, impeccable SKILL.md + audit.md + polish.md
+- [x] Explored all files; full app lives in `server.js` (CSS in `getCSS()`, JS in `getJS()`, HTML in `buildPage()`)
+- [x] Ran impeccable detector → 2 hits (Inter Tight overused font)
+- [x] Manual audit complete → 18 planned fixes
+- [x] Created branch `fix/app-quality-pass`
 
 ## Verification
 
-- Next: independent review, then commit and publish the isolated onboarding branch.
+- Next: record the exact command or observable proof.
 
-<!--
-Markers use a space for queued work, a tilde for active work, x for complete,
-an exclamation mark for blocked work, and a question mark for decisions.
-Required delegated work may be nested under its parent with agent provenance.
-Optional discoveries belong in BACKBURNER.md.
-Parallel mode applies to three or more independent, file-disjoint items.
--->
+<!-- Migrated deterministically. Legacy task and verification files were archived before removal. -->

@@ -1,8 +1,10 @@
 // Re-merge research/agent-{1..4}-*.md JSON blocks into data/conferences.js.
 // Used by both the initial build and the biweekly refresh routine.
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("fs") as typeof import("fs");
+const path = require("path") as typeof import("path");
+
+type RawConference = Record<string, any>;
 
 const dir = "./research";
 const files = [
@@ -12,8 +14,8 @@ const files = [
   "agent-4-viz-mfg-cogsci.md",
 ];
 
-const all = [];
-const seenIds = new Set();
+const all: RawConference[] = [];
+const seenIds = new Set<string>();
 for (const f of files) {
   const txt = fs.readFileSync(path.join(dir, f), "utf8");
   const re = /```json([\s\S]*?)```/g;
@@ -21,7 +23,7 @@ for (const f of files) {
   const blocks = [];
   while ((m = re.exec(txt))) blocks.push(m[1]);
   for (const b of blocks) {
-    let parsed = null;
+    let parsed: any = null;
     try { parsed = JSON.parse(b); }
     catch (e) { try { parsed = eval("(" + b + ")"); } catch (_) { continue; } }
     const list = (parsed && parsed.conferences) || (Array.isArray(parsed) ? parsed : []);
@@ -33,7 +35,7 @@ for (const f of files) {
 // Anything unrecognized returns null and is dropped — the entry keeps whichever
 // fields DID match. This prevents the old fallback from polluting cards
 // with "Knowledge & Information" alongside an already-correct primary tag.
-const fieldMap = {
+const fieldMap: Record<string, string> = {
   // HCI cluster
   "HCI": "HCI", "Human-Computer Interaction": "HCI",
   "HRI": "HCI", "interaction": "HCI", "UIST": "HCI", "UI": "HCI",
@@ -87,7 +89,7 @@ const fieldMap = {
 // Strict canon: returns null for unknown tags. Heuristic patterns kick in
 // only after the explicit map misses, and only return a non-null value if
 // the input clearly matches a known cluster.
-const canon = (raw) => {
+const canon = (raw: unknown): string | null => {
   if (!raw || typeof raw !== "string") return null;
   const f = raw.trim();
   if (fieldMap[f]) return fieldMap[f];
@@ -113,15 +115,15 @@ const canon = (raw) => {
   return null;
 };
 
-const normDate = (s) => {
-  if (!s || ["TBA", "TBD", "rolling", "null"].includes(s) || typeof s !== "string") return null;
+const normDate = (s: unknown): string | null => {
+  if (!s || typeof s !== "string" || ["TBA", "TBD", "rolling", "null"].includes(s)) return null;
   const m = s.match(/^(\d{4})-(\d{2})-([\d X]{2})/);
   if (!m) return null;
-  const day = m[3].includes("X") ? "15" : m[3];
+  const day = m[3]!.includes("X") ? "15" : m[3]!;
   return `${m[1]}-${m[2]}-${day.padStart(2, "0")}`;
 };
 
-const normTier = (t) => {
+const normTier = (t: unknown): string => {
   if (!t) return "B";
   const s = String(t);
   if (/A\*|A-?star/i.test(s)) return "A*";
@@ -132,10 +134,10 @@ const normTier = (t) => {
   return "B";
 };
 
-const cleaned = all.map((c) => {
+const cleaned = all.map((c: RawConference) => {
   // Drop nulls (unrecognized) — keep only canonical tags. Only fall back
   // to a generic bucket if NOTHING in the original list matched.
-  const fset = [...new Set((c.fields || []).map(canon).filter(Boolean))];
+  const fset = [...new Set<string>((c.fields || []).map(canon).filter((x: string | null): x is string => Boolean(x)))];
   if (!fset.length) {
     // Last-ditch heuristic against the conference name itself.
     const blob = (c.name + " " + (c.fullName || "")).toLowerCase();
@@ -169,7 +171,7 @@ const cleaned = all.map((c) => {
   };
 }).filter((c) => c.id && c.name);
 
-const nextDate = (c) => {
+const nextDate = (c: { deadline: string | null; abstractDeadline: string | null; conferenceStart: string | null }): number => {
   const cands = [c.deadline, c.abstractDeadline, c.conferenceStart]
     .filter(Boolean)
     .map((s) => new Date(s + "T00:00:00").getTime())
@@ -196,7 +198,7 @@ const fields = {
 };
 
 const generated = new Date().toISOString();
-const header = `// Generated ${generated.slice(0, 10)} by scripts/refresh-data.js\n\n`;
+const header = `// Generated ${generated.slice(0, 10)} by scripts/refresh-data.ts\n\n`;
 fs.writeFileSync(
   "./data/conferences.js",
   header +
