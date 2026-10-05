@@ -46,7 +46,7 @@ const fail = (msg: string) => { errors.push(msg); log("  ✗", msg); };
   const faviconRes = await page.request.get(URL.replace(/\/$/, "") + "/favicon.svg");
   faviconRes.ok() ? ok("favicon.svg served") : fail(`favicon.svg: ${faviconRes.status()}`);
   const stats = await page.locator("#stats").innerText();
-  /\d+\s*conferences/i.test(stats) ? ok(`stats: ${stats.replace(/\s+/g, " ").trim()}`) : fail(`stats malformed: ${stats}`);
+  /\d+\s*(venues|conferences)/i.test(stats) ? ok(`stats: ${stats.replace(/\s+/g, " ").trim()}`) : fail(`stats malformed: ${stats}`);
 
   const dataInfo = await page.evaluate(() => ({
     confs: window.__DATA__?.conferences?.length || 0,

@@ -105,29 +105,188 @@ The full universal rules are `~/.agents/DESIGN.md`. Where a library entry and a 
 **This list is enumerated because it has to be.** A cloud or container session has no `~/.agents` to walk, so this block is the only routing it gets — which also means a leaf missing here is a leaf that session cannot reach at all. `craft/` and `preflight.md` were absent until 2026-08-07 and every project copy inherited the gap. `Test-DesignLibraryIndex.ps1` now fails the build when this list falls behind the tree.
 <!-- agent-harness:universal-design:v1:end -->
 
-## Product-specific typography
+## Design system: Stint
 
-- Body and labels: Hanken Grotesk (`--sans`), the only family on screen. Dates, counts and columns use `font-variant-numeric: tabular-nums`, never monospace.
-- Display: the same family at `--fs-display` for the page and modal titles.
-- Monospace: `--mono` exists for the `code` element only; no screen renders code.
-- Scale: three sizes (`--fs-sm` 13px, `--fs-base` 16px, `--fs-display` 32 to 36px) and three weights (400, 500, 600). Sentence case everywhere; no uppercase text.
-- Icons: inline SVG, one stroke style (theme toggle, star); no emoji.
-- Date format: short month, day and year (for example Mar 4, 2026) via `fmtDate`; ranges share the month and year. Numbers use plain digits.
+Decided 2026-10-04. Case: **replace**. The previous identity (warm paper and espresso ground, blue accent, grain, pill chips) is the beige-brass-espresso palette the universal rules name as a machine-made tell, and it was shared with another project. Its domain ideas survive: the stripe per field, the deadline calendar, the four views. Everything below supersedes the earlier typography, token and interaction sections of this file.
 
-## Tokens and components
+- **Direction:** Stint. A tracker that does not pretend: what is due, how far away, what it requires. Deadpan copy, no celebration, the data is the hero and the title is not.
+- **Pulled from:** hue language Stint, `~/.agents/skills/hue/examples/stint/design-model.yaml` (reference renders `app-screen.html` beside it and `C:/Users/dougl/Projects/design-worlds/worlds/stint/spec.html`); registry row in `~/.agents/design/languages/registry.md`.
+- **Departures from the source, each because a universal rule wins:** Stint's Inter becomes Onest; its JetBrains Mono for metrics becomes tabular numerals on Onest; its mesh hero and device mockup are dropped (this is a tool, not a landing page); its stock slate neutrals are re-tinted toward violet (hue 282); its Phosphor fallback becomes Tabler outline, whose sharp geometric stroke matches Stint's stated icon style.
+- **Wrong if:** the tracker is embedded in a daylight university page. Then the light token set becomes the default and nothing else changes.
+- **Stack:** unchanged. Express renders one HTML string from `server.ts`; CSS is `getCSS()`, client script is `getJS()`. No framework, no build step, no component package. The system is plain custom properties.
 
-- Field tags derive their fill from the field colour with `color-mix` toward near-black (`--tag-bg` set inline), so white tag text holds 4.5:1 for every field colour. `--accent-ink` is the accent for text on tinted surfaces.
-- Preserve the existing `--accent: #2D5BFF`, low-contrast hairlines, warm-dark palette, restrained grain, and four established timeline/card/table/map views.
-- Reuse the existing filters, viewbar, status pills, countdown chips, modal, and responsive layouts before adding variants.
+### Colour
 
-## Interaction and accessibility
+Every colour is a custom property on `:root`. Dark is the default; light is the same names redefined under `@media (prefers-color-scheme: light)` and `[data-theme="light"]`; `[data-theme="dark"]` restates dark so an explicit choice beats the media query. No component carries a per-theme override.
 
-- Preserve 120 ms hover-in and 240 ms hover-out timing, `:focus-visible` rings, reduced-motion support, touch targets, and mobile verification.
-- Status and tier meaning must remain understandable without color alone.
+| Token | Role | Dark | Light |
+|---|---|---|---|
+| `--ground` | page background, on `body` | `#0C0B14` | `#F4F3F9` |
+| `--surface-1` | rows, cards, toolbar, inputs | `#15131F` | `#FCFBFF` |
+| `--surface-2` | popover, tooltip, modal, hovered row | `#1E1C2C` | `#E9E7F2` |
+| `--surface-3` | pressed and selected fills, calendar empty cell | `#2B2940` | `#DAD7E8` |
+| `--line` | hairline between rows and regions | `#3A3756` | `#B4B0CC` |
+| `--line-strong` | control borders (3:1 against every surface) | `#75729A` | `#7C7899` |
+| `--text-1` | names, values, headings | `#F1F0F8` | `#12101C` |
+| `--text-2` | secondary text, labels | `#B6B3CA` | `#4A4761` |
+| `--text-3` | tertiary text, closed deadlines; never on `--surface-3` | `#918EAA` | `#625E7C` |
+| `--accent` | stint violet as text, focus ring, active tab, today marker | `#9A90F2` | `#4B3CC0` |
+| `--accent-solid` | filled primary button and selected chip, white text | `#6456E0` | `#6456E0` |
 
-## Exceptions
+Status tokens are separate from the accent and never share its hue. Each is paired with a word or icon, never colour alone.
 
-- Gate: `npm run design` (tests/design-compliance.mts) checks all four views, both themes and 375, 768 and 1440 px.
-- Open: spacing is still rem literals rather than a 4/8/12/16/24/32/48/64 token scale; no `@container` queries; no og:image (needs a raster asset).
+| Token | Meaning | Dark | Light |
+|---|---|---|---|
+| `--status-urgent` | deadline in 14 days or fewer; rejected | `#FF8370` | `#B3261E` |
+| `--status-soon` | deadline in 15 to 45 days; drafting | `#E5B454` | `#7A5200` |
+| `--status-ok` | accepted | `#62CB93` | `#1E6B45` |
+| `--status-info` | interested, submitted | `#6FB6E8` | `#1F5F8F` |
 
+A deadline further out than 45 days uses `--text-1`; a passed deadline uses `--text-3` and the word "closed". Tinted fills are derived, not new tokens: `color-mix(in oklab, <token> 16%, var(--surface-1))`.
+
+Measured contrast (WCAG ratio, computed 2026-10-04): `--text-1` 16.21 dark and 18.25 light on `--surface-1`; `--text-2` 8.99 and 8.62; `--text-3` 5.81 and 5.97 on `--surface-1`, 5.29 and 5.04 on `--surface-2`, 4.45 and 4.36 on `--surface-3` (hence the ban there); `--accent` 6.68 and 7.53 on `--surface-1`; white on `--accent-solid` 5.32; every status token at least 5.85 dark and 4.63 light on all three surfaces; `--line-strong` at least 3.68 dark and 3.43 light.
+
+Field colours (`--field-*`, 14 of them) are a categorical data scale, not interface colour. They appear only as a 4px stripe, an 8px dot, a calendar cell fill and a map marker, always beside the field's name. They are re-tuned to one lightness and chroma band per theme and kept at least 20 degrees of hue away from 282 so no field reads as the accent. Field tags are text on `--surface-2` with the dot; the filled coloured tag is retired.
+
+### Type
+
+- One family: **Onest** (SIL Open Font Licence), weights 400, 500, 600, loaded from Google Fonts: `https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap`, with the two preconnects already in the head. Fallback stack `system-ui, sans-serif`. `--mono` stays defined for the `code` element only; no screen renders code.
+- Roles: display is Onest 600; body is Onest 400; labels and controls are Onest 500. Dates, counts and countdowns use `font-variant-numeric: tabular-nums`.
+- Scale ratio 1.25 from a 16px body. Three tokens, three sizes on any screen:
+
+| Token | Value | Use |
+|---|---|---|
+| `--fs-sm` | `0.8rem` (12.8px) | labels, metadata, table headers, chips |
+| `--fs-base` | `1rem` (16px) | body, names, row countdowns, controls |
+| `--fs-display` | `clamp(2rem, 1.6rem + 1.1vw, 2.441rem)` (32 to 39px) | page title, the next-deadline number, modal title |
+
+  The display floor is 32px rather than the ratio's 31.25px so the largest heading is twice the body size.
+- Line height 1.5 body, 1.3 labels, 1.1 display. Letter spacing 0 on body, `-0.02em` on display. Measure capped at `--measure: 65ch`.
+- Sentence case everywhere. No uppercase, no italic emphasis, no eyebrow labels. The italic ampersand in the title is removed.
+
+### Spacing, radii, elevation
+
+- Spacing scale, base 4: `--space-1` 4px, `--space-2` 8px, `--space-3` 12px, `--space-4` 16px, `--space-5` 24px, `--space-6` 32px, `--space-7` 48px, `--space-8` 64px. No other spacing value appears in the stylesheet. Inside a group use 1 to 3; between groups 4 to 5; between regions 6 to 8. Section padding is `clamp(var(--space-4), 4vw, var(--space-6))`.
+- Radii, growing with the size of the thing: `--radius-1` 4px (tags, calendar cells, tier badge), `--radius-2` 6px (buttons, chips, inputs, select), `--radius-3` 8px (cards, popovers, tooltip), `--radius-4` 12px (modal). The field dot is the only circle. No pill radius: chips are 6px rectangles.
+- Elevation, one treatment per level and never a hairline and a shadow together:
+
+| Level | Surface | Treatment | Used by |
+|---|---|---|---|
+| `--elev-0` | `--ground` | none | page |
+| `--elev-1` | `--surface-1` | 1px `--line` hairline, no shadow | rows, cards, toolbar, filter rail |
+| `--elev-2` | `--surface-2` | `0 8px 24px rgb(0 0 0 / 0.32)` dark, `0 8px 24px rgb(18 16 28 / 0.12)` light | tooltip, popover, select list |
+| `--elev-3` | `--surface-2` | `0 24px 64px rgb(0 0 0 / 0.48)` dark, `0 24px 64px rgb(18 16 28 / 0.20)` light, over `--scrim` | modal |
+
+  `--scrim` is `rgb(6 5 12 / 0.64)` dark and `rgb(18 16 28 / 0.40)` light. No backdrop blur, no grain layer, no sheen gradients.
+- Layers: `--z-sticky` 10, `--z-popover` 100, `--z-modal` 1000.
+
+### Motion
+
+Tokens: `--dur-in` 120ms, `--dur-move` 160ms, `--dur-out` 240ms; `--ease-out` `cubic-bezier(0.22, 1, 0.36, 1)`, `--ease-in` `cubic-bezier(0.3, 0, 0.7, 1)`. No `linear`, no `ease-in-out`, no keyframe loops, nothing that pulses.
+
+| Motion | Where | Tokens | What it communicates |
+|---|---|---|---|
+| Colour and border shift | every control on hover, focus, active | `--dur-in` in, `--dur-out` out, `--ease-out` | feedback: this responds to you |
+| Row and card re-sort (position ease, FLIP) | cards and table after a filter, sort or search change | `--dur-move`, `--ease-out` | state change: where each venue went, so the list is not read again from the top |
+| View crossfade | switching timeline, cards, table, map | `--dur-in`, `--ease-out`, opacity only | state change: same data, different arrangement |
+| Modal rise | detail and suggest modals, opacity plus 8px translate | `--dur-move` in, `--dur-in` out | hierarchy: a layer above the list |
+| Rail tick lift | year-rail tick when its row or cell is hovered or focused | `--dur-in` | relationship: this row is that point in the year |
+| Star fill | star toggled | `--dur-in` | feedback: saved |
+
+Under `prefers-reduced-motion: reduce` every duration token is redefined to `0ms` at `:root`; position eases and the modal translate do not run. The theme switch itself never animates.
+
+### Icons
+
+Tabler Icons, outline set, version 3.41.1 (MIT), as one inline `<symbol>` sprite in the page with paths copied verbatim from `https://cdn.jsdelivr.net/npm/@tabler/icons@3.41.1/icons/outline/<name>.svg`. Stroke 1.5, `currentColor`, drawn at 20px inside a 44px target. The webfont is not used: it loads the whole set for a dozen glyphs and blocks first paint. Icons in use: `sun`, `moon`, `star`, `star-filled` (from the filled set), `external-link`, `calendar-down`, `plus`, `search`, `x`, `check`, `chevron-down`, `arrows-sort`, `filter`. No hand-drawn paths, no Unicode arrows or glyphs standing in for icons (the CFP arrow and the table link arrow become `external-link`). The brand mark and map geometry are illustrations, not icons, and stay.
+
+### Layout
+
+One 12-column grid, `max-width: 80rem`, gutter `--space-5`, page margin `clamp(var(--space-4), 4vw, var(--space-6))`. Regions in reading order: app bar, deadline strip (next-deadline readout, counts, year rail), view bar, then filters beside or above the data.
+
+| Width | Columns | Behaviour |
+|---|---|---|
+| 1440 | 12 | App bar one line. Filters are a sticky left rail on columns 1 to 3 (field, tier, window, sort, starred); data on columns 4 to 12. Search and the `.ics` and suggest actions sit in the view bar. The first data row is inside the first 900px on every view. Cards three across. |
+| 768 | 8 | Filter rail becomes a `details` block above the data, summary "Filters" plus the count of active ones, closed by default. Cards two across. Table keeps all columns; the fit column is dropped before any horizontal scroll. |
+| 375 | 4 | Margin `--space-4`. Title wraps to two lines at most. View tabs span the width as four equal 44px tabs. Search is full width on its own row. Filters stay in the `details` block. Cards one across. Table rows restack as two-line entries through `@container`, not a media query. Year rail shows six months. |
+
+Cards, table rows and the deadline strip size themselves with `@container`. Every touch target is at least 44 by 44px with 8px between neighbours. No horizontal scroll and no clipped text at any of the three widths.
+
+### Components and states
+
+Every state is built from the tokens above. Focus on every focusable element is `outline: 2px solid var(--accent); outline-offset: 2px`, visible on all three surfaces. Disabled is 0.5 opacity with `cursor: not-allowed` and no hover response.
+
+| Component | States |
+|---|---|
+| App bar: brand mark, title, theme toggle | toggle: default, hover, focus, active, pressed (dark or light, shown by icon and `aria-pressed`) |
+| Deadline strip: next-deadline readout, counts | default; urgent, soon, far (status token plus the words); empty ("No open deadlines") |
+| Year rail | default; tick hover and focus; tick urgent; empty month; reduced to six months at 375 |
+| View tabs (timeline, cards, table, map) | default, hover, focus, active, selected (`--accent` underline 2px plus weight 600) |
+| Action button (`.ics`, suggest) | default, hover, focus, active, disabled |
+| Filter chip (field with dot, tier, window) | default, hover, focus, active, selected (`--accent-solid` fill, white text, check icon), disabled when the field has no venues in the current set |
+| Sort select | default, hover, focus, open, disabled |
+| Search input | default, hover, focus, filled (clear button appears), no results |
+| Starred-only toggle | unchecked, checked, hover, focus, disabled when nothing is starred |
+| Segmented control (calendar or Gantt; compact, comfortable, spacious) | default, hover, focus, selected |
+| Calendar cell | empty, one deadline, several (count shown), today (accent ring), hover, focus, passed |
+| Gantt bar and markers | default, hover, focus, passed, today line |
+| Tooltip | hidden, shown; reachable by keyboard focus as well as hover |
+| Conference card | default, hover, focus, starred, closed (deadline passed), with or without a user status |
+| Table | header: default, hover, focus, sorted ascending, sorted descending. Row: default, hover, focus, starred, closed |
+| Spec line (format, tier, type under a venue) | present values only; an absent value is omitted, never a dash |
+| Countdown | urgent, soon, far, closed; always a number with its unit and the word, never colour alone |
+| Tier badge | A*, A, B, industry, journal: text on `--surface-2`, weight 600, no colour coding |
+| Field tag | dot plus name |
+| Status pill (interested, drafting, submitted, accepted, rejected) | one per value, each a status token tint with the word; none |
+| Star button | off, on, hover, focus |
+| Map and markers | default, marker hover, focus, selected, cluster with count; empty ("No venues with a known city") |
+| Detail modal: notes field, status select, links | opening, open, closing; notes saved (inline "Saved" text); focus trapped; Escape closes |
+| Suggest modal | default, invalid (message names the missing field), submitting, error (names the failure and the retry), sent |
+| Colophon | default; link hover and focus |
+| Region states | loading: skeleton rows in `--surface-1` and `--surface-2`, no spinner. Empty: one sentence naming the filter to loosen and a "Clear filters" button. Error: what failed and a "Retry" button. Each visibly distinct from live data |
+
+Controls that exist today and must all remain: theme toggle; four view tabs; `.ics`; suggest; 14 field chips; six tier chips; sort select; four window chips; search; starred only; calendar and Gantt switch; compact, comfortable and spacious density switch; per-row star; card and row click to open the modal; modal notes, status and close; CFP links; colophon link.
+
+### Formats
+
+- Date: short month, day, four-digit year, `Mar 4, 2026`, from `fmtDate`. A range shares month and year: `Oct 10–14, 2026`. The two-digit year after a venue name is retired; the year is written in full.
+- Countdown: whole days with the unit attached, `14d`; future as `in 14d`, past as `closed Mar 4, 2026`. No struck-through "509d ago".
+- Numbers: plain digits, no thousands separator below 10,000, tabular. Counts are followed by their noun: `131 venues`.
+- Units: `d` for days is the only abbreviation. Dates are shown as recorded in the data, without time-zone conversion.
+
+### Exceptions
+
+- Field colours and status tokens sit outside the count of interface colours (eleven tokens above). They are data encodings and each is a token. Verifier: `npm run design` plus a grep of `getCSS()` for colour literals outside the `:root` blocks, which must find none.
+- Gate: `npm run design` (`tests/design-compliance.mts`) checks all four views, both themes and 375, 768 and 1440px: no horizontal scroll, at most three sizes and three weights, one family, no uppercase, 44px targets, zero axe violations.
+- Open: no `og:image` (needs a raster asset). Fonts come from Google's CDN rather than a self-hosted file.
 - Record a universal-rule exception only with the evidence and verifier that justify it.
+
+### Recommendations
+
+In this build:
+
+1. Replace the paper, espresso and blue tokens with the Stint tokens in both themes; remove the grain layer, backdrop blur, sheen gradients and the italic ampersand.
+2. Onest in place of Hanken Grotesk; the colophon names the face actually loaded.
+3. Spacing, radius, elevation, layer and motion tokens; no literal left in component rules.
+4. Tabler outline sprite replaces hand-drawn icons and Unicode arrows.
+5. Chips become 6px rectangles; the selected state gains a check icon so it is not colour alone.
+6. New component, next-deadline readout: the days-remaining number at display size at the top of the page, with the venue and date beside it.
+7. New component, year rail: twelve months from today, one tick per deadline in its field colour, urgent ticks in `--status-urgent`.
+8. New component, spec line: format, tier and type as plain text under each venue in cards and table.
+9. Layout: filters move to a sticky left rail at 1440 and a `details` block below it, so data is in the first viewport. Seen in the running app on 2026-10-04 at 1440 by 900: header and filters fill the viewport and only the top edge of the first card or the first two table rows shows.
+10. Countdown column becomes the widest, heaviest element in a row; tabular, right-aligned.
+11. Default sort lists open deadlines first and closed ones after, so the first row is no longer a deadline that passed in 2025.
+12. Row and card re-sort ease, view crossfade, modal rise, rail tick lift.
+13. `@container` on cards, table rows and the deadline strip; `clamp()` on display size and section padding.
+14. Loading, empty and error states for every data region; the empty state offers "Clear filters".
+15. Field palette re-tuned to one lightness band and kept clear of the accent hue.
+
+Proposed for later:
+
+1. Self-host Onest (Fontsource woff2 served by a route in `server.ts`) to drop the third-party request.
+2. A raster `og:image` generated from the deadline strip.
+3. Year rail as a control: click a month to set the window filter.
+4. Saved filter sets in the URL hash with a "Copy link" action.
+5. Anywhere-on-Earth labelling once the data records a time zone per deadline.
+6. Keyboard shortcuts: `/` focuses search, `1` to `4` switch views, `s` stars the focused row.
+7. Requirement fields in the data (page limit, anonymity) so the spec line can carry them; the refresh script does not collect them today.
+8. Register this project against the Stint row in `~/.agents/design/languages/registry.md`.

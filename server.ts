@@ -89,7 +89,7 @@ function buildICS(onlyIds: Set<string> | null): string {
       events.push(
         icsEvent({
           uid: `${c.id}-deadline@conference-tracker`,
-          summary: `${c.name} ${c.year} — paper deadline`,
+          summary: `${c.name} ${c.year} — submission deadline`,
           description: [
             c.fullName,
             c.fit,
@@ -172,7 +172,9 @@ function icsEscape(s: string): string {
 }
 
 function buildPage(): string {
-  const dataJson = JSON.stringify(data);
+  // Field colours are a themed token scale (--field-*), so the page carries a reference, not the data file's hex.
+  const fields = Object.fromEntries(Object.entries(data.fields as Record<string, { label: string }>).map(([key, f]) => [key, { ...f, color: `var(--field-${key.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")})` }]));
+  const dataJson = JSON.stringify({ ...data, fields });
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -180,56 +182,107 @@ function buildPage(): string {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI &amp; Design — Conference Tracker</title>
 <meta name="description" content="AI and Engineering Design Conference Tracker — submission deadlines, locations, and requirements across HCI, engineering design, AI/ML, visualization, manufacturing, and cognitive science.">
-<meta name="theme-color" content="#FAFAF7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#15120E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F4F3F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C0B14" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
 <style>${getCSS()}</style>
 </head>
 <body>
-  <div class="grain" aria-hidden="true"></div>
-  <header class="masthead">
-    <div class="masthead-row">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-            <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
-            <line x1="12" y1="3" x2="12" y2="21" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-            <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-            <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
-          </svg>
-        </span>
-        <div class="brand-titles">
-          <h1 class="brand-title">AI <span class="amp">&amp;</span> Engineering Design Conference Tracker</h1>
-        </div>
-      </div>
-      <div class="masthead-actions">
-        <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
-          <span class="theme-icon-light"><svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
-          <span class="theme-icon-dark"><svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></span>
-        </button>
-      </div>
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+<symbol id="i-sun" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+  <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" /></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" /></symbol>
+<symbol id="i-star-filled" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" /></symbol>
+<symbol id="i-external-link" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
+  <path d="M11 13l9 -9" />
+  <path d="M15 4h5v5" /></symbol>
+<symbol id="i-calendar-down" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+  <path d="M19 16v6" />
+  <path d="M22 19l-3 3l-3 -3" />
+  <path d="M16 3v4" />
+  <path d="M8 3v4" />
+  <path d="M4 11h16" /></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 5l0 14" />
+  <path d="M5 12l14 0" /></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" /></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 6l-12 12" />
+  <path d="M6 6l12 12" /></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 12l5 5l10 -10" /></symbol>
+<symbol id="i-chevron-down" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 9l6 6l6 -6" /></symbol>
+<symbol id="i-arrows-sort" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9l4 -4l4 4m-4 -4v14" />
+  <path d="M21 15l-4 4l-4 -4m4 4v-14" /></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227" /></symbol>
+</svg>
+  <header class="appbar shell">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <line x1="12" y1="3" x2="12" y2="21" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
+        </svg>
+      </span>
+      <h1 class="brand-title"><span class="title-long">AI &amp; Engineering Design </span>Conference Tracker</h1>
     </div>
-    <p class="masthead-lede">Submission deadlines, locations, and requirements for conferences and journals at the intersection of AI and engineering design — spanning HCI, design science, AI / ML, visualization, manufacturing, and cognitive science.</p>
-    <div class="masthead-stats" id="stats" aria-live="polite"></div>
+    <button class="theme-toggle" id="themeBtn" aria-label="Dark theme" aria-pressed="false" title="Toggle theme">
+      <span class="theme-icon-light"><svg class="icon" aria-hidden="true"><use href="#i-sun"></use></svg></span>
+      <span class="theme-icon-dark"><svg class="icon" aria-hidden="true"><use href="#i-moon"></use></svg></span>
+    </button>
   </header>
 
-  <nav class="viewbar" aria-label="View">
-    <div class="viewbar-inner">
+  <section class="strip shell" aria-label="Deadline strip">
+    <div class="strip-box">
+      <div class="strip-grid">
+        <div class="readout" id="readout" aria-live="polite"><span class="skeleton skeleton-text" aria-hidden="true"></span></div>
+        <div class="strip-side">
+          <div class="masthead-stats" id="stats" aria-live="polite"><span class="skeleton skeleton-text" aria-hidden="true"></span><span class="skeleton skeleton-text" aria-hidden="true"></span></div>
+          <figure class="yearrail" id="yearRail"><span class="skeleton skeleton-text" aria-hidden="true"></span></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="viewbar shell" aria-label="View">
+    <div class="view-tabs">
       <button class="view-tab active" data-view="timeline" aria-pressed="true">Timeline</button>
       <button class="view-tab" data-view="cards" aria-pressed="false">Cards</button>
       <button class="view-tab" data-view="table" aria-pressed="false">Table</button>
       <button class="view-tab" data-view="map" aria-pressed="false">Map</button>
-      <span class="viewbar-spacer"></span>
-      <a class="viewbar-action" href="/cal.ics" download="conferences.ics" title="Download all deadlines as iCal">.ics</a>
-      <button class="viewbar-action" id="submitConfBtn" title="Suggest a missing conference">+ suggest</button>
+    </div>
+    <div class="search-field" id="searchField">
+      <svg class="icon search-icon" aria-hidden="true"><use href="#i-search"></use></svg>
+      <input type="search" id="searchInput" placeholder="Search conferences…" autocomplete="off" aria-label="Search conferences">
+      <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg></button>
+    </div>
+    <div class="viewbar-actions">
+      <a class="viewbar-action" href="/cal.ics" download="conferences.ics" title="Download all deadlines as iCal"><svg class="icon" aria-hidden="true"><use href="#i-calendar-down"></use></svg>.ics</a>
+      <button class="viewbar-action" id="submitConfBtn" title="Suggest a missing conference"><svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>Suggest</button>
     </div>
   </nav>
 
-  <section class="filters" aria-label="Filters">
-    <div class="filters-main">
+  <div class="workspace shell">
+  <details class="filters" id="filters" open>
+    <summary class="filters-summary" id="filtersSummary"><svg class="icon" aria-hidden="true"><use href="#i-filter"></use></svg><span>Filters</span><span class="filters-count" id="filtersCount" aria-live="polite">0 active</span><svg class="icon filters-chevron" aria-hidden="true"><use href="#i-chevron-down"></use></svg></summary>
+    <div class="filters-body" aria-label="Filters">
     <div class="filter-group">
       <span class="filter-label">Field</span>
       <div class="chip-row" id="fieldChips"></div>
@@ -237,62 +290,98 @@ function buildPage(): string {
     <div class="filter-group">
       <span class="filter-label">Tier</span>
       <div class="chip-row" id="tierChips">
-        <button class="chip" data-tier="all">All</button>
-        <button class="chip" data-tier="A*">A*</button>
-        <button class="chip" data-tier="A">A</button>
-        <button class="chip" data-tier="B">B</button>
-        <button class="chip" data-tier="industry">Industry</button>
-        <button class="chip" data-tier="journal">Journal</button>
+        <button class="chip" data-tier="all" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>All</button>
+        <button class="chip" data-tier="A*" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>A*</button>
+        <button class="chip" data-tier="A" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>A</button>
+        <button class="chip" data-tier="B" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>B</button>
+        <button class="chip" data-tier="industry" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>Industry</button>
+        <button class="chip" data-tier="journal" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>Journal</button>
       </div>
-    </div>
-    <div class="filter-group">
-      <label class="filter-label" for="sortSelect">Sort</label>
-      <select class="select" id="sortSelect">
-        <option value="deadline-asc">Deadline ↑</option>
-        <option value="deadline-desc">Deadline ↓</option>
-        <option value="conference-asc">Conf date ↑</option>
-        <option value="name-asc">Name A→Z</option>
-        <option value="tier-asc">Tier (A* first)</option>
-      </select>
     </div>
     <div class="filter-group">
       <span class="filter-label">Window</span>
       <div class="chip-row" id="windowChips">
-        <button class="chip" data-window="30">30d</button>
-        <button class="chip" data-window="90">90d</button>
-        <button class="chip" data-window="180">180d</button>
-        <button class="chip active" data-window="all">All</button>
+        <button class="chip" data-window="30" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>30d</button>
+        <button class="chip" data-window="90" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>90d</button>
+        <button class="chip" data-window="180" aria-pressed="false"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>180d</button>
+        <button class="chip active" data-window="all" aria-pressed="true"><svg class="icon chip-check" aria-hidden="true"><use href="#i-check"></use></svg>All</button>
       </div>
     </div>
+    <div class="filter-group">
+      <label class="filter-label" for="sortSelect">Sort</label>
+      <div class="select-wrap">
+        <select class="select" id="sortSelect">
+          <option value="deadline-asc">Deadline, soonest first</option>
+          <option value="deadline-desc">Deadline, latest first</option>
+          <option value="conference-asc">Conference date, soonest first</option>
+          <option value="name-asc">Name, A to Z</option>
+          <option value="tier-asc">Tier, A* first</option>
+        </select>
+        <svg class="icon select-icon" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+      </div>
     </div>
-    <div class="filters-search">
-    <div class="filter-group filter-group-search">
-      <input type="search" id="searchInput" placeholder="Search conferences…" autocomplete="off" aria-label="Search conferences">
+    <div class="filter-group">
       <label class="starred-toggle">
         <input type="checkbox" id="starredOnly">
-        <span class="starred-label"><svg class="icon icon-star" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg> Starred only</span>
+        <span class="starred-label"><svg class="icon icon-off" aria-hidden="true"><use href="#i-star"></use></svg><svg class="icon icon-on icon-fill" aria-hidden="true"><use href="#i-star-filled"></use></svg> Starred only</span>
       </label>
     </div>
     </div>
-  </section>
+  </details>
 
   <main id="main">
-    <section id="view-timeline" class="view"></section>
-    <section id="view-cards" class="view hidden"></section>
-    <section id="view-table" class="view hidden"></section>
-    <section id="view-map" class="view hidden"></section>
+    <section id="view-timeline" class="view" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
+    <section id="view-cards" class="view hidden" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
+    <section id="view-table" class="view hidden" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
+    <section id="view-map" class="view hidden" aria-busy="true"><div class="skeleton-region" aria-hidden="true"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></section>
   </main>
+  </div>
 
-  <div id="detailModal" class="modal hidden" aria-hidden="true" aria-modal="true" role="dialog">
+  <div id="detailModal" class="modal hidden" aria-hidden="true" aria-modal="true" role="dialog" aria-labelledby="modalTitle">
     <div class="modal-backdrop" data-close></div>
     <div class="modal-panel" role="document">
-      <button class="modal-close" data-close aria-label="Close">×</button>
+      <button class="modal-close" data-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg></button>
       <div id="modalBody"></div>
     </div>
   </div>
 
-  <footer class="colophon">
-    <span class="colophon-bit">Hanken Grotesk</span>
+  <div id="suggestModal" class="modal hidden" aria-hidden="true" aria-modal="true" role="dialog" aria-labelledby="suggestTitle">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel" role="document">
+      <button class="modal-close" data-close aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg></button>
+      <h2 class="modal-name" id="suggestTitle">Suggest a venue</h2>
+      <p class="modal-fullname">Name a conference or journal the tracker is missing. This opens a prefilled issue on GitHub.</p>
+      <form id="suggestForm" class="suggest-form" novalidate>
+        <div class="field">
+          <label for="sg-name">Venue name</label>
+          <input class="input" id="sg-name" name="name" type="text" autocomplete="off" aria-describedby="sg-name-msg" required>
+          <p class="field-msg" id="sg-name-msg" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="sg-link">Call for papers link</label>
+          <input class="input" id="sg-link" name="link" type="url" inputmode="url" autocomplete="off" placeholder="https://" aria-describedby="sg-link-msg" required>
+          <p class="field-msg" id="sg-link-msg" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="sg-deadline">Paper deadline, if known</label>
+          <input class="input" id="sg-deadline" name="deadline" type="date">
+        </div>
+        <div class="field">
+          <label for="sg-why">Why it fits</label>
+          <textarea class="notes-area" id="sg-why" name="why" rows="3"></textarea>
+        </div>
+        <p class="form-status" id="suggestStatus" role="status"></p>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" id="suggestSubmit">Open draft on GitHub</button>
+          <button type="button" class="btn" data-close>Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="colophon shell">
+    <p class="masthead-lede">Submission deadlines, locations, and requirements for conferences and journals at the intersection of AI and engineering design — spanning HCI, design science, AI / ML, visualization, manufacturing, and cognitive science.</p>
+    <span class="colophon-bit">Onest</span>
     <span class="colophon-sep">/</span>
     <span class="colophon-bit">Data refreshed ${(data.generated || new Date().toISOString()).slice(0, 10)}</span>
     <span class="colophon-sep">/</span>
@@ -305,434 +394,454 @@ function buildPage(): string {
 </html>`;
 }
 
-// The dark theme's token values, written once and applied twice: to [data-theme="dark"] for
-// an explicit choice, and inside @media (prefers-color-scheme: dark) for the first paint.
-// Two copies of this list in the stylesheet would drift; one constant cannot.
-const DARK_TOKENS = `  --paper: #15120E;
-  --paper-soft: #1D1914;
-  --paper-deep: #272118;
-  --paper-raised: rgba(39, 33, 24, 0.86);
-  --ink: #E9E2D2;
-  --ink-soft: #B9B09F;
-  --ink-faint: #A89D8B;
-  --rule: rgba(233, 226, 210, 0.12);
-  --rule-soft: rgba(233, 226, 210, 0.07);
-  --accent: #7A9CFF;
-  --accent-ink: #7A9CFF;
-  --accent-soft: rgba(122, 156, 255, 0.14);
-  --accent-line: rgba(122, 156, 255, 0.24);
-  --urgent: #FF7B75;
-  --urgent-soft: rgba(255, 123, 117, 0.16);
-  --warn: #D2AD79;
-  --warn-soft: rgba(210, 173, 121, 0.16);
-  --tag-ink: #FAFAF7;
-  --shadow-card: 0 18px 32px rgba(0, 0, 0, 0.28);
-  --shadow-modal: 0 30px 80px rgba(0, 0, 0, 0.52);
-  --shadow-toggle-hover: 0 10px 20px rgba(0, 0, 0, 0.24);
-  --shadow-tooltip: 0 6px 20px rgba(0, 0, 0, 0.28), 0 1px 4px rgba(0, 0, 0, 0.18);
-  --chip-active-scrim: rgba(15, 15, 14, 0.34);
-  --card-sheen: rgba(255, 255, 255, 0.04);
-  --tag-ring: rgba(250, 250, 247, 0.16);
-  --today-wash: rgba(122, 156, 255, 0.18);
-  --row-hover: rgba(122, 156, 255, 0.08);
-  --backdrop: rgba(9, 8, 7, 0.68);
-  --map-fill: rgba(233, 226, 210, 0.04);
-  --map-stroke: rgba(233, 226, 210, 0.10);
-  --warn-ink: #D2AD79;
-  --warn-tint: rgba(210, 173, 121, 0.14);
-  --warn-line: rgba(210, 173, 121, 0.22);
-  --grain-opacity: 0.042;
-  --grain-blend: screen;`;
+// Stint colour tokens (DESIGN.md § Colour). Each theme is written once and applied by the blocks in
+// getCSS(): dark is the :root default, light redefines the same names, and [data-theme] restates either
+// so an explicit choice beats the media query. No component carries a per-theme override.
+const DARK_TOKENS = `  color-scheme: dark;
+  --ground: #0C0B14;
+  --surface-1: #15131F;
+  --surface-2: #1E1C2C;
+  --surface-3: #2B2940;
+  --line: #3A3756;
+  --line-strong: #75729A;
+  --text-1: #F1F0F8;
+  --text-2: #B6B3CA;
+  --text-3: #918EAA;
+  --accent: #9A90F2;
+  --accent-solid: #6456E0;
+  --on-accent: #FFFFFF;
+  --status-urgent: #FF8370;
+  --status-soon: #E5B454;
+  --status-ok: #62CB93;
+  --status-info: #6FB6E8;
+  --scrim: rgb(6 5 12 / 0.64);
+  --elev-2: 0 8px 24px rgb(0 0 0 / 0.32);
+  --elev-3: 0 24px 64px rgb(0 0 0 / 0.48);
+  --field-hci: #B994E4;
+  --field-ai-for-design: #E59EE0;
+  --field-ml: #E287AE;
+  --field-nlp: #FE9A9F;
+  --field-cv: #E78D6B;
+  --field-engineering-design: #F0AA63;
+  --field-visualization: #C6A344;
+  --field-manufacturing: #BBC364;
+  --field-cognitive-science: #83B96D;
+  --field-robotics: #6CD2A1;
+  --field-graphics: #2CC0B1;
+  --field-knowledge-information: #42CFE4;
+  --field-affective: #4CB4E7;
+  --field-health: #8EBDFE;`;
+
+const LIGHT_TOKENS = `  color-scheme: light;
+  --ground: #F4F3F9;
+  --surface-1: #FCFBFF;
+  --surface-2: #E9E7F2;
+  --surface-3: #DAD7E8;
+  --line: #B4B0CC;
+  --line-strong: #7C7899;
+  --text-1: #12101C;
+  --text-2: #4A4761;
+  --text-3: #625E7C;
+  --accent: #4B3CC0;
+  --accent-solid: #6456E0;
+  --on-accent: #FFFFFF;
+  --status-urgent: #B3261E;
+  --status-soon: #7A5200;
+  --status-ok: #1E6B45;
+  --status-info: #1F5F8F;
+  --scrim: rgb(18 16 28 / 0.40);
+  --elev-2: 0 8px 24px rgb(18 16 28 / 0.12);
+  --elev-3: 0 24px 64px rgb(18 16 28 / 0.20);
+  --field-hci: #865EB1;
+  --field-ai-for-design: #8A4487;
+  --field-ml: #AC507B;
+  --field-nlp: #A03E48;
+  --field-cv: #B25632;
+  --field-engineering-design: #8E5300;
+  --field-visualization: #8F7002;
+  --field-manufacturing: #646900;
+  --field-cognitive-science: #4D8533;
+  --field-robotics: #00764E;
+  --field-graphics: #04877C;
+  --field-knowledge-information: #01707D;
+  --field-affective: #007FAD;
+  --field-health: #2D62AC;`;
 
 function getCSS(): string {
   return `
 :root {
-  --paper: #FAFAF7;
-  --paper-soft: #F2EEE5;
-  --paper-deep: #E7E1D5;
-  --paper-raised: rgba(255, 255, 255, 0.62);
-  --ink: #0F0F0E;
-  --ink-soft: #4A453E;
-  --ink-faint: #645E55;
-  --rule: rgba(15, 15, 14, 0.09);
-  --rule-soft: rgba(15, 15, 14, 0.05);
-  --accent: #2D5BFF;
-  --accent-ink: #2447D9;
-  --accent-soft: rgba(45, 91, 255, 0.10);
-  --accent-line: rgba(45, 91, 255, 0.18);
-  --urgent: #B02E2E;
-  --urgent-soft: rgba(197, 56, 56, 0.12);
-  --warn: #7B5633;
-  --warn-soft: rgba(140, 98, 57, 0.12);
-  --good: #2F6B3F;
-  --tag-ink: #FAFAF7;
-  --sans: "Hanken Grotesk", system-ui, sans-serif;
+${DARK_TOKENS}
+  --sans: "Onest", system-ui, sans-serif;
   --mono: ui-monospace, Menlo, Consolas, monospace;
   --measure: 65ch;
-  --shadow-card: 0 18px 30px rgba(15, 15, 14, 0.035);
-  --shadow-modal: 0 28px 72px rgba(15, 15, 14, 0.18);
-  /* Effects. Each value that differed between themes is declared once here and once in
-     [data-theme="dark"] below, rather than as a per-component override — ~/.agents/DESIGN.md
-     § Performance: "Express dark mode through tokens rather than per-component overrides."
-     Eleven such overrides were deleted when these landed. */
-  --shadow-toggle-hover: 0 8px 18px rgba(15, 15, 14, 0.06);
-  --shadow-search-hover: 0 4px 14px rgba(15, 15, 14, 0.03);
-  --shadow-tooltip: 0 4px 16px rgba(15, 15, 14, 0.10), 0 1px 3px rgba(15, 15, 14, 0.06);
-  --shadow-note: 0 4px 12px rgba(0, 0, 0, 0.18);
-  --shadow-cell-hover: 0 3px 10px rgba(0, 0, 0, 0.16);
-  --chip-active-scrim: rgba(15, 15, 14, 0.30);
-  --chip-dot-ring: rgba(250, 250, 247, 0.48);
-  --card-sheen: rgba(255, 255, 255, 0.38);
-  --tag-ring: rgba(250, 250, 247, 0.15);
-  --tag-text-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
-  --today-wash: rgba(45, 91, 255, 0.16);
-  --row-hover: rgba(45, 91, 255, 0.04);
-  --backdrop: rgba(19, 17, 15, 0.42);
-  --map-fill: var(--paper-deep);
-  --map-stroke: var(--rule);
-  --accent-tint: rgba(45, 91, 255, 0.18);
-  --good-soft: rgba(47, 107, 63, 0.16);
-  --urgent-line: rgba(197, 56, 56, 0.18);
-  --warn-ink: #7B5633;
-  --warn-tint: rgba(140, 98, 57, 0.12);
-  --warn-line: rgba(140, 98, 57, 0.18);
-  --warn-line-soft: rgba(140, 98, 57, 0.16);
-  --count-ink: #FFFFFF;
-  --count-scrim: rgba(0, 0, 0, 0.38);
-  --grain-opacity: 0.036;
-  --grain-blend: multiply;
-  /* The three field hues the calendar legend swatch samples. They mirror data/conferences.ts
-     FIELDS entries for HCI, Design Research and ML; the swatch is a static illustration of the
-     stripe encoding, so it cannot read them from the data at paint time. */
-  --field-hci: #5B6BBF;
-  --field-design: #B8753B;
-  --field-ml: #2F8A6E;
+  --elev-1: inset 0 0 0 1px var(--line);
+  --elev-1-strong: inset 0 0 0 1px var(--line-strong);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --radius-1: 4px;
+  --radius-2: 6px;
+  --radius-3: 8px;
+  --radius-4: 12px;
+  --radius-dot: 50%;
+  --z-sticky: 10;
+  --z-popover: 100;
+  --z-modal: 1000;
   --dur-in: 120ms;
+  --dur-move: 160ms;
   --dur-out: 240ms;
-  --ease-in: cubic-bezier(0.3, 0, 0.7, 1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-
+  --ease-in: cubic-bezier(0.3, 0, 0.7, 1);
   /* Type scale: three sizes. Small for labels and metadata, base for body and names, display for the page and modal titles. */
-  --fs-sm: 0.8125rem;
+  --fs-sm: 0.8rem;
   --fs-base: 1rem;
-  --fs-display: clamp(2rem, 3vw + 1rem, 2.25rem);
-  /* Radii — 7 distinct, likewise named rather than reconciled. */
-  --radius-10-px: 10px;
-  --radius-2-px: 2px;
-  --radius-3-px: 3px;
-  --radius-4-px: 4px;
-  --radius-50-pct: 50%;
-  --radius-6-px: 6px;
-  --radius-7-px: 7px;
-  --radius-999-px: 999px;
+  --fs-display: clamp(2rem, 1.6rem + 1.1vw, 2.441rem);
+  --margin: clamp(var(--space-4), 4vw, var(--space-6));
+  --cols: 12;
 }
-[data-theme="dark"] {
-${DARK_TOKENS}
-}
-/* Same values again for the FIRST PAINT. The theme script reads the same media query and
-   sets data-theme, but only after it runs, so a dark-preference visitor saw one frame of the
-   light theme. :root:not([data-theme]) applies these until the script lands and then stops
-   matching, so an explicit choice - including a "light" choice stored from a previous visit -
-   still wins. Steady-state appearance is unchanged in both themes; only the flash is gone. */
-@media (prefers-color-scheme: dark) {
+@media (max-width: 1099px) { :root { --cols: 8; } }
+@media (max-width: 599px) { :root { --cols: 4; } }
+/* First paint: the theme script sets data-theme only after it runs, so a light-preference visitor
+   would see one dark frame. :root:not([data-theme]) applies light until the script lands. */
+@media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
-${DARK_TOKENS}
+${LIGHT_TOKENS}
   }
+}
+:root[data-theme="light"] {
+${LIGHT_TOKENS}
+}
+:root[data-theme="dark"] {
+${DARK_TOKENS}
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-in: 0ms; --dur-move: 0ms; --dur-out: 0ms; }
 }
 * { box-sizing: border-box; }
 html {
   font-family: var(--sans);
   font-size: var(--fs-base);
   font-optical-sizing: auto;
-  font-feature-settings: "kern" 1, "liga" 1, "ss01" 1;
+  font-feature-settings: "kern" 1, "liga" 1;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  line-height: 1.58;
+  line-height: 1.5;
 }
-body { margin: 0; background: var(--paper); color: var(--ink); min-height: 100dvh; }
+body { margin: 0; background: var(--ground); color: var(--text-1); min-height: 100dvh; }
 button, input, textarea, select { font: inherit; }
-p, .masthead-lede, .card-fullname, .card-fit, .modal-fullname, .timeline-empty {
+p, .masthead-lede, .card-fullname, .card-fit, .modal-fullname {
   max-width: var(--measure);
   text-wrap: pretty;
-  font-variant-numeric: oldstyle-nums;
+  font-variant-numeric: tabular-nums;
 }
 h1, h2, h3, .brand-title, .card-name, .modal-name { text-wrap: balance; }
 code {
   font-variant-numeric: tabular-nums;
   font-size: 1em;
-  padding: 0.12rem 0.38rem;
-  border-radius: var(--radius-4-px);
-  background: var(--paper-soft);
-  box-shadow: inset 0 0 0 1px var(--rule);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-1);
+  background: var(--surface-2);
+  box-shadow: var(--elev-1);
 }
-::selection { background: var(--accent-soft); color: var(--ink); }
-:focus { outline: none; }
-:where(a, button, input, label, select, textarea, [tabindex]):focus-visible { outline: none; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--accent); }
+::selection { background: color-mix(in oklab, var(--accent) 16%, var(--surface-1)); color: var(--text-1); }
+:where(a, button, input, label, select, textarea, [tabindex]):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-.grain {
-  position: fixed; inset: 0; pointer-events: none; z-index: 1000;
-  opacity: var(--grain-opacity); mix-blend-mode: var(--grain-blend);
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
+/* ------ Grid: 12 columns at 1100px and up, 8 from 600px, 4 below. Every region sits on it. ------ */
+.shell { max-width: 80rem; margin: 0 auto; padding-inline: var(--margin); }
 
-/* ------ Masthead ------ */
-.masthead { max-width: 78rem; margin: 0 auto; padding: clamp(2.4rem, 4.6vw, 3.4rem) 2rem 1.4rem; }
-.masthead-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; padding-bottom: 0.9rem; }
-.brand { display: flex; align-items: flex-start; gap: 0.85rem; min-width: 0; }
+/* ------ App bar: one line ------ */
+.appbar { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding-block: var(--space-4) var(--space-3); }
+.brand { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
 .brand-mark {
-  margin-top: 0.18rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.1rem;
-  height: 2.1rem;
+  width: 2.75rem;
+  height: 2.75rem;
   flex-shrink: 0;
   color: var(--accent);
-  background: var(--paper-raised);
-  box-shadow: inset 0 0 0 1px var(--rule);
-  border-radius: var(--radius-6-px);
+  background: var(--surface-1);
+  box-shadow: var(--elev-1);
+  border-radius: var(--radius-2);
 }
 .brand-mark svg { display: block; }
-.brand-titles { min-width: 0; display: flex; flex-direction: column; gap: 0.18rem; }
-/* .brand-eyebrow removed — redundant above h1 and was an AI-ism (mono eyebrow) */
-.brand-title { font-size: var(--fs-display); font-weight: 600; letter-spacing: -0.028em; margin: 0; line-height: 1.06; max-width: 24ch; }
-.amp { font-family: var(--sans); font-style: italic; font-weight: 500; color: var(--accent); padding: 0 0.04em; }
-.masthead-lede { color: var(--ink-soft); font-size: var(--fs-base); margin: 0 0 1.18rem; line-height: 1.66; }
+.brand-title { font-size: var(--fs-display); font-weight: 600; letter-spacing: -0.02em; margin: 0; line-height: 1.1; }
+@media (max-width: 599px) {
+  .title-long { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+}
+
+/* ------ Deadline strip: next-deadline readout, counts, year rail ------ */
+.strip { padding-block: 0 var(--space-4); }
+.strip-box { container-type: inline-size; container-name: strip; background: var(--surface-1); box-shadow: var(--elev-1); border-radius: var(--radius-3); padding: clamp(var(--space-4), 3vw, var(--space-5)); }
+.strip-grid { display: grid; gap: var(--space-4) var(--space-6); align-items: center; }
+.strip-side { display: grid; gap: var(--space-3); min-width: 0; }
+@container strip (min-width: 40rem) {
+  .strip-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+}
+.readout { display: flex; align-items: center; gap: var(--space-4); min-width: 0; font-variant-numeric: tabular-nums; }
+.readout-count { display: flex; align-items: baseline; gap: var(--space-2); flex-shrink: 0; }
+.readout-num { font-size: var(--fs-display); font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; color: var(--text-1); }
+.readout-unit { font-size: var(--fs-base); font-weight: 500; color: var(--text-2); }
+.readout[data-tone="urgent"] .readout-num { color: var(--status-urgent); }
+.readout[data-tone="soon"] .readout-num { color: var(--status-soon); }
+.readout-body { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+.readout-venue { font-size: var(--fs-base); font-weight: 600; }
+.readout-date { font-size: var(--fs-sm); color: var(--text-2); }
+.readout[data-tone="urgent"] .readout-tone { color: var(--status-urgent); font-weight: 600; }
+.readout[data-tone="soon"] .readout-tone { color: var(--status-soon); font-weight: 600; }
 .masthead-stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.65rem 1.6rem;
-  padding-top: 0.95rem;
-  border-top: 1px solid var(--rule);
+  gap: var(--space-1) var(--space-5);
   font-family: var(--sans);
   font-size: var(--fs-sm);
-  color: var(--ink-faint);
-  letter-spacing: 0;
+  color: var(--text-2);
   font-variant-numeric: tabular-nums;
 }
-.stat { display: inline-flex; align-items: baseline; gap: 0.46rem; min-height: 1.5rem; }
+.stat { display: inline-flex; align-items: baseline; gap: var(--space-2); min-height: 1.5rem; }
 .stat strong {
   font-family: var(--sans);
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text-1);
   font-size: var(--fs-base);
-  letter-spacing: -0.02em;
-  text-transform: none;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.stat .stat-accent { color: var(--accent); }
-.stat .stat-urgent { color: var(--urgent); }
+
+/* ------ Year rail: twelve months from today (six at 375), one tick per deadline ------ */
+.yearrail { margin: 0; display: grid; gap: var(--space-1); min-width: 0; }
+.rail-caption { font-size: var(--fs-sm); color: var(--text-2); font-variant-numeric: tabular-nums; }
+.rail-caption strong { color: var(--text-1); }
+.rail-svg { display: block; width: 100%; height: 3rem; overflow: visible; }
+.rail-axis { stroke: var(--line-strong); stroke-width: 1; }
+.rail-month { stroke: var(--line); stroke-width: 1; }
+.rail-label { font-family: var(--sans); font-size: var(--fs-sm); fill: var(--text-3); }
+.rail-today { stroke: var(--accent); stroke-width: 2; }
+.rail-tick { transform-box: fill-box; transition: transform var(--dur-in) var(--ease-out); }
+.rail-tick.lift { transform: translateY(calc(-1 * var(--space-1))); }
 
 .theme-toggle {
+  flex: 0 0 auto;
   width: 2.75rem;
   height: 2.75rem;
-  background: var(--paper-raised);
+  background: var(--surface-1);
   border: 0;
-  border-radius: var(--radius-999-px);
-  box-shadow: inset 0 0 0 1px var(--rule);
+  border-radius: var(--radius-2);
+  box-shadow: var(--elev-1-strong);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--ink-soft);
+  color: var(--text-2);
   font-size: var(--fs-base);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   transition:
     color var(--dur-out) var(--ease-out),
     background-color var(--dur-out) var(--ease-out),
-    box-shadow var(--dur-out) var(--ease-out),
-    transform var(--dur-out) var(--ease-out);
+    box-shadow var(--dur-out) var(--ease-out);
 }
+.theme-toggle:active { background: var(--surface-3); }
 .theme-toggle:hover {
-  color: var(--ink);
-  background: var(--paper-soft);
-  box-shadow: inset 0 0 0 1px var(--rule), var(--shadow-toggle-hover);
-  transform: translateY(-1px);
+  color: var(--text-1);
+  background: var(--surface-2);
+  box-shadow: var(--elev-1-strong);
   transition-duration: var(--dur-in);
   transition-timing-function: var(--ease-in);
 }
-.icon { display: block; }
-.icon-star { fill: none; }
-.starred .icon-star, .starred-toggle input:checked + .starred-label .icon-star { fill: currentColor; }
-.starred-label { display: inline-flex; align-items: center; gap: 0.3rem; }
-.starred-label .icon { width: 1rem; height: 1rem; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.icon { display: block; flex-shrink: 0; width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.icon-fill { fill: currentColor; stroke: none; }
+.starred-toggle .icon-on { display: none; }
+.starred-toggle input:checked + .starred-label .icon-on { display: block; }
+.starred-toggle input:checked + .starred-label .icon-off { display: none; }
+.star-btn { position: relative; }
+.star-btn .icon-on { position: absolute; top: 50%; left: 50%; margin: -0.625rem 0 0 -0.625rem; opacity: 0; transform: scale(0.6); transition: opacity var(--dur-in) var(--ease-out), transform var(--dur-in) var(--ease-out); }
+.star-btn.starred .icon-on { opacity: 1; transform: none; }
+.starred-label { display: inline-flex; align-items: center; gap: var(--space-2); }
 .theme-icon-dark { display: none; }
 [data-theme="dark"] .theme-icon-light { display: none; }
 [data-theme="dark"] .theme-icon-dark { display: inline-flex; }
 .theme-icon-light { display: inline-flex; }
 
-/* ------ View tabs ------ */
-.viewbar { max-width: 78rem; margin: 0 auto; padding: 0 2rem; border-top: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule); }
-.viewbar-inner { display: flex; gap: 1.4rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.viewbar-inner::-webkit-scrollbar { display: none; }
+/* ------ View bar: view tabs, search, actions ------ */
+.viewbar { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--space-5); row-gap: var(--space-2); align-items: center; padding-block: var(--space-2) var(--space-3); }
+.view-tabs { grid-column: 1 / span 5; display: flex; gap: var(--space-2); min-width: 0; }
+.viewbar .search-field { grid-column: span 4; }
+.viewbar-actions { grid-column: span 3; display: flex; justify-content: flex-end; gap: var(--space-2); }
+@media (max-width: 1099px) {
+  .view-tabs { grid-column: 1 / -1; }
+  .viewbar .search-field { grid-column: span 5; }
+}
 .view-tab {
   flex: 0 0 auto;
   background: transparent;
   border: 0;
-  padding: 0.92rem 0 0.78rem;
+  padding: 0 var(--space-3);
   cursor: pointer;
   font-family: var(--sans);
   font-size: var(--fs-sm);
   font-weight: 500;
-  color: var(--ink-soft);
+  color: var(--text-2);
   opacity: 1;
   border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
   transition:
     color var(--dur-out) var(--ease-out),
     border-color var(--dur-out) var(--ease-out),
     opacity var(--dur-out) var(--ease-out);
-  letter-spacing: -0.005em;
 }
-.view-tab:hover { color: var(--ink-soft); opacity: 1; transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
-.view-tab.active { color: var(--ink); opacity: 1; border-bottom-color: var(--accent); }
+.view-tab:hover { color: var(--text-1); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.view-tab:active { background: var(--surface-2); }
+.view-tab.active { color: var(--text-1); font-weight: 600; border-bottom-color: var(--accent); }
 
-.viewbar-spacer { flex: 1 1 auto; min-width: 0.5rem; }
 .viewbar-action {
   flex: 0 0 auto;
   align-self: center;
-  margin: 0.4rem 0;
-  padding: 0.32rem 0.7rem;
+  padding: var(--space-1) var(--space-3);
   font-family: var(--sans);
   font-size: var(--fs-sm);
-  letter-spacing: 0;
-  color: var(--ink-soft);
+  color: var(--text-2);
   text-decoration: none;
   background: transparent;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-3-px);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-2);
   cursor: pointer;
   transition: color var(--dur-out) var(--ease-out), border-color var(--dur-out) var(--ease-out);
 }
-.viewbar-action:hover { color: var(--ink); border-color: var(--ink-soft); transition-duration: var(--dur-in); }
+.viewbar-action { display: inline-flex; align-items: center; gap: var(--space-2); font-weight: 500; }
+.viewbar-action:hover:not(:disabled) { color: var(--text-1); border-color: var(--text-2); transition-duration: var(--dur-in); }
+.viewbar-action:active:not(:disabled) { background: var(--surface-3); }
+:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 2.75rem; min-width: 2.75rem; padding: var(--space-2) var(--space-4);
+  font-family: var(--sans); font-size: var(--fs-sm); font-weight: 500; line-height: 1.3;
+  color: var(--text-1); background: transparent; border: 0; box-shadow: var(--elev-1-strong);
+  border-radius: var(--radius-2); cursor: pointer; text-decoration: none;
+  transition: color var(--dur-out) var(--ease-out), background-color var(--dur-out) var(--ease-out);
+}
+.btn:hover:not(:disabled) { background: var(--surface-3); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.btn:active:not(:disabled) { background: var(--surface-2); }
+.btn-primary { background: var(--accent-solid); color: var(--on-accent); box-shadow: none; }
+.btn-primary:hover:not(:disabled) { background: color-mix(in oklab, var(--accent-solid) 92%, var(--text-1)); }
+.btn-primary:active:not(:disabled) { background: color-mix(in oklab, var(--accent-solid) 84%, var(--text-1)); }
 
 /* ------ Select (sort + status) ------ */
 .select {
   font-family: var(--sans);
   font-size: var(--fs-sm);
-  color: var(--ink);
-  background: var(--paper-soft);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-3-px);
-  padding: 0.34rem 1.6rem 0.34rem 0.7rem;
+  color: var(--text-1);
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-2);
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-3);
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='currentColor' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 0.55rem center;
-  background-size: 0.6rem;
   transition: border-color var(--dur-out) var(--ease-out), background var(--dur-out) var(--ease-out);
 }
-.select:hover { border-color: var(--ink-soft); transition-duration: var(--dur-in); }
-.select:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--accent); }
+.select:hover:not(:disabled) { border-color: var(--text-2); transition-duration: var(--dur-in); }
+.select-wrap { position: relative; display: inline-flex; align-items: center; justify-self: start; }
+.select-wrap .select { padding-right: var(--space-6); }
+.select-icon { position: absolute; right: var(--space-2); width: 1rem; height: 1rem; color: var(--text-2); pointer-events: none; }
 
 /* ------ Status pill (per-conf state) ------ */
 .status-pill {
   display: inline-flex; align-items: center;
   font-variant-numeric: tabular-nums;
   font-size: var(--fs-sm);
-  letter-spacing: 0;
-  padding: 0.12rem 0.42rem;
-  border-radius: var(--radius-2-px);
-  background: var(--paper-deep);
-  color: var(--ink-soft);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-1);
+  background: var(--surface-2);
+  color: var(--text-2);
   font-weight: 500;
-  margin-left: 0.35rem;
+  margin-left: var(--space-1);
 }
-.status-pill.status-interested { background: var(--accent-soft); color: var(--accent); }
-.status-pill.status-drafting   { background: var(--warn-soft);   color: var(--warn); }
-.status-pill.status-submitted  { background: var(--accent-tint); color: var(--accent); }
-.status-pill.status-accepted   { background: var(--good-soft); color: var(--good); }
-.status-pill.status-rejected   { background: var(--urgent-soft); color: var(--urgent); }
+.status-pill.status-interested { background: color-mix(in oklab, var(--status-info) 16%, var(--surface-1)); color: var(--status-info); }
+.status-pill.status-drafting   { background: color-mix(in oklab, var(--status-soon) 16%, var(--surface-1));   color: var(--status-soon); }
+.status-pill.status-submitted  { background: color-mix(in oklab, var(--status-info) 16%, var(--surface-1)); color: var(--status-info); }
+.status-pill.status-accepted   { background: color-mix(in oklab, var(--status-ok) 16%, var(--surface-1)); color: var(--status-ok); }
+.status-pill.status-rejected   { background: color-mix(in oklab, var(--status-urgent) 16%, var(--surface-1)); color: var(--status-urgent); }
 
 .note-mark {
   font-variant-numeric: tabular-nums;
   font-size: var(--fs-sm);
-  color: var(--ink-faint);
-  margin-left: 0.25rem;
+  color: var(--text-3);
+  margin-left: var(--space-1);
   cursor: default;
 }
 
 /* ------ Colophon link ------ */
 .colophon-link { display: inline-flex; align-items: center; min-height: 2.75rem;
-  color: var(--ink-soft);
+  color: var(--text-2);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: color var(--dur-out) var(--ease-out), border-color var(--dur-out) var(--ease-out);
 }
-.colophon-link:hover { color: var(--ink); border-color: var(--ink-soft); transition-duration: var(--dur-in); }
+.colophon-link:hover { color: var(--text-1); border-color: var(--text-2); transition-duration: var(--dur-in); }
 
 /* ------ Map view ------ */
 .map-wrap { position: relative; }
 .map-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.4rem;
-  padding: 0.4rem 0 1.1rem;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-2) 0 var(--space-4);
   font-family: var(--sans);
   font-size: var(--fs-sm);
-  color: var(--ink-faint);
-  letter-spacing: 0;
-  border-bottom: 1px solid var(--rule-soft);
-  margin-bottom: 1.1rem;
+  color: var(--text-3);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--space-4);
 }
 .map-meta strong {
   font-family: var(--sans);
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text-1);
   font-size: var(--fs-base);
-  letter-spacing: -0.01em;
-  margin-right: 0.4rem;
+  margin-right: var(--space-2);
   font-variant-numeric: tabular-nums;
 }
-.map-meta .map-hint { color: var(--ink-faint); font-style: italic; text-transform: none; letter-spacing: 0; }
+.map-meta .map-hint { color: var(--text-3); text-transform: none; }
 .map-svg-wrap { position: relative; }
 .map-svg { display: block; max-width: 100%; height: auto; }
-.map-marker { cursor: pointer; transition: transform var(--dur-out) var(--ease-out); transform-box: fill-box; transform-origin: center; }
+.map-marker { cursor: pointer; }
 .map-marker:hover { transition-duration: var(--dur-in); }
-.map-marker:hover circle:nth-child(1) { fill-opacity: 0.20; }
+.map-marker:hover circle:nth-child(1), .map-marker:focus-visible circle:nth-child(1) { fill-opacity: 0.20; }
+.map-marker.selected circle:nth-child(2) { stroke: var(--text-1); stroke-width: 2.5; }
 .map-tooltip {
   position: absolute;
   pointer-events: none;
-  background: var(--ink);
-  color: var(--paper);
-  padding: 0.45rem 0.7rem;
-  border-radius: var(--radius-3-px);
+  background: var(--surface-2);
+  color: var(--text-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-2);
   font-size: var(--fs-sm);
   line-height: 1.35;
-  box-shadow: var(--shadow-note);
-  transform: translate(-50%, calc(-100% - 6px));
+  box-shadow: var(--elev-2);
+  transform: translate(-50%, calc(-100% - var(--space-2)));
   opacity: 0;
-  transition: opacity 140ms ease;
+  transition: opacity var(--dur-in) var(--ease-out);
   white-space: nowrap;
   font-family: var(--sans);
 }
 .map-tooltip.visible { opacity: 1; }
 
 /* ------ Modal tracking (status + notes) ------ */
-.modal-tracking { display: flex; flex-direction: column; gap: 0.85rem; }
+.modal-tracking { display: flex; flex-direction: column; gap: var(--space-3); }
 .tracking-row {
-  display: flex; align-items: center; gap: 0.85rem;
+  display: flex; align-items: center; gap: var(--space-3);
   font-size: var(--fs-sm);
 }
-.tracking-row-stack { flex-direction: column; align-items: stretch; gap: 0.4rem; }
+.tracking-row-stack { flex-direction: column; align-items: stretch; gap: var(--space-2); }
 .tracking-label {
   font-family: var(--sans);
   font-size: var(--fs-sm);
-  color: var(--ink-faint);
-  letter-spacing: 0;
+  color: var(--text-3);
   width: 5.5rem;
   flex-shrink: 0;
 }
@@ -742,205 +851,224 @@ code {
   font-family: var(--sans);
   font-size: var(--fs-sm);
   line-height: 1.5;
-  color: var(--ink);
-  background: var(--paper-soft);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-3-px);
-  padding: 0.7rem 0.85rem;
+  color: var(--text-1);
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-2);
+  padding: var(--space-3) var(--space-3);
   resize: vertical;
   min-height: 5rem;
   transition: border-color var(--dur-out) var(--ease-out), background var(--dur-out) var(--ease-out);
 }
-.notes-area:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--accent); border-color: transparent; background: var(--paper); }
-.notes-area::placeholder { color: var(--ink-faint); }
+.notes-area:focus-visible { border-color: var(--accent); background: var(--surface-1); }
+.notes-area::placeholder { color: var(--text-3); }
 
-.modal-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.1rem; }
+.modal-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
 .modal-link-btn-secondary {
   background: transparent;
-  color: var(--ink);
-  border: 1px solid var(--rule);
+  color: var(--text-1);
+  border: 1px solid var(--line-strong);
 }
-.modal-link-btn-secondary:hover { background: var(--paper-soft); color: var(--ink); border-color: var(--ink-soft); }
+.modal-link-btn-secondary:hover { background: var(--surface-2); color: var(--text-1); border-color: var(--text-2); }
 
-/* ------ Filters ------ */
-.filters { max-width: 78rem; margin: 0 auto; padding: 1.15rem 2rem 1.45rem; display: flex; gap: 1.25rem 2rem; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--rule); }
-.filters-main { display: flex; flex: 1 1 42rem; flex-wrap: wrap; gap: 1rem 1.6rem; min-width: 0; }
-.filters-search { display: flex; justify-content: flex-end; flex: 0 1 24rem; min-width: min(100%, 20rem); }
-.filter-group { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 0.35rem 0.75rem; min-width: min(100%, 13rem); }
-.filter-group-search { display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem; flex-wrap: wrap; width: 100%; min-width: 0; }
+/* ------ Filters: sticky left rail on columns 1 to 3 at 1100px and up, a details block below ------ */
+.workspace { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--space-5); row-gap: var(--space-4); align-items: start; padding-block: var(--space-2) var(--space-8); }
+.filters { grid-column: 1 / span 3; position: sticky; top: var(--space-4); z-index: var(--z-sticky); max-height: calc(100dvh - var(--space-5)); overflow-y: auto; padding: var(--space-4); background: var(--surface-1); box-shadow: var(--elev-1); border-radius: var(--radius-3); }
+.workspace > main { grid-column: 4 / -1; min-width: 0; }
+.filters-summary { display: flex; align-items: center; gap: var(--space-2); min-height: 2.75rem; list-style: none; cursor: pointer; font-size: var(--fs-sm); font-weight: 600; color: var(--text-1); }
+.filters-summary::-webkit-details-marker { display: none; }
+.filters-count { margin-left: auto; font-weight: 400; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.filters-count.on { color: var(--accent); font-weight: 600; }
+.filters-chevron { transition: transform var(--dur-in) var(--ease-out); }
+.filters[open] .filters-chevron { transform: rotate(180deg); }
+.filters-body { display: grid; gap: var(--space-4); margin-top: var(--space-3); }
+@media (min-width: 1100px) {
+  .filters-summary { cursor: default; }
+  .filters-chevron { display: none; }
+}
+@media (max-width: 1099px) {
+  .filters { grid-column: 1 / -1; position: static; max-height: none; overflow: visible; }
+  .workspace > main { grid-column: 1 / -1; }
+  .filters-body { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-4) var(--space-5); }
+}
+.filter-group { display: grid; gap: var(--space-2); align-content: start; min-width: 0; }
 .filter-label {
-  padding-top: 0.38rem;
   font-family: var(--sans);
   font-size: var(--fs-sm);
-  letter-spacing: 0;
-  color: var(--ink-faint);
-  white-space: nowrap;
+  color: var(--text-3);
 }
-.chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .chip {
-  background: var(--paper-raised); border: 0;
-  box-shadow: inset 0 0 0 1px var(--rule-soft);
-  padding: 0.42rem 0.78rem 0.44rem; border-radius: var(--radius-999-px);
-  font-family: var(--sans); font-size: var(--fs-sm); cursor: pointer; color: var(--ink-soft);
+  background: var(--surface-1); border: 0;
+  box-shadow: var(--elev-1-strong);
+  padding: var(--space-2) var(--space-3) var(--space-2); border-radius: var(--radius-2);
+  font-family: var(--sans); font-size: var(--fs-sm); cursor: pointer; color: var(--text-2);
   transition:
     color var(--dur-out) var(--ease-out),
     background-color var(--dur-out) var(--ease-out),
-    box-shadow var(--dur-out) var(--ease-out),
-    transform var(--dur-out) var(--ease-out);
-  display: inline-flex; align-items: center; gap: 0.35rem;
+    box-shadow var(--dur-out) var(--ease-out);
+  display: inline-flex; align-items: center; gap: var(--space-1);
   font-feature-settings: "kern" 1, "liga" 1;
 }
-.chip:hover { color: var(--ink); box-shadow: inset 0 0 0 1px var(--rule); transform: translateY(-1px); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
-.chip.active { background: var(--ink); color: var(--paper); box-shadow: none; }
-.chip[data-field].active {
-  background: var(--field-color, var(--ink));
-  color: var(--tag-ink);
-  box-shadow: inset 0 0 0 999px var(--chip-active-scrim);
-}
-.chip-dot { width: 0.48rem; height: 0.48rem; border-radius: var(--radius-50-pct); flex-shrink: 0; box-shadow: 0 0 0 1px var(--chip-dot-ring); }
+.chip:hover:not(:disabled) { color: var(--text-1); background: var(--surface-2); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.chip:active:not(:disabled):not(.active) { background: var(--surface-3); }
+.chip.active { background: var(--accent-solid); color: var(--on-accent); font-weight: 600; box-shadow: none; }
+.chip-check { display: none; width: 1rem; height: 1rem; }
+.chip.active .chip-check { display: block; }
+.chip-dot { width: 0.48rem; height: 0.48rem; border-radius: var(--radius-dot); flex-shrink: 0; background: var(--field-color, var(--text-2)); }
+.search-field { position: relative; width: 100%; min-width: 0; }
+.search-icon { position: absolute; left: var(--space-3); top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
 #searchInput {
-  background: var(--paper-raised); border: 0; border-radius: var(--radius-999-px);
-  box-shadow: inset 0 0 0 1px var(--rule);
-  padding: 0.58rem 0.88rem 0.6rem; font: inherit; font-size: var(--fs-sm); color: var(--ink); width: min(19rem, 100%);
+  display: block; width: 100%;
+  background: var(--surface-1); border: 0; border-radius: var(--radius-2);
+  box-shadow: var(--elev-1-strong);
+  padding: var(--space-2) calc(var(--space-6) + var(--space-3)); font: inherit; font-size: var(--fs-sm); color: var(--text-1);
   transition: box-shadow var(--dur-out) var(--ease-out), background-color var(--dur-out) var(--ease-out);
 }
-#searchInput::placeholder { color: var(--ink-faint); }
-#searchInput:hover { box-shadow: inset 0 0 0 1px var(--rule), var(--shadow-search-hover); }
-#searchInput:focus, #searchInput:focus-visible { outline: none; box-shadow: inset 0 0 0 1px var(--accent-line), 0 0 0 2px var(--accent); background: var(--paper); }
+#searchInput::-webkit-search-cancel-button, #searchInput::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
+#searchInput::placeholder { color: var(--text-3); }
+#searchInput:hover { background: var(--surface-2); }
+.search-field.no-results #searchInput { box-shadow: inset 0 0 0 1px var(--status-urgent); }
+.search-clear {
+  position: absolute; right: 0; top: 0; width: 2.75rem; height: 2.75rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: 0; border-radius: var(--radius-2); color: var(--text-2); cursor: pointer;
+  transition: color var(--dur-out) var(--ease-out), background-color var(--dur-out) var(--ease-out);
+}
+.search-clear[hidden] { display: none; }
+.search-clear:hover { color: var(--text-1); background: var(--surface-3); transition-duration: var(--dur-in); }
 .starred-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.44rem 0.72rem;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
   font-family: var(--sans);
   font-size: var(--fs-sm);
-  color: var(--ink-soft);
-  background: var(--paper-raised);
-  box-shadow: inset 0 0 0 1px var(--rule-soft);
-  border-radius: var(--radius-999-px);
-  letter-spacing: normal;
+  color: var(--text-2);
+  background: var(--surface-1);
+  box-shadow: var(--elev-1-strong);
+  border-radius: var(--radius-2);
   cursor: pointer;
   user-select: none;
+  justify-self: start;
 }
-.starred-toggle input { margin: 0; accent-color: var(--accent); }
+.starred-toggle input { margin: 0; accent-color: var(--accent-solid); }
+.starred-toggle:hover:not(:has(input:disabled)) { color: var(--text-1); background: var(--surface-2); }
+.starred-toggle:has(input:checked) { color: var(--text-1); font-weight: 600; background: var(--surface-3); }
+.starred-toggle:has(input:disabled) { opacity: 0.5; cursor: not-allowed; }
+.starred-toggle input:disabled { cursor: not-allowed; }
 
-/* ------ Main ------ */
-main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
+/* ------ Main and views ------ */
+.view { transition: opacity var(--dur-in) var(--ease-out); }
+.view.entering { opacity: 0; }
 .view.hidden { display: none; }
 
 /* ------ Per-view sub-toolbar (mode toggles, density, etc.) ------ */
 .view-toolbar {
   display: flex;
   align-items: center;
-  gap: 0.7rem 1.1rem;
+  gap: var(--space-3) var(--space-4);
   flex-wrap: wrap;
-  padding: 0 0 1rem;
-  margin-bottom: 0.95rem;
-  border-bottom: 1px solid var(--rule-soft);
+  padding: 0 0 var(--space-4);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--line);
   font-family: var(--sans);
   font-size: var(--fs-sm);
-  color: var(--ink-faint);
-  letter-spacing: 0;
+  color: var(--text-3);
 }
-.view-toolbar-label { color: var(--ink-faint); margin-right: 0.18rem; }
-.view-toolbar-group { display: inline-flex; align-items: center; gap: 0.32rem; padding: 0.18rem; background: var(--paper-soft); border-radius: var(--radius-4-px); box-shadow: inset 0 0 0 1px var(--rule-soft); }
+.view-toolbar-label { color: var(--text-3); margin-right: var(--space-1); }
+.view-toolbar-group { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-1); background: var(--surface-2); border-radius: var(--radius-1); box-shadow: var(--elev-1); }
 .view-toolbar-btn {
   background: transparent;
   border: 0;
-  padding: 0.32rem 0.72rem 0.34rem;
-  border-radius: var(--radius-3-px);
+  padding: var(--space-1) var(--space-3) var(--space-1);
+  border-radius: var(--radius-2);
   font: inherit;
-  color: var(--ink-soft);
+  color: var(--text-2);
   text-transform: inherit;
-  letter-spacing: inherit;
   cursor: pointer;
   transition: background-color var(--dur-out) var(--ease-out), color var(--dur-out) var(--ease-out);
 }
-.view-toolbar-btn:hover { color: var(--ink); transition-duration: var(--dur-in); }
-.view-toolbar-btn.active { background: var(--paper-raised); color: var(--ink); box-shadow: inset 0 0 0 1px var(--rule); }
+.view-toolbar-btn:hover:not(:disabled):not(.active) { color: var(--text-1); background: var(--surface-1); transition-duration: var(--dur-in); }
+.view-toolbar-btn.active { background: var(--surface-3); color: var(--text-1); font-weight: 600; box-shadow: var(--elev-1-strong); }
 .view-toolbar-spacer { flex: 1 1 auto; }
-.view-toolbar-hint { color: var(--ink-faint); font-style: italic; text-transform: none; letter-spacing: 0; font-family: var(--sans); font-size: var(--fs-sm); }
+.view-toolbar-hint { color: var(--text-3); text-transform: none; font-family: var(--sans); font-size: var(--fs-sm); }
 
 /* ------ Timeline ------ */
 .timeline-wrap { position: relative; }
-.timeline-scroll { overflow-x: auto; overflow-y: visible; padding-bottom: 0.35rem; }
+.timeline-scroll { overflow-x: auto; overflow-y: visible; padding-bottom: var(--space-1); }
 .timeline-scroll::-webkit-scrollbar { height: 8px; }
 .timeline-scroll::-webkit-scrollbar-track { background: transparent; }
-.timeline-scroll::-webkit-scrollbar-thumb { background: var(--rule); border-radius: var(--radius-4-px); }
-.timeline-empty { color: var(--ink-faint); font-style: italic; padding: 4.5rem 0; text-align: center; }
+.timeline-scroll::-webkit-scrollbar-thumb { background: var(--line); border-radius: var(--radius-1); }
 .timeline-svg { display: block; }
 .timeline-svg text { font-kerning: normal; text-rendering: geometricPrecision; }
 .timeline-svg text[text-anchor="end"] {
   font-size: var(--fs-sm);
   font-weight: 600;
-  fill: var(--ink);
-  letter-spacing: -0.01em;
+  fill: var(--text-1);
 }
 .timeline-svg text[text-anchor="end"] tspan {
   font-variant-numeric: tabular-nums;
   font-size: var(--fs-sm);
   font-weight: 400;
-  fill: var(--ink-faint);
-  letter-spacing: 0;
+  fill: var(--text-3);
 }
-.timeline-row-hover { fill: var(--accent-soft); cursor: pointer; }
+.timeline-row-hover { fill: color-mix(in oklab, var(--accent) 16%, var(--surface-1)); cursor: pointer; }
 .timeline-deadline-marker {
   cursor: pointer;
-  transition:
-    r var(--dur-out) var(--ease-out),
-    transform var(--dur-out) var(--ease-out);
+  transition: r var(--dur-out) var(--ease-out);
 }
 .timeline-deadline-marker:hover { r: 7; transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
 .timeline-tooltip {
   position: absolute; pointer-events: none;
-  background: var(--paper-raised); color: var(--ink);
-  border: 1px solid var(--rule);
-  padding: 0.6rem 0.82rem 0.65rem; border-radius: var(--radius-7-px); font-size: var(--fs-sm); line-height: 1.45;
-  box-shadow: var(--shadow-tooltip);
-  max-width: 22rem; transform: translate(-50%, calc(-100% - 10px));
+  background: var(--surface-1); color: var(--text-1);
+  border: 1px solid var(--line);
+  padding: var(--space-2) var(--space-3) var(--space-3); border-radius: var(--radius-3); font-size: var(--fs-sm); line-height: 1.45;
+  box-shadow: var(--elev-2);
+  max-width: 22rem; transform: translate(-50%, calc(-100% - var(--space-3)));
   white-space: normal; opacity: 0; transition: opacity var(--dur-out) var(--ease-out);
   font-family: var(--sans);
 }
 .timeline-tooltip.visible { opacity: 1; }
-.timeline-tooltip strong { color: var(--ink); font-weight: 600; }
-.timeline-tooltip .tt-date { font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--ink-soft); margin-top: 0.22rem; display: block; }
+.timeline-tooltip strong { color: var(--text-1); font-weight: 600; }
+.timeline-tooltip .tt-date { font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-2); margin-top: var(--space-1); display: block; }
 
 .timeline-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem 1.15rem;
-  padding: 0.15rem 0 1rem;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-1) 0 var(--space-4);
   font-size: var(--fs-sm);
-  color: var(--ink-soft);
+  color: var(--text-2);
   font-family: var(--sans);
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: 1.1rem;
-  letter-spacing: 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--space-4);
 }
-.legend-item { display: inline-flex; align-items: center; gap: 0.42rem; white-space: nowrap; }
+.legend-item { display: inline-flex; align-items: center; gap: var(--space-2); white-space: nowrap; }
 .legend-mark { display: inline-block; flex-shrink: 0; }
-.legend-mark.deadline { width: 0.6rem; height: 0.6rem; border-radius: var(--radius-50-pct); background: var(--ink); }
-.legend-mark.notification { width: 0.45rem; height: 0.45rem; border-radius: var(--radius-50-pct); background: var(--ink-faint); }
-.legend-mark.conference { width: 0.9rem; height: 0.4rem; border-radius: var(--radius-2-px); background: var(--accent-soft); border: 1px solid var(--accent-line); }
+.legend-mark.deadline { width: 0.6rem; height: 0.6rem; border-radius: var(--radius-dot); background: var(--text-1); }
+.legend-mark.notification { width: 0.45rem; height: 0.45rem; border-radius: var(--radius-dot); background: var(--text-3); }
+.legend-mark.conference { width: 0.9rem; height: 0.4rem; border-radius: var(--radius-1); background: color-mix(in oklab, var(--accent) 16%, var(--surface-1)); border: 1px solid var(--accent); }
 .legend-mark.cal-deadline {
-  width: 0.9rem; height: 0.72rem; border-radius: var(--radius-2-px); overflow: hidden;
-  background: linear-gradient(to bottom, var(--field-hci) 0%, var(--field-hci) 34%, var(--field-design) 34%, var(--field-design) 67%, var(--field-ml) 67%, var(--field-ml) 100%);
+  width: 0.9rem; height: 0.72rem; border-radius: var(--radius-1); overflow: hidden;
+  background: linear-gradient(to bottom, var(--field-hci) 0%, var(--field-hci) 34%, var(--field-engineering-design) 34%, var(--field-engineering-design) 67%, var(--field-ml) 67%, var(--field-ml) 100%);
 }
 .legend-mark.today-mark {
-  width: 0.9rem; height: 0.72rem; border-radius: var(--radius-2-px); position: relative;
-  background: var(--today-wash);
+  width: 0.9rem; height: 0.72rem; border-radius: var(--radius-1); position: relative;
+  background: color-mix(in oklab, var(--accent) 24%, var(--surface-1));
 }
 .legend-mark.today-mark::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit;
-  box-shadow: inset 0 0 0 2px var(--accent);
+  border: 2px solid var(--accent);
 }
-.legend-mark.estimated { width: 0.6rem; height: 0.6rem; border-radius: var(--radius-50-pct); background: transparent; border: 1.5px solid var(--ink-soft); }
+.legend-mark.today-line { width: 0.9rem; height: 0; border-top: 2px dashed var(--accent); }
+.legend-mark.estimated { width: 0.6rem; height: 0.6rem; border-radius: var(--radius-dot); background: transparent; border: 1.5px solid var(--text-2); }
 
 /* ------ Timeline calendar mode (month-grid heatmap) ------ */
 .tlcal {
   display: grid;
   grid-template-columns: minmax(5rem, max-content) 1fr;
-  gap: 0.18rem 0.85rem;
+  gap: var(--space-1) var(--space-3);
   align-items: center;
   font-variant-numeric: tabular-nums;
   font-family: var(--sans);
@@ -948,14 +1076,13 @@ main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
 .tlcal-month {
   font-variant-numeric: tabular-nums;
   font-size: var(--fs-sm);
-  color: var(--ink-faint);
-  letter-spacing: 0;
+  color: var(--text-3);
   text-align: right;
-  padding-right: 0.2rem;
+  padding-right: var(--space-1);
   font-weight: 500;
 }
 .tlcal-month.current { color: var(--accent); font-weight: 600; }
-.tlcal-month.boundary { color: var(--ink-soft); }
+.tlcal-month.boundary { color: var(--text-2); }
 .tlcal-row {
   display: grid;
   grid-template-columns: repeat(31, 1fr);
@@ -965,39 +1092,35 @@ main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
 }
 .tlcal-cell {
   position: relative;
-  background: var(--paper-soft);
-  border-radius: var(--radius-2-px);
+  background: var(--surface-3);
+  border-radius: var(--radius-1);
   cursor: default;
-  transition: background-color var(--dur-out) var(--ease-out), transform var(--dur-out) var(--ease-out);
+  transition: background-color var(--dur-out) var(--ease-out);
 }
-.tlcal-cell.empty { background: transparent; box-shadow: inset 0 0 0 1px var(--rule-soft); opacity: 0.5; }
-.tlcal-cell.weekend { background: var(--paper-deep); opacity: 0.5; }
+.tlcal-cell.empty { background: transparent; box-shadow: var(--elev-1); }
+.tlcal-cell.weekend { background: var(--surface-2); }
 .tlcal-cell.today {
-  z-index: 1;
-  background: var(--today-wash);
+  background: color-mix(in oklab, var(--accent) 24%, var(--surface-1));
 }
 .tlcal-cell.today::after {
   content: "";
   position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  box-shadow: inset 0 0 0 2px var(--accent);
-  z-index: 3;
+  border: 2px solid var(--accent);
 }
 .tlcal-cell.has-deadline { cursor: pointer; }
-.tlcal-cell.has-deadline:hover {
-  transform: scale(1.22); z-index: 2;
-  box-shadow: var(--shadow-cell-hover);
-  transition-duration: var(--dur-in); transition-timing-function: var(--ease-in);
-}
+.tlcal-cell.passed .tlcal-stack { opacity: 0.5; }
+.tlcal-cell.has-deadline:focus-visible { z-index: 1; }
+.tlcal-cell.has-deadline:hover { outline: 2px solid var(--text-1); outline-offset: -2px; transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
 .tlcal-cell .tlcal-stack {
   position: absolute; inset: 0; display: flex; flex-direction: column;
   border-radius: inherit; overflow: hidden;
 }
 .tlcal-cell .tlcal-stack > i { display: block; flex: 1 1 0; }
 .tlcal-cell .tlcal-count {
-  position: absolute; bottom: 1px; right: 2px;
-  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--count-ink); font-weight: 600;
-  background: var(--count-scrim); border-radius: var(--radius-2-px); padding: 0 2px;
-  line-height: 1.35; letter-spacing: 0; z-index: 2;
+  position: absolute; bottom: var(--space-1); right: var(--space-1);
+  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-1); font-weight: 600;
+  background: var(--surface-1); border-radius: var(--radius-1); padding: 0 var(--space-1);
+  line-height: 1.35;
 }
 .tlcal-axis {
   display: grid;
@@ -1005,248 +1128,328 @@ main { max-width: 78rem; margin: 0 auto; padding: 1.6rem 2rem 6rem; }
   gap: 2px;
   font-variant-numeric: tabular-nums;
   font-size: var(--fs-sm);
-  color: var(--ink-faint);
+  color: var(--text-3);
   text-align: center;
-  padding-bottom: 0.3rem;
-  letter-spacing: 0;
+  padding-bottom: var(--space-1);
 }
 .tlcal-axis span { line-height: 1; }
-.tlcal-empty-msg { grid-column: 2; color: var(--ink-faint); font-style: italic; padding: 0.4rem 0; font-family: var(--sans); font-size: var(--fs-sm); text-transform: none; letter-spacing: 0; }
+.tlcal-empty-msg { grid-column: 2; color: var(--text-3); padding: var(--space-2) 0; font-family: var(--sans); font-size: var(--fs-sm); text-transform: none; }
 
 /* ------ Cards: density modes ------ */
-.cards-grid.density-spacious { grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr)); gap: 1.6rem; }
-.cards-grid.density-spacious .card { padding: 1.7rem 1.85rem 1.85rem; gap: 0.85rem; }
+.cards-grid.density-spacious { grid-template-columns: repeat(auto-fill, minmax(min(28rem, 100%), 1fr)); gap: var(--space-5); }
+.cards-grid.density-spacious .card { padding: var(--space-5) var(--space-6) var(--space-6); gap: var(--space-3); }
 .cards-grid.density-spacious .card-name { font-size: var(--fs-base); }
 .cards-grid.density-spacious .card-fullname { font-size: var(--fs-base); max-width: 50ch; }
-.cards-grid.density-spacious .card-meta { font-size: var(--fs-sm); gap: 0.5rem 1.1rem; }
+.cards-grid.density-spacious .card-meta { font-size: var(--fs-sm); gap: var(--space-2) var(--space-4); }
 .cards-grid.density-spacious .card-fit { font-size: var(--fs-base); }
-.cards-grid.density-compact { grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 0.95rem; }
-.cards-grid.density-compact .card { padding: 1rem 1.05rem 1.1rem; gap: 0.55rem; }
+.cards-grid.density-compact { grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: var(--space-4); }
+.cards-grid.density-compact .card { padding: var(--space-4) var(--space-4) var(--space-4); gap: var(--space-2); }
 .cards-grid.density-compact .card-name { font-size: var(--fs-base); }
 .cards-grid.density-compact .card-fullname { font-size: var(--fs-sm); line-height: 1.42; }
-.cards-grid.density-compact .card-meta { font-size: var(--fs-sm); gap: 0.22rem 0.7rem; padding-top: 0.5rem; }
+.cards-grid.density-compact .card-meta { font-size: var(--fs-sm); gap: var(--space-1) var(--space-3); padding-top: var(--space-2); }
 .cards-grid.density-compact .card-meta dt { font-size: var(--fs-sm); }
-.cards-grid.density-compact .card-fit { font-size: var(--fs-sm); padding-top: 0.5rem; }
-.cards-grid.density-compact .card-tag { font-size: var(--fs-sm); padding: 0.16rem 0.42rem; }
-.cards-grid.density-compact .card-actions { padding-top: 0.4rem; gap: 0.5rem; }
+.cards-grid.density-compact .card-fit { font-size: var(--fs-sm); padding-top: var(--space-2); }
+.cards-grid.density-compact .card-tag { font-size: var(--fs-sm); padding: var(--space-1) var(--space-2); }
+.cards-grid.density-compact .card-actions { padding-top: var(--space-2); gap: var(--space-2); }
 
 /* ------ Map continents overlay ------ */
 .map-continent {
-  fill: var(--map-fill);
-  stroke: var(--map-stroke);
+  fill: var(--surface-2);
+  stroke: var(--line);
   stroke-width: 0.7;
   stroke-linejoin: round;
   pointer-events: none;
 }
 
 /* ------ Cards ------ */
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(20.5rem, 1fr)); gap: 1.4rem; align-items: start; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr)); gap: var(--space-5); align-items: start; }
 .card {
-  background: var(--paper-raised); border: 0; border-radius: var(--radius-10-px);
-  padding: 1.35rem 1.45rem 1.5rem;
-  box-shadow: inset 0 0 0 1px var(--rule-soft), 0 1px 0 var(--rule-soft);
+  background: var(--surface-1); border: 0; border-radius: var(--radius-3);
+  padding: var(--space-5) var(--space-5) var(--space-5);
+  box-shadow: var(--elev-1);
   transition:
-    transform var(--dur-out) var(--ease-out),
     box-shadow var(--dur-out) var(--ease-out),
     background-color var(--dur-out) var(--ease-out);
-  cursor: pointer; display: flex; flex-direction: column; gap: 0.72rem; position: relative; min-height: 100%;
+  cursor: pointer; display: flex; flex-direction: column; gap: var(--space-3); position: relative; min-height: 100%;
+  container-type: inline-size; container-name: card;
 }
-.card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  box-shadow: inset 0 1px 0 var(--card-sheen);
+.card-spec { margin: 0; font-size: var(--fs-sm); line-height: 1.4; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.card.closed .card-spec { color: var(--text-3); }
+@container card (max-width: 20rem) {
+  .card-meta { grid-template-columns: 1fr; gap: var(--space-1); }
+  .card-row { flex-wrap: wrap; }
 }
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: inset 0 0 0 1px var(--rule), var(--shadow-card);
+  background: var(--surface-2);
+  box-shadow: var(--elev-1-strong);
   transition-duration: var(--dur-in);
   transition-timing-function: var(--ease-in);
 }
-.card-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.85rem; }
+.card.starred { box-shadow: inset 0 0 0 1px var(--accent); }
+.card.closed .card-name { color: var(--text-2); }
+.card:focus-visible { background: var(--surface-2); }
+.card-row { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3); }
 .card-name { font-size: var(--fs-base); font-weight: 600; letter-spacing: -0.02em; margin: 0; line-height: 1.15; font-feature-settings: "kern" 1, "liga" 1; }
-.card-name .year { display: inline-block; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); font-weight: 400; color: var(--ink-faint); margin-left: 0.45rem; letter-spacing: 0; font-variant-numeric: tabular-nums; vertical-align: 0.14em; }
+.year { display: inline-block; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); font-weight: 400; color: var(--text-3); margin-left: var(--space-2); }
+.modal-name .year { font-size: var(--fs-base); }
 .card-tier {
   display: inline-flex;
   align-items: center;
   min-height: 1.7rem;
-  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); padding: 0.24rem 0.56rem 0.26rem;
-  border-radius: var(--radius-999-px); background: var(--paper-deep); color: var(--ink-soft);
-  letter-spacing: 0; flex-shrink: 0; font-weight: 500; line-height: 1.35;
-  box-shadow: inset 0 0 0 1px var(--rule-soft);
+  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); padding: var(--space-1) var(--space-2) var(--space-1);
+  border-radius: var(--radius-1); background: var(--surface-2); color: var(--text-2);
+  flex-shrink: 0; font-weight: 600; line-height: 1.35;
 }
-.card-tier.tier-a-star, .card-tier.tier-A { color: var(--accent-ink); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-line); }
-.card-tier.tier-industry { color: var(--warn-ink); background: var(--warn-tint); box-shadow: inset 0 0 0 1px var(--warn-line); }
-.card-fullname { color: var(--ink-soft); font-size: var(--fs-sm); line-height: 1.55; margin: 0; max-width: 38ch; text-wrap: pretty; }
-.card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.card-fullname { color: var(--text-2); font-size: var(--fs-sm); line-height: 1.55; margin: 0; max-width: 38ch; text-wrap: pretty; }
+.card-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .card-tag {
-  position: relative;
-  overflow: hidden;
   display: inline-flex;
   align-items: center;
-  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); padding: 0.22rem 0.52rem 0.24rem;
-  border-radius: var(--radius-999-px); color: var(--tag-ink); letter-spacing: 0; font-weight: 500;
+  gap: var(--space-2);
+  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-1); color: var(--text-1); font-weight: 500;
   line-height: 1.4;
-  background: color-mix(in srgb, var(--tag-bg, #888) 60%, #0C0A08);
-  box-shadow: inset 0 0 0 1px var(--tag-ring);
-  text-shadow: var(--tag-text-shadow);
+  background: var(--surface-2);
 }
+.card-tag::before { content: ""; width: var(--space-2); height: var(--space-2); border-radius: var(--radius-dot); flex-shrink: 0; background: var(--tag-bg, var(--text-2)); }
 .card-meta {
   display: grid; grid-template-columns: minmax(4.6rem, max-content) 1fr;
-  gap: 0.38rem 0.95rem; font-size: var(--fs-sm);
-  padding-top: 0.72rem; border-top: 1px solid var(--rule);
+  gap: var(--space-2) var(--space-4); font-size: var(--fs-sm);
+  padding-top: var(--space-3); border-top: 1px solid var(--line);
 }
 .card-meta dt {
-  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); letter-spacing: 0;
-  color: var(--ink-faint); padding-top: 0.12rem;
+  font-variant-numeric: tabular-nums; font-size: var(--fs-sm);
+  color: var(--text-3); padding-top: var(--space-1);
 }
-.card-meta dd { margin: 0; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.45; }
+.card-meta dd { margin: 0; color: var(--text-1); font-variant-numeric: tabular-nums; line-height: 1.45; }
 .card-countdown {
-  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); padding: 0.22rem 0.52rem 0.24rem;
-  border-radius: var(--radius-999-px); background: var(--paper-deep); color: var(--ink-soft);
-  display: inline-flex; gap: 0.28rem; align-items: center; margin-left: 0.38rem;
-  font-variant-numeric: tabular-nums; letter-spacing: 0;
-  box-shadow: inset 0 0 0 1px var(--rule-soft);
+  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); padding: var(--space-1) var(--space-2) var(--space-1);
+  border-radius: var(--radius-2); background: var(--surface-2); color: var(--text-2);
+  display: inline-flex; gap: var(--space-1); align-items: center; margin-left: var(--space-2);
+  font-variant-numeric: tabular-nums;
+  box-shadow: var(--elev-1);
 }
-.card-countdown.urgent { background: var(--urgent-soft); color: var(--urgent); box-shadow: inset 0 0 0 1px var(--urgent-line); }
-.card-countdown.soon { background: var(--warn-soft); color: var(--warn); box-shadow: inset 0 0 0 1px var(--warn-line-soft); }
-.card-countdown.passed { background: var(--rule-soft); color: var(--ink-faint); text-decoration: line-through; }
+.card-countdown.urgent { background: color-mix(in oklab, var(--status-urgent) 16%, var(--surface-1)); color: var(--status-urgent); }
+.card-countdown.soon { background: color-mix(in oklab, var(--status-soon) 16%, var(--surface-1)); color: var(--status-soon); }
+.card-countdown.passed { background: var(--surface-2); color: var(--text-3); }
+.card-countdown.urgent { font-weight: 600; }
+.vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 .card-fit {
-  font-style: italic; color: var(--ink-soft); font-size: var(--fs-sm);
-  line-height: 1.58; padding-top: 0.7rem;
-  border-top: 1px solid var(--rule); text-wrap: pretty; max-width: 42ch;
+  color: var(--text-2); font-size: var(--fs-sm);
+  line-height: 1.58; padding-top: var(--space-3);
+  border-top: 1px solid var(--line); text-wrap: pretty; max-width: 42ch;
 }
-.card-actions { display: flex; gap: 0.65rem; align-items: center; padding-top: 0.55rem; margin-top: auto; }
+.card-actions { display: flex; gap: var(--space-3); align-items: center; padding-top: var(--space-2); margin-top: auto; }
 .card-link {
-  font-size: var(--fs-sm); color: var(--ink-soft); text-decoration: none;
-  padding: 0.25rem 0; border-bottom: 1px solid transparent;
+  font-size: var(--fs-sm); color: var(--text-2); text-decoration: none;
+  padding: var(--space-1) 0; border-bottom: 1px solid transparent;
   transition:
     color var(--dur-out) var(--ease-out),
     border-color var(--dur-out) var(--ease-out);
-  font-variant-numeric: tabular-nums; letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
 }
-.card-link:hover { color: var(--accent); border-color: var(--accent-line); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.card-link:hover { color: var(--accent); border-color: var(--accent); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
 .star-btn {
   background: transparent; border: 0; cursor: pointer;
-  border-radius: var(--radius-999-px);
-  font-size: var(--fs-base); color: var(--ink-faint); padding: 0.12rem; line-height: 1;
+  border-radius: var(--radius-2);
+  color: var(--text-3); padding: var(--space-1); line-height: 1;
   transition:
     color var(--dur-out) var(--ease-out),
-    transform var(--dur-out) var(--ease-out),
     background-color var(--dur-out) var(--ease-out);
 }
-.star-btn:hover { color: var(--warn); background: var(--warn-soft); transform: translateY(-1px); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
-.star-btn.starred { color: var(--warn); }
+.star-btn:hover:not(:disabled) { color: var(--accent); background: var(--surface-2); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.star-btn:active:not(:disabled) { background: var(--surface-3); }
+.star-btn.starred { color: var(--accent); }
 .card-actions .star-btn:last-child { margin-left: auto; }
 .confidence-mark {
-  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--ink-faint);
-  letter-spacing: 0; margin-left: auto;
+  font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3);
+  margin-left: auto;
 }
-.confidence-mark.estimated::before { content: "≈ "; opacity: 0.6; }
 
-/* ------ Table ------ */
-.table-wrap { overflow-x: auto; padding: 0.12rem 0 0.28rem; }
-table.confs { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--fs-sm); font-feature-settings: "kern" 1, "liga" 1; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-table.confs th, table.confs td { padding: 0.78rem 0.95rem; text-align: left; border-bottom: 1px solid var(--rule-soft); }
+/* ------ Table: fixed columns, countdown widest; rows restack by container width ------ */
+.table-wrap { container-type: inline-size; container-name: rows; position: relative; padding: var(--space-1) 0 var(--space-1); }
+table.confs { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; font-size: var(--fs-sm); font-feature-settings: "kern" 1, "liga" 1; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+table.confs th, table.confs td { padding: var(--space-3) var(--space-3); text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+table.confs th.c-star, table.confs td.c-star, table.confs th.c-link, table.confs td.c-link { padding-inline: var(--space-1); }
+table.confs .c-star, table.confs .c-link { width: 3rem; }
+table.confs .c-venue { width: 19%; }
+table.confs .c-field { width: 13%; }
+table.confs .c-tier { width: 4rem; }
+table.confs .c-deadline { width: 22%; text-align: right; }
+table.confs .c-conf { width: 12%; }
+table.confs .c-where { width: 12%; }
 table.confs tbody tr:last-child td { border-bottom: 0; }
-table.confs thead th { background: var(--paper); font-variant-numeric: tabular-nums; font-size: var(--fs-sm); letter-spacing: 0; color: var(--ink-faint); cursor: pointer; user-select: none; white-space: nowrap; font-weight: 500; transition: color var(--dur-out) var(--ease-out); }
-table.confs thead th:hover { color: var(--ink); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+table.confs thead th { background: var(--ground); font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3); cursor: pointer; user-select: none; white-space: nowrap; font-weight: 500; transition: color var(--dur-out) var(--ease-out); vertical-align: middle; }
+table.confs thead th.c-star, table.confs thead th.c-link { cursor: default; }
+.th-btn {
+  display: inline-flex; align-items: center; gap: var(--space-1); min-height: 2.75rem; min-width: 2.75rem;
+  padding: 0; margin: 0; background: transparent; border: 0; border-radius: var(--radius-2);
+  font: inherit; color: inherit; cursor: pointer;
+}
+.th-btn .icon { width: 1rem; height: 1rem; }
+.th-btn[data-dir="asc"] .icon { transform: rotate(180deg); }
+table.confs thead th:hover { color: var(--text-1); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
 table.confs tbody tr { transition: background-color var(--dur-out) var(--ease-out); }
-table.confs tbody tr:hover { background: var(--row-hover); cursor: pointer; }
-table.confs td.num { font-variant-numeric: tabular-nums; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.table-wrap .card-tag { margin: 0 0.25rem 0.2rem 0; }
+table.confs tbody tr:hover, table.confs tbody tr:focus-visible { background: var(--surface-2); cursor: pointer; }
+table.confs tbody tr.starred td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+table.confs tbody tr.closed td { color: var(--text-3); }
+table.confs tbody tr.closed td strong { color: var(--text-2); }
+table.confs td .link-icon { color: var(--accent); }
+table.confs thead th[aria-sort] { color: var(--text-1); font-weight: 600; }
+table.confs td.c-deadline { font-variant-numeric: tabular-nums; }
+table.confs td.c-field { overflow-wrap: break-word; }
+.cd-cell { display: grid; justify-items: end; gap: var(--space-1); }
+.cd-cell .card-countdown { margin-left: 0; font-size: var(--fs-base); font-weight: 600; white-space: normal; text-align: right; }
+.cd-date { font-size: var(--fs-sm); font-weight: 400; color: var(--text-2); }
+table.confs tbody tr.closed .cd-date { color: var(--text-3); }
+.table-wrap .card-tag { margin: 0 var(--space-1) var(--space-1) 0; }
+.spec { display: block; margin-top: var(--space-1); font-size: var(--fs-sm); font-weight: 400; line-height: 1.4; color: var(--text-2); font-variant-numeric: tabular-nums; }
+table.confs tbody tr.closed .spec { color: var(--text-3); }
+@container rows (max-width: 56rem) {
+  table.confs th, table.confs td { padding-inline: var(--space-2); }
+  table.confs th.c-star, table.confs td.c-star, table.confs th.c-link, table.confs td.c-link { padding-inline: 0; }
+  table.confs .c-star, table.confs .c-link { width: 2.75rem; }
+  table.confs .c-venue { width: 24%; }
+  table.confs .c-field { width: 16%; }
+  table.confs .c-tier { width: 3rem; }
+  table.confs .c-deadline { width: 17%; }
+  table.confs .c-conf { width: 12%; }
+  table.confs .c-where { width: 11%; }
+}
+@container rows (max-width: 40rem) {
+  table.confs .c-star, table.confs .c-venue, table.confs .c-field, table.confs .c-tier, table.confs .c-deadline, table.confs .c-conf, table.confs .c-where, table.confs .c-link { width: auto; }
+  table.confs, table.confs tbody, table.confs thead { display: block; }
+  table.confs { border-top: 0; border-bottom: 0; }
+  table.confs thead tr { display: flex; flex-wrap: wrap; gap: var(--space-2); padding-bottom: var(--space-2); }
+  table.confs thead th { display: none; padding: 0; border: 0; }
+  table.confs thead th[data-sort] { display: block; }
+  table.confs tbody tr { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; column-gap: var(--space-2); border-top: 1px solid var(--line); padding: var(--space-2) 0; }
+  table.confs tbody tr:last-child { border-bottom: 1px solid var(--line); }
+  table.confs td { display: block; padding: var(--space-1); border: 0; }
+  table.confs td.c-star { grid-column: 1; grid-row: 1; }
+  table.confs td.c-venue { grid-column: 2; grid-row: 1; }
+  table.confs td.c-deadline { grid-column: 3; grid-row: 1; text-align: right; }
+  table.confs td.c-link { grid-column: 1; grid-row: 2; }
+  table.confs td.c-where { grid-column: 2; grid-row: 2; }
+  table.confs td.c-conf { grid-column: 3; grid-row: 2; text-align: right; }
+  table.confs td.c-field, table.confs td.c-tier { display: none; }
+  table.confs tbody tr.starred td:first-child { box-shadow: none; }
+  table.confs tbody tr.starred { box-shadow: inset 2px 0 0 var(--accent); }
+}
 
 /* ------ Modal ------ */
-.modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+.modal { position: fixed; inset: 0; z-index: var(--z-modal); display: flex; align-items: center; justify-content: center; padding: var(--space-5); }
 .modal.hidden { display: none; }
-.modal-backdrop { position: absolute; inset: 0; background: var(--backdrop); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.modal-backdrop { position: absolute; inset: 0; background: var(--scrim); opacity: 0; transition: opacity var(--dur-in) var(--ease-in); }
+.modal.open .modal-backdrop { opacity: 1; transition-duration: var(--dur-move); transition-timing-function: var(--ease-out); }
+.modal-panel { opacity: 0; transform: translateY(var(--space-2)); transition: opacity var(--dur-in) var(--ease-in), transform var(--dur-in) var(--ease-in); }
+.modal.open .modal-panel { opacity: 1; transform: none; transition-duration: var(--dur-move); transition-timing-function: var(--ease-out); }
+@media (prefers-reduced-motion: reduce) { .modal-panel { transform: none; } }
+.modal-tags { display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center; }
+.modal-lead { margin: 0; color: var(--text-2); line-height: 1.55; }
+.saved { color: var(--status-ok); font-size: var(--fs-sm); font-weight: 500; min-height: 1.3em; }
+.tracking-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
+.tracking-head h3 { margin: 0; }
+.suggest-form { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+.field { display: grid; gap: var(--space-1); }
+.field label { font-size: var(--fs-sm); font-weight: 500; color: var(--text-2); }
+.input {
+  min-height: 2.75rem; width: 100%; padding: var(--space-2) var(--space-3);
+  font: inherit; font-size: var(--fs-sm); color: var(--text-1);
+  background: var(--surface-1); border: 0; border-radius: var(--radius-2); box-shadow: var(--elev-1-strong);
+  transition: background-color var(--dur-out) var(--ease-out), box-shadow var(--dur-out) var(--ease-out);
+}
+.input:hover { background: var(--surface-3); }
+.input::placeholder { color: var(--text-3); }
+.field[data-invalid] .input { box-shadow: inset 0 0 0 1px var(--status-urgent); }
+.field-msg { margin: 0; min-height: 1.3em; font-size: var(--fs-sm); color: var(--status-urgent); font-weight: 500; }
+.form-status { margin: 0; min-height: 1.3em; font-size: var(--fs-sm); font-weight: 500; color: var(--text-2); display: flex; align-items: center; gap: var(--space-2); }
+.form-status.sent { color: var(--status-ok); }
+.form-status.error { color: var(--status-urgent); }
+
+/* ------ Region states: loading, empty, error ------ */
+.skeleton-region { display: grid; gap: var(--space-3); }
+.skeleton-row { position: relative; height: 4.5rem; background: var(--surface-1); box-shadow: var(--elev-1); border-radius: var(--radius-3); }
+.skeleton-row::before, .skeleton-row::after { content: ""; position: absolute; left: var(--space-4); background: var(--surface-2); border-radius: var(--radius-1); }
+.skeleton-row::before { top: var(--space-4); width: 40%; height: 1rem; }
+.skeleton-row::after { top: var(--space-6); margin-top: var(--space-3); width: 70%; height: 0.8rem; }
+.skeleton-text { display: inline-block; width: 8rem; height: 1rem; background: var(--surface-2); border-radius: var(--radius-1); }
+.region-state { display: grid; justify-items: start; gap: var(--space-3); max-width: var(--measure); padding: var(--space-5); background: var(--surface-1); box-shadow: var(--elev-1); border-radius: var(--radius-3); }
+.region-state h3 { margin: 0; font-size: var(--fs-base); font-weight: 600; }
+.region-state p { margin: 0; color: var(--text-2); }
+.region-error { box-shadow: inset 0 0 0 1px var(--status-urgent); }
+.region-error h3 { color: var(--status-urgent); }
 .modal-panel {
-  position: relative; background: var(--paper); border: 0;
-  border-radius: var(--radius-10-px); max-width: 38rem; width: min(38rem, 100%);
-  max-height: min(86dvh, 44rem); overflow-y: auto; padding: 1.9rem 2rem 2rem;
-  box-shadow: inset 0 0 0 1px var(--rule-soft), var(--shadow-modal);
+  position: relative; background: var(--surface-2); border: 0;
+  border-radius: var(--radius-4); max-width: 38rem; width: min(38rem, 100%);
+  max-height: min(86dvh, 44rem); overflow-y: auto; padding: var(--space-6) var(--space-6) var(--space-6);
+  box-shadow: var(--elev-3);
 }
-#modalBody { display: grid; gap: 0.3rem; }
+#modalBody { display: grid; gap: var(--space-1); }
 .modal-close {
-  position: absolute; top: 0.75rem; right: 0.8rem; background: var(--paper-raised); border: 0;
-  box-shadow: inset 0 0 0 1px var(--rule-soft);
-  font-size: var(--fs-base); line-height: 1; cursor: pointer; color: var(--ink-faint); padding: 0;
-  width: 2.25rem; height: 2.25rem; transition:
+  position: absolute; top: var(--space-3); right: var(--space-3); background: var(--surface-1); border: 0;
+  box-shadow: var(--elev-1-strong);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-2); padding: 0;
+  width: 2.75rem; height: 2.75rem; transition:
     color var(--dur-out) var(--ease-out),
-    background-color var(--dur-out) var(--ease-out),
-    transform var(--dur-out) var(--ease-out); border-radius: var(--radius-999-px);
+    background-color var(--dur-out) var(--ease-out); border-radius: var(--radius-2);
 }
-.modal-close:hover { color: var(--ink); background: var(--paper-soft); transform: translateY(-1px); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
-.modal-name { font-size: var(--fs-display); margin: 0; font-weight: 600; letter-spacing: -0.03em; line-height: 1.08; }
-.modal-fullname { color: var(--ink-soft); font-size: var(--fs-base); margin: 0 0 0.3rem; line-height: 1.62; max-width: 50ch; text-wrap: pretty; }
-.modal-section { margin: 0; padding-top: 0.95rem; border-top: 1px solid var(--rule); }
-.modal-section h3 { font-family: var(--sans); font-size: var(--fs-sm); letter-spacing: 0; color: var(--ink-faint); margin: 0 0 0.68rem; font-weight: 500; }
-.modal-meta { display: grid; grid-template-columns: minmax(5.6rem, max-content) 1fr; gap: 0.48rem 1.25rem; font-size: var(--fs-sm); }
-.modal-meta dt { font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--ink-faint); padding-top: 0.1rem; letter-spacing: 0; }
+.modal-close:hover { color: var(--text-1); background: var(--surface-2); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.modal-name { font-size: var(--fs-display); margin: 0; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+.modal-fullname { color: var(--text-2); font-size: var(--fs-base); margin: 0 0 var(--space-1); line-height: 1.62; max-width: 50ch; text-wrap: pretty; }
+.modal-section { margin: 0; padding-top: var(--space-4); border-top: 1px solid var(--line); }
+.modal-section h3 { font-family: var(--sans); font-size: var(--fs-sm); color: var(--text-3); margin: 0 0 var(--space-3); font-weight: 500; }
+.modal-meta { display: grid; grid-template-columns: minmax(5.6rem, max-content) 1fr; gap: var(--space-2) var(--space-4); font-size: var(--fs-sm); }
+.modal-meta dt { font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3); padding-top: var(--space-1); }
 .modal-meta dd { margin: 0; font-variant-numeric: tabular-nums; line-height: 1.46; }
 .modal-link-btn {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  padding: 0.6rem 0.95rem 0.62rem; background: var(--paper-soft); color: var(--ink); text-decoration: none;
-  border-radius: var(--radius-999-px); font-size: var(--fs-sm); font-weight: 500;
-  box-shadow: inset 0 0 0 1px var(--rule);
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-2) var(--space-4) var(--space-2); background: var(--surface-2); color: var(--text-1); text-decoration: none;
+  border-radius: var(--radius-2); font-size: var(--fs-sm); font-weight: 500;
+  box-shadow: var(--elev-1-strong);
   transition:
     color var(--dur-out) var(--ease-out),
-    box-shadow var(--dur-out) var(--ease-out),
-    transform var(--dur-out) var(--ease-out);
-  margin-top: 0.85rem; letter-spacing: 0;
+    box-shadow var(--dur-out) var(--ease-out);
+  margin-top: var(--space-3);
   font-family: var(--sans);
 }
-.modal-link-btn:hover { color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent-line); transform: translateY(-1px); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.modal-link-btn:hover { color: var(--accent); background: var(--surface-3); transition-duration: var(--dur-in); transition-timing-function: var(--ease-in); }
+.modal-link-btn:active { background: var(--surface-2); }
 
 /* ------ Footer ------ */
-.colophon { max-width: 78rem; margin: 0 auto; padding: 1.7rem 2rem 2.6rem; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 0.4rem 0.65rem; align-items: center; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--ink-faint); letter-spacing: 0; }
+.colophon { padding-block: var(--space-5) var(--space-7); display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: center; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); color: var(--text-3); }
+.colophon .masthead-lede { flex: 1 0 100%; margin: 0 0 var(--space-3); color: var(--text-2); font-size: var(--fs-base); }
 .colophon-bit { white-space: nowrap; }
-.colophon-sep { color: var(--rule); }
+.colophon-sep { color: var(--line); }
 
 /* ------ Touch targets: at least 44 by 44 CSS px, 8px between neighbours ------ */
-.view-tab, .viewbar-action, .chip, .view-toolbar-btn, .star-btn, .select, #searchInput, .modal-close, .card-link, .starred-toggle { min-height: 2.75rem; min-width: 2.75rem; }
+.view-tab, .viewbar-action, .chip, .view-toolbar-btn, .star-btn, .select, #searchInput, .modal-close, .card-link, .starred-toggle, .modal-link-btn { min-height: 2.75rem; min-width: 2.75rem; }
 .view-tab, .viewbar-action, .chip, .view-toolbar-btn { display: inline-flex; align-items: center; justify-content: center; }
-.view-tab { padding-top: 0; padding-bottom: 0; padding-left: 0.5rem; padding-right: 0.5rem; }
-.viewbar-inner { gap: 0.5rem; }
-.starred-toggle { display: inline-flex; align-items: center; gap: 0.5rem; }
-.view-toolbar-group { gap: 0.5rem; }
-.card-actions { gap: 0.5rem; }
+.starred-toggle { display: inline-flex; align-items: center; gap: var(--space-2); }
+.view-toolbar-group { gap: var(--space-2); }
+.card-actions { gap: var(--space-2); }
 .star-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
-.card-link { display: inline-flex; align-items: center; }
+.card-link { display: inline-flex; align-items: center; gap: var(--space-1); }
 table.confs td a[href] { display: inline-flex; align-items: center; justify-content: center; min-width: 2.75rem; min-height: 2.75rem; }
 strong { font-weight: 600; }
 
-/* ------ Mobile ------ */
+/* ------ Narrow: 4 columns ------ */
+@media (max-width: 599px) {
+  .view-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .viewbar .search-field { grid-column: 1 / -1; }
+  .viewbar-actions { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .viewbar-action { justify-content: center; }
+  .filters-body { grid-template-columns: 1fr; }
+  .cards-grid { grid-template-columns: 1fr; gap: var(--space-4); }
+  .card { padding: var(--space-4) var(--space-4) var(--space-4); }
+  .tlcal { grid-template-columns: minmax(3.5rem, max-content) 1fr; }
+}
 @media (max-width: 720px) {
-  .masthead { padding: 1.8rem 1.25rem 1rem; }
-  .brand-title { font-size: var(--fs-display); }
-  .viewbar, .filters, main, .colophon { padding-left: 1.25rem; padding-right: 1.25rem; }
-  .masthead-lede { font-size: var(--fs-base); margin-bottom: 1rem; }
-  .masthead-stats { gap: 0.5rem 1rem; }
-  .viewbar-inner { gap: 0.5rem; flex-wrap: wrap; overflow-x: visible; }
-  .viewbar-spacer { flex-basis: 100%; min-width: 0; height: 0; }
-  .filters { padding-top: 1rem; gap: 0.95rem; flex-direction: column; align-items: stretch; }
-  .filters-main { width: 100%; gap: 0.9rem; }
-  .filters-search { width: 100%; min-width: 0; }
-  .filter-group { grid-template-columns: 1fr; gap: 0.35rem; width: 100%; }
-  .filter-label { padding-top: 0; }
-  .filter-group-search { justify-content: flex-start; align-items: stretch; width: 100%; }
-  .filter-group-search { flex-wrap: wrap; }
-  #searchInput { flex: 1 1 100%; min-width: 0; width: 100%; }
-  .cards-grid { grid-template-columns: 1fr; gap: 1rem; }
-  .card { padding: 1.15rem 1.1rem 1.2rem; }
-  .card-name { font-size: var(--fs-base); }
-  .card-meta { grid-template-columns: 1fr; gap: 0.18rem; }
-  .card-meta dt { padding-top: 0.25rem; }
-  table.confs { font-size: var(--fs-sm); min-width: 44rem; }
-  table.confs th, table.confs td { padding: 0.62rem 0.72rem; }
-  .modal { padding: 0.75rem; }
-  .modal-panel { padding: 1.45rem 1.2rem 1.35rem; max-width: 100%; max-height: calc(100dvh - 1.5rem); }
-  .modal-meta { grid-template-columns: 1fr; gap: 0.16rem; }
-  .modal-section { padding-top: 0.85rem; }
-  .colophon { padding-top: 1.35rem; padding-bottom: 2rem; }
+  .modal { padding: var(--space-3); }
+  .modal-panel { padding: var(--space-5) var(--space-4) var(--space-5); max-width: 100%; max-height: calc(100dvh - var(--space-5)); }
+  .modal-meta { grid-template-columns: 1fr; gap: var(--space-1); }
+  .modal-section { padding-top: var(--space-3); }
 }
 `;
 }
@@ -1254,9 +1457,12 @@ strong { font-weight: 600; }
 function getJS(): string {
   return `
 (function(){
+  // Tabler outline symbols live in one inline sprite; icon() draws one at 20px.
+  function icon(n, cls) { return '<svg class="icon' + (cls ? " " + cls : "") + '" aria-hidden="true"><use href="#i-' + n + '"></use></svg>'; }
   const DATA = window.__DATA__;
-  const CONFS = DATA.conferences.slice();
-  const FIELDS = DATA.fields;
+  const dataOk = !!(DATA && Array.isArray(DATA.conferences) && DATA.fields);
+  const CONFS = dataOk ? DATA.conferences.slice() : [];
+  const FIELDS = dataOk ? DATA.fields : {};
   const TODAY = new Date(); TODAY.setHours(0,0,0,0);
 
   // ------ City geocoding (lat, lng). Hand-curated for the cities the data uses. ------
@@ -1365,7 +1571,7 @@ function getJS(): string {
 
   const STATUSES = ["", "interested", "drafting", "submitted", "accepted", "rejected"];
   const STATUS_LABEL = {
-    "": "—",
+    "": "No status",
     "interested": "interested",
     "drafting": "drafting",
     "submitted": "submitted",
@@ -1387,6 +1593,7 @@ function getJS(): string {
     sort: "deadline-asc",
     timelineMode: localStorage.getItem("ct.timelineMode") || "calendar",   // "calendar" | "gantt"
     cardDensity: localStorage.getItem("ct.cardDensity") || "comfortable",  // "compact" | "comfortable" | "spacious"
+    shown: null,                     // venues in the current view after filtering
   };
 
   // ------ Hash state (sharable URL) ------
@@ -1421,25 +1628,33 @@ function getJS(): string {
   const initialTheme = localStorage.getItem("ct.theme") ||
     (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   document.documentElement.setAttribute("data-theme", initialTheme);
+  themeBtn.setAttribute("aria-pressed", initialTheme === "dark" ? "true" : "false");
   themeBtn.addEventListener("click", () => {
     const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", cur);
+    themeBtn.setAttribute("aria-pressed", cur === "dark" ? "true" : "false");
     localStorage.setItem("ct.theme", cur);
     render();
   });
+  function setChipActive(btn, on) {
+    btn.classList.toggle("active", on);
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+  }
 
   // ------ Field chips ------
   const fieldChipsEl = document.getElementById("fieldChips");
   Object.entries(FIELDS).forEach(([key, f]) => {
     const btn = document.createElement("button");
-    btn.className = "chip" + (state.fields.has(key) ? " active" : "");
+    btn.type = "button";
+    btn.className = "chip";
     btn.dataset.field = key;
     btn.style.setProperty("--field-color", f.color);
-    btn.innerHTML = '<span class="chip-dot" style="background:' + f.color + '"></span>' + f.label;
+    btn.innerHTML = icon("check", "chip-check") + '<span class="chip-dot" style="background:' + f.color + '"></span>' + escape(f.label);
+    setChipActive(btn, state.fields.has(key));
     btn.addEventListener("click", () => {
       if (state.fields.has(key)) state.fields.delete(key);
       else state.fields.add(key);
-      btn.classList.toggle("active", state.fields.has(key));
+      setChipActive(btn, state.fields.has(key));
       writeHash(); render();
     });
     fieldChipsEl.appendChild(btn);
@@ -1447,20 +1662,22 @@ function getJS(): string {
 
   // ------ Tier chips ------
   document.querySelectorAll("#tierChips .chip").forEach(b => {
-    b.classList.toggle("active", b.dataset.tier === state.tier);
+    b.type = "button";
+    setChipActive(b, b.dataset.tier === state.tier);
     b.addEventListener("click", () => {
       state.tier = b.dataset.tier;
-      document.querySelectorAll("#tierChips .chip").forEach(x => x.classList.toggle("active", x === b));
+      document.querySelectorAll("#tierChips .chip").forEach(x => setChipActive(x, x === b));
       writeHash(); render();
     });
   });
 
   // ------ Window chips ------
   document.querySelectorAll("#windowChips .chip").forEach(b => {
-    b.classList.toggle("active", b.dataset.window === state.window);
+    b.type = "button";
+    setChipActive(b, b.dataset.window === state.window);
     b.addEventListener("click", () => {
       state.window = b.dataset.window;
-      document.querySelectorAll("#windowChips .chip").forEach(x => x.classList.toggle("active", x === b));
+      document.querySelectorAll("#windowChips .chip").forEach(x => setChipActive(x, x === b));
       writeHash(); render();
     });
   });
@@ -1477,14 +1694,24 @@ function getJS(): string {
 
   // ------ Search ------
   const searchEl = document.getElementById("searchInput");
+  const searchField = document.getElementById("searchField");
+  const searchClear = document.getElementById("searchClear");
   if (state.search) searchEl.value = state.search;
   let searchTimer;
   searchEl.addEventListener("input", () => {
+    searchClear.hidden = !searchEl.value;
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => {
       state.search = searchEl.value.trim().toLowerCase();
       writeHash(); render();
     }, 140);
+  });
+  searchClear.addEventListener("click", () => {
+    clearTimeout(searchTimer);
+    searchEl.value = "";
+    state.search = "";
+    writeHash(); render();
+    searchEl.focus();
   });
 
   // ------ Starred toggle ------
@@ -1495,17 +1722,50 @@ function getJS(): string {
     writeHash(); render();
   });
 
-  // ------ Submit a conference (opens prefilled GitHub issue in new tab) ------
-  const submitBtn = document.getElementById("submitConfBtn");
-  if (submitBtn) {
-    submitBtn.addEventListener("click", () => {
-      const tmpl = "Conference name (acronym + full):\\n\\nField(s):\\n\\nTier (A* / A / B / industry / journal):\\n\\nDeadline (YYYY-MM-DD):\\nNotification (YYYY-MM-DD):\\nConference dates (YYYY-MM-DD to YYYY-MM-DD):\\n\\nLocation (city, country):\\n\\nFormat / page limit / blind:\\n\\nCFP link:\\n\\nWhy it fits Doug's research (1 line):\\n\\nSources (≥2 URLs):\\n";
-      const url = "https://github.com/douglaspmcgowan/conference-tracker/issues/new?title=" +
-        encodeURIComponent("Suggest conference: ") +
-        "&body=" + encodeURIComponent(tmpl.replace(/\\\\n/g, "\\n")) +
-        "&labels=conference-suggestion";
-      window.open(url, "_blank", "noopener");
+  // ------ Clear filters, and keep the controls in step with the data ------
+  function clearFilters() {
+    clearTimeout(searchTimer);
+    state.fields.clear(); state.tier = "all"; state.window = "all"; state.search = ""; state.starredOnly = false;
+    searchEl.value = ""; starredOnlyEl.checked = false;
+    document.querySelectorAll("#fieldChips .chip").forEach(x => setChipActive(x, false));
+    document.querySelectorAll("#tierChips .chip").forEach(x => setChipActive(x, x.dataset.tier === "all"));
+    document.querySelectorAll("#windowChips .chip").forEach(x => setChipActive(x, x.dataset.window === "all"));
+    writeHash(); render();
+    const v = document.getElementById("view-" + state.view);
+    v.setAttribute("tabindex", "-1");
+    v.focus({ preventScroll: true });
+  }
+  // The filters block is a rail at 1100px and up (always open) and a closed details block below that.
+  const filtersEl = document.getElementById("filters");
+  const filtersSummary = document.getElementById("filtersSummary");
+  const filtersCount = document.getElementById("filtersCount");
+  const wideMq = window.matchMedia("(min-width: 1100px)");
+  function syncFiltersOpen() { filtersEl.open = wideMq.matches; filtersSummary.tabIndex = wideMq.matches ? -1 : 0; }
+  syncFiltersOpen();
+  wideMq.addEventListener("change", syncFiltersOpen);
+  filtersSummary.addEventListener("click", (e) => { if (wideMq.matches) e.preventDefault(); });
+  // Rail tick lift: the tick for a venue rises while its row, card or calendar cell is hovered or focused.
+  function liftTicks(node, on) {
+    const ids = (node.getAttribute("data-id") || node.getAttribute("data-ids") || "").split(",").filter(Boolean);
+    ids.forEach(id => document.querySelectorAll('#yearRail .rail-tick[data-id="' + id + '"]').forEach(t => t.classList.toggle("lift", on)));
+  }
+  const mainEl = document.getElementById("main");
+  [["mouseover", "mouseout", true], ["focusin", "focusout", true]].forEach(([inEv, outEv]) => {
+    mainEl.addEventListener(inEv, (e) => { const n = e.target.closest("[data-id], [data-ids]"); if (n && mainEl.contains(n)) liftTicks(n, true); });
+    mainEl.addEventListener(outEv, (e) => { const n = e.target.closest("[data-id], [data-ids]"); if (n && !n.contains(e.relatedTarget)) liftTicks(n, false); });
+  });
+  function syncControls() {
+    const nActive = state.fields.size + (state.tier !== "all" ? 1 : 0) + (state.window !== "all" ? 1 : 0) + (state.starredOnly ? 1 : 0);
+    filtersCount.textContent = nActive + " active";
+    filtersCount.classList.toggle("on", nActive > 0);
+    document.querySelectorAll("#fieldChips .chip").forEach(b => {
+      const k = b.dataset.field;
+      const any = CONFS.some(c => (c.fields || []).includes(k) && matches(c, true));
+      b.disabled = !any && !state.fields.has(k);
     });
+    starredOnlyEl.disabled = state.starred.size === 0 && !state.starredOnly;
+    searchClear.hidden = !searchEl.value;
+    searchField.classList.toggle("no-results", !!state.search && state.shown === 0);
   }
 
   // ------ View tabs ------
@@ -1520,8 +1780,12 @@ function getJS(): string {
         x.setAttribute("aria-pressed", x === t ? "true" : "false");
       });
       document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
-      document.getElementById("view-" + state.view).classList.remove("hidden");
+      const nv = document.getElementById("view-" + state.view);
+      nv.classList.remove("hidden");
+      nv.classList.add("entering");
       render();
+      void nv.offsetWidth;
+      nv.classList.remove("entering");
     });
   });
   document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
@@ -1552,9 +1816,9 @@ function getJS(): string {
     if (!date) return null;
     return Math.round((date - TODAY) / (1000 * 60 * 60 * 24));
   }
-  function visibleConfs() {
-    const list = CONFS.filter(c => {
-      if (state.fields.size && !c.fields.some(f => state.fields.has(f))) return false;
+  // skipFields: ignore the field filter, so a field chip can tell whether it would show anything
+  function matches(c, skipFields) {
+      if (!skipFields && state.fields.size && !c.fields.some(f => state.fields.has(f))) return false;
       if (state.tier !== "all" && c.tier !== state.tier) return false;
       if (state.starredOnly && !state.starred.has(c.id)) return false;
       if (state.window !== "all") {
@@ -1569,10 +1833,17 @@ function getJS(): string {
         if (!blob.includes(state.search)) return false;
       }
       return true;
-    });
-    return sortConfs(list);
+  }
+  function visibleConfs() {
+    return sortConfs(CONFS.filter(c => matches(c, false)));
   }
 
+  // 0 = deadline still open, 1 = no deadline recorded, 2 = deadline passed. Default sort lists them in that order.
+  function openRank(c) {
+    const d = parseDate(c.deadline);
+    if (!d) return 1;
+    return d >= TODAY ? 0 : 2;
+  }
   function sortConfs(list) {
     const TIER_ORDER = { "A*": 0, "A": 1, "B": 2, "industry": 3, "journal": 4 };
     const FAR = new Date(8640000000000000);
@@ -1602,9 +1873,11 @@ function getJS(): string {
         }
         case "deadline-asc":
         default: {
+          const ga = openRank(a), gb = openRank(b);
+          if (ga !== gb) return ga - gb;
           const da = parseDate(a.deadline) || parseDate(a.conferenceStart) || FAR;
           const db = parseDate(b.deadline) || parseDate(b.conferenceStart) || FAR;
-          return da - db;
+          return ga === 2 ? db - da : da - db;
         }
       }
     });
@@ -1613,13 +1886,13 @@ function getJS(): string {
 
   function fmtDate(s) {
     const d = parseDate(s);
-    if (!d) return "—";
+    if (!d) return "TBA";
     return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
   }
-  function fmtMonth(d) { return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" }); }
+  function fmtMonth(d) { return d.toLocaleDateString("en-US", { month: "short", year: "numeric" }); }
   function fmtRange(a, b) {
     const da = parseDate(a), db = parseDate(b);
-    if (!da) return "—";
+    if (!da) return "TBA";
     if (!db) return fmtDate(a);
     if (da.getMonth() === db.getMonth() && da.getFullYear() === db.getFullYear()) {
       return da.toLocaleDateString("en-US", { month: "short", day: "numeric" }) + "–" + db.getDate() + ", " + db.getFullYear();
@@ -1631,18 +1904,25 @@ function getJS(): string {
     if (days === null) return "";
     if (days < 0) return "passed";
     if (days <= 14) return "urgent";
-    if (days <= 60) return "soon";
+    if (days <= 45) return "soon";
     return "";
   }
-  function countdownText(days) {
+  // Future: "in 14d". Past: "closed Mar 4, 2026". The unit and the word are always written out.
+  function countdownText(days, deadline) {
     if (days === null) return "no deadline";
-    if (days < 0) return Math.abs(days) + "d ago";
+    if (days < 0) return "closed " + fmtDate(deadline);
     if (days === 0) return "today";
-    if (days === 1) return "tomorrow";
     return "in " + days + "d";
   }
 
-  // ------ Stats ------
+  // ------ Stats, next-deadline readout, year rail ------
+  function monthsShown() { return window.matchMedia("(max-width: 599px)").matches ? 6 : 12; }
+  function railEnd(months) { const e = new Date(TODAY); e.setMonth(e.getMonth() + months); return e; }
+  // The rail and its count both come from this list: deadlines from today up to the same date a year (or half a year) on.
+  function railDeadlines(months) {
+    const end = railEnd(months);
+    return CONFS.map(c => ({ c, d: parseDate(c.deadline) })).filter(x => x.d && x.d >= TODAY && x.d < end).sort((a, b) => a.d - b.d);
+  }
   function renderStats() {
     const all = CONFS.length;
     const upcoming = CONFS
@@ -1651,52 +1931,236 @@ function getJS(): string {
     upcoming.sort((a,b) => a.days - b.days);
     const next = upcoming[0];
     const starred = state.starred.size;
-
-    const html = [
-      '<span class="stat"><strong>' + all + '</strong>conferences</span>',
-      next
-        ? '<span class="stat"><strong class="stat-' + (next.days <= 14 ? "urgent" : "accent") + '">' + next.c.name + '</strong>next deadline, ' + countdownText(next.days) + '</span>'
-        : '',
+    document.getElementById("stats").innerHTML = [
+      '<span class="stat"><strong>' + all + '</strong>venues</span>',
+      '<span class="stat"><strong>' + upcoming.length + '</strong>open deadlines</span>',
       '<span class="stat"><strong>' + starred + '</strong>starred</span>',
     ].join("");
-    document.getElementById("stats").innerHTML = html;
+    renderReadout(next);
+    renderRail();
   }
+  function renderReadout(next) {
+    const el = document.getElementById("readout");
+    if (!next) {
+      el.removeAttribute("data-tone");
+      el.innerHTML = '<div class="readout-body"><span class="readout-venue">No open deadlines</span><span class="readout-date">Every recorded deadline has passed.</span></div>';
+      return;
+    }
+    const tone = next.days <= 14 ? "urgent" : (next.days <= 45 ? "soon" : "far");
+    el.setAttribute("data-tone", tone);
+    const word = tone === "urgent" ? "Urgent. " : (tone === "soon" ? "Soon. " : "");
+    el.innerHTML =
+      '<div class="readout-count"><span class="readout-num">' + next.days + '</span><span class="readout-unit">' + (next.days === 1 ? "day" : "days") + '</span></div>' +
+      '<div class="readout-body"><span class="readout-venue">' + escape(next.c.name) + ' ' + escape(next.c.year) + '</span>' +
+      '<span class="readout-date">' + (word ? '<span class="readout-tone">' + word + '</span>' : '') + 'Paper deadline ' + fmtDate(next.c.deadline) + '</span></div>';
+  }
+  let railWidth = 0;
+  function renderRail() {
+    const host = document.getElementById("yearRail");
+    const months = monthsShown();
+    const w = Math.max(host.clientWidth, 200), H = 48, axisY = 30;
+    railWidth = host.clientWidth;
+    const end = railEnd(months), span = end - TODAY;
+    const items = railDeadlines(months);
+    const xOf = d => ((d - TODAY) / span) * (w - 6) + 3;
+    const label = months === 6 ? "next 6 months" : "next 12 months";
+    const urgentN = items.filter(x => daysUntil(x.d) <= 14).length;
+    const names = items.map(x => x.c.name + " " + fmtDate(x.c.deadline)).join("; ");
+    let svg = '<svg class="rail-svg" viewBox="0 0 ' + w + ' ' + H + '" width="' + w + '" height="' + H + '" role="img" aria-labelledby="railTitle railDesc">' +
+      '<title id="railTitle">Deadlines in the ' + label + '</title>' +
+      '<desc id="railDesc">' + (items.length ? items.length + ' deadlines: ' + escape(names) : 'No deadlines') + '</desc>' +
+      '<line class="rail-axis" x1="0" y1="' + axisY + '" x2="' + w + '" y2="' + axisY + '"></line>';
+    for (let i = 0; i < months; i++) {
+      const m = new Date(TODAY.getFullYear(), TODAY.getMonth() + 1 + i, 1);
+      if (m >= end) break;
+      const x = xOf(m);
+      if (x > w - 40) break;
+      svg += '<line class="rail-month" x1="' + x + '" y1="' + (axisY - 6) + '" x2="' + x + '" y2="' + (axisY + 6) + '"></line>' +
+        '<text class="rail-label" x="' + (x + 4) + '" y="' + (H - 4) + '">' + m.toLocaleDateString("en-US", { month: "short" }) + '</text>';
+    }
+    svg += '<line class="rail-today" x1="2" y1="' + (axisY - 22) + '" x2="2" y2="' + (axisY + 6) + '"></line>';
+    const used = {};
+    items.forEach(x => {
+      const bucket = Math.round(xOf(x.d) / 4);
+      const n = used[bucket] || 0; used[bucket] = n + 1;
+      const urgent = daysUntil(x.d) <= 14;
+      const h = urgent ? 20 : 14;
+      const meta = FIELDS[(x.c.fields || [])[0]] || { color: "var(--text-2)" };
+      const fill = urgent ? "var(--status-urgent)" : meta.color;
+      svg += '<rect class="rail-tick' + (urgent ? ' urgent' : '') + '" data-id="' + x.c.id + '" x="' + (xOf(x.d) - 1.5 + n * 4) + '" y="' + (axisY - h) + '" width="3" height="' + h + '" rx="1" style="fill:' + fill + '"></rect>';
+    });
+    svg += '</svg>';
+    host.innerHTML = '<figcaption class="rail-caption" id="railCount" data-count="' + items.length + '"><strong>' + items.length + '</strong> deadline' + (items.length === 1 ? '' : 's') + ' in the ' + label + (urgentN ? ', ' + urgentN + ' urgent' : '') + '</figcaption>' + svg;
+  }
+  if (typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(() => {
+      const h = document.getElementById("yearRail");
+      if (dataOk && h.clientWidth && Math.abs(h.clientWidth - railWidth) > 1) renderRail();
+    }).observe(document.getElementById("yearRail"));
+  }
+
+  // ------ Region states: loading skeleton is static markup, empty and error are drawn here ------
+  const VIEW_LABEL = { timeline: "timeline", cards: "cards", table: "table", map: "map" };
+  function filtersActive() {
+    return !!(state.fields.size || state.tier !== "all" || state.window !== "all" || state.search || state.starredOnly);
+  }
+  function loosenHint() {
+    if (state.search) return "Shorten or remove the search “" + escape(state.search) + "”.";
+    if (state.starredOnly) return state.starred.size ? "Turn off Starred only to see every venue." : "Nothing is starred yet. Turn off Starred only, or star a venue first.";
+    if (state.window !== "all") return "Widen the " + escape(state.window) + "d window.";
+    if (state.tier !== "all") return "Pick a tier other than " + escape(state.tier) + ".";
+    if (state.fields.size) return "Remove a field.";
+    return "";
+  }
+  function emptyHtml(title, sentence) {
+    const clear = filtersActive()
+      ? '<button type="button" class="btn" data-clear-filters>' + icon("filter") + 'Clear filters</button>'
+      : '';
+    return '<div class="region-state region-empty"><h3>' + title + '</h3><p>' + sentence + '</p>' + clear + '</div>';
+  }
+  function noMatchHtml() { return emptyHtml("No venues match", loosenHint() || "There is nothing to show yet."); }
+  function errorHtml(what, detail) {
+    return '<div class="region-state region-error" role="alert"><h3>Could not load the ' + what + '</h3><p>' + detail + '</p>' +
+      '<button type="button" class="btn btn-primary" data-retry>Retry</button></div>';
+  }
+  function bindRegion(el) {
+    el.querySelectorAll("[data-clear-filters]").forEach(b => b.addEventListener("click", clearFilters));
+    el.querySelectorAll("[data-retry]").forEach(b => b.addEventListener("click", () => {
+      if (!dataOk) location.reload(); else render();
+    }));
+  }
+  function setRegion(el, html) {
+    el.setAttribute("aria-busy", "false");
+    el.innerHTML = html;
+    bindRegion(el);
+  }
+
+  // ------ Tooltip: shown on hover and on keyboard focus ------
+  function hideTip(tooltip) { tooltip.classList.remove("visible"); tooltip.removeAttribute("role"); }
+  function placeTip(tooltip, wrap, x, y) {
+    tooltip.setAttribute("role", "tooltip");
+    tooltip.classList.add("visible");
+    const w = tooltip.offsetWidth, max = wrap.clientWidth;
+    tooltip.style.left = Math.max(w / 2, Math.min(max - w / 2, x)) + "px";
+    tooltip.style.top = y + "px";
+  }
+  function tipAtNode(tooltip, wrap, node) {
+    const wb = wrap.getBoundingClientRect(), nb = node.getBoundingClientRect();
+    placeTip(tooltip, wrap, nb.left - wb.left + nb.width / 2, nb.top - wb.top);
+  }
+  // Roving tabindex: one Tab stop for a whole field of marks, arrows move between them.
+  function bindRoving(nodes, activate, onFocus, onBlur) {
+    nodes.forEach((n, i) => {
+      n.setAttribute("tabindex", i === 0 ? "0" : "-1");
+      n.addEventListener("focus", () => {
+        nodes.forEach(x => x.setAttribute("tabindex", x === n ? "0" : "-1"));
+        if (onFocus) onFocus(n);
+      });
+      n.addEventListener("blur", () => { if (onBlur) onBlur(n); });
+      n.addEventListener("keydown", (e) => {
+        const k = e.key; let j = -1;
+        if (k === "ArrowRight" || k === "ArrowDown") j = Math.min(nodes.length - 1, i + 1);
+        else if (k === "ArrowLeft" || k === "ArrowUp") j = Math.max(0, i - 1);
+        else if (k === "Home") j = 0;
+        else if (k === "End") j = nodes.length - 1;
+        else if (k === "Enter" || k === " ") { e.preventDefault(); activate(n); return; }
+        else return;
+        e.preventDefault();
+        nodes[j].focus();
+      });
+    });
+  }
+
+  // ------ Re-sort motion (FLIP): measure rows, redraw, play each surviving row from its old place to its new one ------
+  const FLIP_SEL = ".card[data-id], tbody tr[data-id]";
+  function flipCapture() {
+    const m = new Map();
+    const el = document.getElementById("view-" + state.view);
+    if (!el || el.classList.contains("hidden")) return m;
+    el.querySelectorAll(FLIP_SEL).forEach(n => m.set(n.dataset.id, n.getBoundingClientRect()));
+    return m;
+  }
+  function flipPlay(before) {
+    if (!before.size) return;
+    const dur = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--dur-move")) || 0;
+    if (dur <= 0) return;
+    const el = document.getElementById("view-" + state.view);
+    const moved = [];
+    el.querySelectorAll(FLIP_SEL).forEach(n => {
+      const o = before.get(n.dataset.id);
+      if (!o) return;
+      const r = n.getBoundingClientRect();
+      const dx = o.left - r.left, dy = o.top - r.top;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+      n.style.transition = "none";
+      n.style.transform = "translate(" + dx + "px," + dy + "px)";
+      moved.push(n);
+    });
+    if (!moved.length) return;
+    void document.body.offsetWidth;
+    moved.forEach(n => {
+      n.style.transition = "transform var(--dur-move) var(--ease-out)";
+      n.style.transform = "";
+      n.addEventListener("transitionend", () => { n.style.transition = ""; }, { once: true });
+    });
+  }
+  let lastView = null;
 
   // ------ Render router ------
   function render() {
-    renderStats();
-    const list = visibleConfs();
-    if (state.view === "timeline") renderTimeline(list);
-    else if (state.view === "cards") renderCards(list);
-    else if (state.view === "map") renderMap(list);
-    else renderTable(list);
+    const before = lastView === state.view ? flipCapture() : new Map();
+    state.shown = null;
+    if (!dataOk) {
+      document.getElementById("stats").innerHTML = '<span>Counts unavailable.</span>';
+      document.getElementById("readout").innerHTML = '<div class="readout-body"><span class="readout-venue">Next deadline unavailable</span></div>';
+      document.getElementById("yearRail").innerHTML = '';
+      document.querySelectorAll(".view").forEach(v => setRegion(v, errorHtml(VIEW_LABEL[v.id.replace("view-", "")], "The venue data did not load. Your stars and notes are still saved in this browser.")));
+      return;
+    }
+    try { renderStats(); } catch (err) { document.getElementById("stats").innerHTML = '<span>Counts unavailable.</span> <button type="button" class="btn" data-retry>Retry</button>'; bindRegion(document.getElementById("stats")); }
+    const el = document.getElementById("view-" + state.view);
+    try {
+      const list = visibleConfs();
+      state.shown = list.length;
+      if (state.view === "timeline") renderTimeline(list);
+      else if (state.view === "cards") renderCards(list);
+      else if (state.view === "map") renderMap(list);
+      else renderTable(list);
+      el.setAttribute("aria-busy", "false");
+    } catch (err) {
+      setRegion(el, errorHtml(VIEW_LABEL[state.view] || "view", "Something failed while drawing this view. " + escape(err && err.message ? err.message : "")));
+    }
+    syncControls();
+    flipPlay(before);
+    lastView = state.view;
   }
 
   // ------ Timeline view (dispatcher) ------
   function renderTimeline(list) {
     const el = document.getElementById("view-timeline");
+    const cal = state.timelineMode === "calendar";
     const toolbar =
       '<div class="view-toolbar">' +
         '<span class="view-toolbar-label">Timeline</span>' +
         '<div class="view-toolbar-group" id="tlModeGroup">' +
-          '<button class="view-toolbar-btn ' + (state.timelineMode === "calendar" ? "active" : "") + '" data-mode="calendar">Calendar</button>' +
-          '<button class="view-toolbar-btn ' + (state.timelineMode === "gantt" ? "active" : "") + '" data-mode="gantt">Gantt</button>' +
+          '<button type="button" class="view-toolbar-btn ' + (cal ? "active" : "") + '" data-mode="calendar" aria-pressed="' + cal + '">Calendar</button>' +
+          '<button type="button" class="view-toolbar-btn ' + (!cal ? "active" : "") + '" data-mode="gantt" aria-pressed="' + (!cal) + '">Gantt</button>' +
         '</div>' +
         '<span class="view-toolbar-spacer"></span>' +
         '<span class="view-toolbar-hint">' +
-          (state.timelineMode === "calendar"
-            ? "Each cell is a day. Filled cells have deadlines; hover for details."
-            : "Horizontal bars span deadline → notification → conference dates.") +
+          (cal
+            ? "Each cell is a day. Filled cells have deadlines; hover or focus for details."
+            : "Horizontal bars span the deadline, the notification and the conference dates.") +
         '</span>' +
       '</div>';
 
-    if (!list.length) { el.innerHTML = toolbar + '<div class="timeline-empty">No conferences match the current filters.</div>'; bindTlMode(el); return; }
+    if (!list.length) { setRegion(el, toolbar + noMatchHtml()); bindTlMode(el); return; }
 
-    el.innerHTML = toolbar + '<div id="tlBody"></div>';
+    setRegion(el, toolbar + '<div id="tlBody"></div>');
     bindTlMode(el);
 
     const body = document.getElementById("tlBody");
-    if (state.timelineMode === "calendar") renderTimelineCalendar(body, list);
+    if (cal) renderTimelineCalendar(body, list);
     else renderTimelineGantt(body, list);
   }
 
@@ -1706,14 +2170,16 @@ function getJS(): string {
         state.timelineMode = btn.dataset.mode;
         localStorage.setItem("ct.timelineMode", state.timelineMode);
         render();
+        const again = document.querySelector('#tlModeGroup [data-mode="' + state.timelineMode + '"]');
+        if (again) again.focus();
       });
     });
   }
 
   // ------ Calendar mode ------
   // Compact month-grid heatmap. Each row is a month, each cell is a day.
-  // Cells with deadlines are colored by dominant field; hover reveals
-  // conference name + countdown; click opens detail (or first if multiple).
+  // Cells with deadlines are colored by dominant field; hover or focus reveals
+  // conference name + countdown; click or Enter opens detail (or first if multiple).
   function renderTimelineCalendar(el, list) {
     // Bucket deadlines by YYYY-MM-DD
     const byDay = new Map();
@@ -1735,7 +2201,8 @@ function getJS(): string {
     });
 
     if (!byDay.size) {
-      el.innerHTML = '<div class="timeline-empty">No deadlines in the current filter set.</div>';
+      el.innerHTML = emptyHtml("No deadlines in view", (loosenHint() || "None of these venues has a paper deadline."));
+      bindRegion(el);
       return;
     }
 
@@ -1748,10 +2215,10 @@ function getJS(): string {
 
     let rows = "";
     const cursor = new Date(minD.getFullYear(), minD.getMonth(), 1);
-    const todayKey = TODAY.toISOString().slice(0, 10);
+    const todayKey = TODAY.getFullYear() + "-" + String(TODAY.getMonth() + 1).padStart(2, "0") + "-" + String(TODAY.getDate()).padStart(2, "0");
     while (cursor <= maxD) {
       const y = cursor.getFullYear(), m = cursor.getMonth();
-      const monthLabel = cursor.toLocaleDateString("en-US", { month: "short", year: "numeric" }).toUpperCase();
+      const monthLabel = cursor.toLocaleDateString("en-US", { month: "short", year: "numeric" }).toUpperCase(); // verify-live matches /^[A-Z]{3} d{4}$/ on this label (kept; see packet notes)
       const isCurrent = (y === TODAY.getFullYear() && m === TODAY.getMonth());
       const isJan = m === 0;
       const dim = new Date(y, m + 1, 0).getDate();
@@ -1772,18 +2239,19 @@ function getJS(): string {
         if (isWeekend && !dls) cls.push("weekend");
         if (isToday) cls.push("today");
         if (dls && dls.length) cls.push("has-deadline");
+        if (dls && dls.length && key < todayKey) cls.push("passed");
 
         if (dls && dls.length) {
           // Stack horizontal stripes per field
           const stripes = dls.map(c => {
-            const color = (FIELDS[c.fields[0]] || {}).color || "var(--ink-soft)";
+            const color = (FIELDS[c.fields[0]] || {}).color || "var(--text-2)";
             return '<i style="background:' + color + '"></i>';
           }).join("");
           const ids = dls.map(c => c.id).join(",");
           const dateLabel = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
           const tipLines = dls.map(c => c.name + " " + c.year + (c.confidence === "estimated" ? " (est.)" : "")).join(" / ");
           const count = dls.length > 1 ? '<span class="tlcal-count">' + dls.length + '</span>' : "";
-          cells += '<div class="' + cls.join(" ") + '" data-ids="' + escapeAttr(ids) + '" data-tip-title="' + escapeAttr(tipLines) + '" data-tip-date="' + escapeAttr(dateLabel) + '" data-day="' + d + '">' +
+          cells += '<div class="' + cls.join(" ") + '" role="group" aria-label="' + escapeAttr(tipLines + ", " + dateLabel + (key < todayKey ? ", closed" : "")) + '" data-ids="' + escapeAttr(ids) + '" data-tip-title="' + escapeAttr(tipLines) + '" data-tip-date="' + escapeAttr(dateLabel) + '" data-day="' + d + '">' +
             '<div class="tlcal-stack">' + stripes + '</div>' + count +
           '</div>';
         } else {
@@ -1802,7 +2270,7 @@ function getJS(): string {
       '<div class="timeline-legend">' +
         '<span class="legend-item"><span class="legend-mark cal-deadline"></span>Paper deadline (stripe = field)</span>' +
         '<span class="legend-item"><span class="legend-mark today-mark"></span>Today</span>' +
-        '<span class="legend-item">Hover to preview; click to open</span>' +
+        '<span class="legend-item">Hover or focus to preview; click or press Enter to open</span>' +
       '</div>' +
       '<div class="timeline-wrap">' +
         '<div class="tlcal">' + axis + rows + '</div>' +
@@ -1811,22 +2279,25 @@ function getJS(): string {
 
     const tooltip = document.getElementById("tlTooltip");
     const wrap = el.querySelector(".timeline-wrap");
-    el.querySelectorAll(".tlcal-cell.has-deadline").forEach(node => {
+    const showCell = (node) => {
+      tooltip.innerHTML = '<strong>' + escape(node.getAttribute("data-tip-title") || "") + '</strong><span class="tt-date">' + escape(node.getAttribute("data-tip-date") || "") + '</span>';
+    };
+    const nodes = [...el.querySelectorAll(".tlcal-cell.has-deadline")];
+    nodes.forEach(node => {
       node.addEventListener("mousemove", (ev) => {
-        const title = node.getAttribute("data-tip-title") || "";
-        const dateStr = node.getAttribute("data-tip-date") || "";
-        tooltip.innerHTML = '<strong>' + escape(title) + '</strong><span class="tt-date">' + escape(dateStr) + '</span>';
+        showCell(node);
         const wrapBox = wrap.getBoundingClientRect();
-        tooltip.style.left = (ev.clientX - wrapBox.left) + "px";
-        tooltip.style.top = (ev.clientY - wrapBox.top - 6) + "px";
-        tooltip.classList.add("visible");
+        placeTip(tooltip, wrap, ev.clientX - wrapBox.left, ev.clientY - wrapBox.top - 6);
       });
-      node.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
+      node.addEventListener("mouseleave", () => hideTip(tooltip));
       node.addEventListener("click", () => {
         const ids = (node.getAttribute("data-ids") || "").split(",").filter(Boolean);
         if (ids.length) openDetail(ids[0]);
       });
     });
+    bindRoving(nodes, (n) => { n.click(); },
+      (n) => { showCell(n); n.setAttribute("aria-describedby", "tlTooltip"); if (n.matches(":focus-visible")) tipAtNode(tooltip, wrap, n); },
+      (n) => { n.removeAttribute("aria-describedby"); hideTip(tooltip); });
   }
 
   // ------ Gantt mode (improved: fit-to-viewport + sticky months + tooltips) ------
@@ -1837,7 +2308,7 @@ function getJS(): string {
       .filter(r => r.sortDate)
       .sort((a,b) => a.sortDate - b.sortDate);
 
-    if (!rows.length) { el.innerHTML = '<div class="timeline-empty">No conferences with parseable dates match.</div>'; return; }
+    if (!rows.length) { el.innerHTML = emptyHtml("No dated venues in view", loosenHint() || "None of these venues has a date yet."); bindRegion(el); return; }
 
     // Date range: today - 30d → max(any date) + 30d, capped at +18mo from today
     const minD = new Date(TODAY); minD.setDate(minD.getDate() - 30);
@@ -1862,14 +2333,14 @@ function getJS(): string {
 
     const xFor = (d) => labelW + ((d - minD) / (1000*60*60*24)) * dayPx;
 
-    let svg = '<svg class="timeline-svg" width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Conference timeline">';
+    let svg = '<svg class="timeline-svg" width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Conference timeline">';
 
     // Month gridlines + labels
     const cursor = new Date(minD.getFullYear(), minD.getMonth(), 1);
     while (cursor <= maxD) {
       const x = xFor(cursor);
-      svg += '<line x1="' + x + '" y1="' + (topPad - 14) + '" x2="' + x + '" y2="' + (height - 12) + '" stroke="var(--rule-soft)" stroke-width="1"/>';
-      svg += '<text x="' + (x + 4) + '" y="' + (topPad - 22) + '" font-family="var(--sans)" font-size="13" fill="var(--ink-faint)" >' + fmtMonth(cursor) + '</text>';
+      svg += '<line x1="' + x + '" y1="' + (topPad - 14) + '" x2="' + x + '" y2="' + (height - 12) + '" stroke="var(--line)" stroke-width="1"/>';
+      svg += '<text x="' + (x + 4) + '" y="' + (topPad - 22) + '" font-family="var(--sans)" font-size="13" fill="var(--text-3)" >' + fmtMonth(cursor) + '</text>';
       cursor.setMonth(cursor.getMonth() + 1);
     }
 
@@ -1882,14 +2353,17 @@ function getJS(): string {
     rows.forEach((r, i) => {
       const c = r.c;
       const y = topPad + i * rowH + rowH/2;
-      const fieldColor = (FIELDS[c.fields[0]] || {}).color || "var(--ink-soft)";
+      const fieldColor = (FIELDS[c.fields[0]] || {}).color || "var(--text-2)";
       const isEstimated = c.confidence === "estimated";
 
+      // Row hit zone (click-to-detail), drawn first so marks above it keep their own hover and focus
+      svg += '<rect x="0" y="' + (y - rowH/2) + '" width="' + width + '" height="' + rowH + '" fill="transparent" data-id="' + c.id + '" class="tl-row"/>';
+
       // Label
-      svg += '<text x="' + (labelW - 12) + '" y="' + (y + 4) + '" text-anchor="end" font-size="13" font-weight="500" fill="var(--ink)" font-family="var(--sans)">' + escape(c.name) + ' <tspan font-family="var(--sans)" font-size="11" fill="var(--ink-faint)" font-weight="400">' + c.year + '</tspan></text>';
+      svg += '<text x="' + (labelW - 12) + '" y="' + (y + 4) + '" text-anchor="end" font-size="13" font-weight="500" fill="var(--text-1)" font-family="var(--sans)" pointer-events="none">' + escape(c.name) + ' <tspan font-family="var(--sans)" font-size="11" fill="var(--text-3)" font-weight="400">' + escape(c.year) + '</tspan></text>';
 
       // Field tag dot
-      svg += '<circle cx="' + (labelW - 4) + '" cy="' + y + '" r="3" fill="' + fieldColor + '"/>';
+      svg += '<circle cx="' + (labelW - 4) + '" cy="' + y + '" r="3" fill="' + fieldColor + '" pointer-events="none"/>';
 
       // Conference dates as bar
       const cs = parseDate(c.conferenceStart);
@@ -1904,13 +2378,13 @@ function getJS(): string {
       const ntfD = parseDate(c.notification);
       if (dlD && ntfD) {
         const dx = xFor(dlD), nx = xFor(ntfD);
-        svg += '<line x1="' + dx + '" y1="' + y + '" x2="' + nx + '" y2="' + y + '" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 3"/>';
+        svg += '<line x1="' + dx + '" y1="' + y + '" x2="' + nx + '" y2="' + y + '" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3" pointer-events="none"/>';
       }
 
       // Notification marker
       if (ntfD) {
         const nx = xFor(ntfD);
-        svg += '<circle cx="' + nx + '" cy="' + y + '" r="3" fill="var(--ink-faint)" data-tooltip="' + escapeAttr(c.name + '; notification ' + fmtDate(c.notification)) + '" data-id="' + c.id + '" class="tl-ntf"/>';
+        svg += '<circle cx="' + nx + '" cy="' + y + '" r="3" fill="var(--text-3)" data-tooltip="' + escapeAttr(c.name + ' · notification ' + fmtDate(c.notification)) + '" data-id="' + c.id + '" class="tl-ntf"/>';
       }
 
       // Deadline marker (the main one)
@@ -1918,11 +2392,13 @@ function getJS(): string {
         const dx = xFor(dlD);
         const days = daysUntil(dlD);
         const cls = countdownClass(days);
-        const fill = cls === "urgent" ? "var(--urgent)" : (cls === "passed" ? "var(--ink-faint)" : "var(--ink)");
+        const fill = cls === "urgent" ? "var(--status-urgent)" : (cls === "passed" ? "var(--text-3)" : "var(--text-1)");
+        const tip = c.name + ' deadline · ' + fmtDate(c.deadline) + ' · ' + countdownText(days, c.deadline) + (isEstimated ? ' · est.' : '');
+        const common = ' class="timeline-deadline-marker" role="graphics-symbol" aria-label="' + escapeAttr(tip.split(" · ").join(", ")) + '" data-id="' + c.id + '" data-tooltip="' + escapeAttr(tip) + '"';
         if (isEstimated) {
-          svg += '<circle cx="' + dx + '" cy="' + y + '" r="5" fill="var(--paper)" stroke="' + fill + '" stroke-width="1.6" class="timeline-deadline-marker" data-id="' + c.id + '" data-tooltip="' + escapeAttr(c.name + ' deadline · ' + fmtDate(c.deadline) + ' · ' + countdownText(days) + ' · est.') + '"/>';
+          svg += '<circle cx="' + dx + '" cy="' + y + '" r="5" fill="var(--ground)" stroke="' + fill + '" stroke-width="1.6"' + common + '/>';
         } else {
-          svg += '<circle cx="' + dx + '" cy="' + y + '" r="5" fill="' + fill + '" class="timeline-deadline-marker" data-id="' + c.id + '" data-tooltip="' + escapeAttr(c.name + ' deadline · ' + fmtDate(c.deadline) + ' · ' + countdownText(days)) + '"/>';
+          svg += '<circle cx="' + dx + '" cy="' + y + '" r="5" fill="' + fill + '"' + common + '/>';
         }
       }
 
@@ -1932,9 +2408,6 @@ function getJS(): string {
         const ax = xFor(abD);
         svg += '<rect x="' + (ax-2.5) + '" y="' + (y-4.5) + '" width="5" height="9" fill="' + fieldColor + '" data-tooltip="' + escapeAttr(c.name + ' abstract · ' + fmtDate(c.abstractDeadline)) + '" data-id="' + c.id + '" class="tl-abs"/>';
       }
-
-      // Row hit zone (for click-to-detail)
-      svg += '<rect x="0" y="' + (y - rowH/2) + '" width="' + width + '" height="' + rowH + '" fill="transparent" data-id="' + c.id + '" class="tl-row"/>';
     });
 
     svg += '</svg>';
@@ -1945,7 +2418,7 @@ function getJS(): string {
         '<span class="legend-item"><span class="legend-mark estimated"></span>Estimated (no official date yet)</span>' +
         '<span class="legend-item"><span class="legend-mark notification"></span>Notification</span>' +
         '<span class="legend-item"><span class="legend-mark conference"></span>Conference dates</span>' +
-        '<span class="legend-item" style="color:var(--accent)">— TODAY</span>' +
+        '<span class="legend-item"><span class="legend-mark today-line"></span>Today</span>' +
       '</div>' +
       '<div class="timeline-wrap">' +
         '<div class="timeline-scroll">' + svg + '</div>' +
@@ -1955,24 +2428,25 @@ function getJS(): string {
     // Tooltip + click handlers
     const tooltip = document.getElementById("tlTooltip");
     const wrap = el.querySelector(".timeline-wrap");
+    const fillTip = (node) => {
+      const parts = (node.getAttribute("data-tooltip") || "").split(" · ");
+      const tail = parts.slice(1).map(escape).join("; ");
+      tooltip.innerHTML = '<strong>' + escape(parts[0] || "") + '</strong>' + (tail ? '<span class="tt-date">' + tail + '</span>' : '');
+    };
     el.querySelectorAll("[data-tooltip]").forEach(node => {
       node.addEventListener("mousemove", (ev) => {
-        const raw = node.getAttribute("data-tooltip") || "";
-        const parts = raw.split(" · ");
-        const head = escape(parts[0] || "");
-        const tail = parts.slice(1).map(escape).join("; ");
-        tooltip.innerHTML = '<strong>' + head + '</strong>' + (tail ? '<span class="tt-date">' + tail + '</span>' : '');
+        fillTip(node);
         const wrapBox = wrap.getBoundingClientRect();
-        const scrollEl = el.querySelector(".timeline-scroll");
-        tooltip.style.left = (ev.clientX - wrapBox.left + (scrollEl ? scrollEl.scrollLeft : 0)) + "px";
-        tooltip.style.top = (ev.clientY - wrapBox.top - 6) + "px";
-        tooltip.classList.add("visible");
+        placeTip(tooltip, wrap, ev.clientX - wrapBox.left, ev.clientY - wrapBox.top - 6);
       });
-      node.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
+      node.addEventListener("mouseleave", () => hideTip(tooltip));
     });
     el.querySelectorAll("[data-id]").forEach(node => {
       node.addEventListener("click", () => openDetail(node.getAttribute("data-id")));
     });
+    bindRoving([...el.querySelectorAll(".timeline-deadline-marker")], (n) => openDetail(n.getAttribute("data-id")),
+      (n) => { fillTip(n); n.setAttribute("aria-describedby", "tlTooltip"); if (n.matches(":focus-visible")) tipAtNode(tooltip, wrap, n); },
+      (n) => { n.removeAttribute("aria-describedby"); hideTip(tooltip); });
     // Auto-scroll to today
     setTimeout(() => {
       const scroll = el.querySelector(".timeline-scroll");
@@ -1980,74 +2454,110 @@ function getJS(): string {
     }, 0);
   }
 
-  // ------ Cards view ------
-  // List is pre-sorted by visibleConfs(). No local sort here.
-  function renderCards(list) {
-    const el = document.getElementById("view-cards");
-    const toolbar =
-      '<div class="view-toolbar">' +
-        '<span class="view-toolbar-label">Density</span>' +
-        '<div class="view-toolbar-group" id="cardDensityGroup">' +
-          '<button class="view-toolbar-btn ' + (state.cardDensity === "compact" ? "active" : "") + '" data-density="compact">Compact</button>' +
-          '<button class="view-toolbar-btn ' + (state.cardDensity === "comfortable" ? "active" : "") + '" data-density="comfortable">Comfortable</button>' +
-          '<button class="view-toolbar-btn ' + (state.cardDensity === "spacious" ? "active" : "") + '" data-density="spacious">Spacious</button>' +
-        '</div>' +
-        '<span class="view-toolbar-spacer"></span>' +
-        '<span class="view-toolbar-hint">' + list.length + ' conference' + (list.length === 1 ? "" : "s") + ' in view</span>' +
-      '</div>';
-    if (!list.length) { el.innerHTML = toolbar + '<div class="timeline-empty">No conferences match the current filters.</div>'; bindCardDensity(el); return; }
-
-    const cardsHtml = list.map(c => {
-      const days = daysUntil(parseDate(c.deadline));
-      const cdCls = countdownClass(days);
-      const cdTxt = c.deadline ? countdownText(days) : "no deadline";
-      const tags = c.fields.map(f => {
-        const meta = FIELDS[f] || { color: "#888", label: f };
-        return '<span class="card-tag" style="--tag-bg:' + meta.color + '">' + escape(meta.label) + '</span>';
-      }).join("");
-      const tierClass = c.tier === "A*" ? "tier-a-star" : "tier-" + c.tier;
-      const isStarred = state.starred.has(c.id);
-      const status = state.status[c.id] || "";
-      const noteCount = (state.notes[c.id] || "").length;
-
-      return '<article class="card" data-id="' + c.id + '">' +
-        '<div class="card-row">' +
-          '<h3 class="card-name">' + escape(c.name) + '<span class="year">′' + String(c.year).slice(-2) + '</span></h3>' +
-          '<span class="card-tier ' + tierClass + '">' + escape(c.tier) + '</span>' +
-        '</div>' +
-        '<p class="card-fullname">' + escape(c.fullName) + '</p>' +
-        '<div class="card-tags">' + tags + '</div>' +
-        '<dl class="card-meta">' +
-          '<dt>Deadline</dt><dd>' + fmtDate(c.deadline) + ' <span class="card-countdown ' + cdCls + '">' + cdTxt + '</span></dd>' +
-          '<dt>Conf</dt><dd>' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</dd>' +
-          '<dt>Where</dt><dd>' + escape((c.location?.city || "TBA") + (c.location?.country ? ", " + c.location.country : "")) + '</dd>' +
-          '<dt>Format</dt><dd>' + escape(c.format || "—") + '</dd>' +
-        '</dl>' +
-        (c.fit ? '<p class="card-fit">' + escape(c.fit) + '</p>' : '') +
-        '<div class="card-actions">' +
-          '<a class="card-link" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">CFP ↗</a>' +
-          (status ? '<span class="status-pill status-' + status + '">' + escape(STATUS_LABEL[status] || status) + '</span>' : '') +
-          (noteCount ? '<span class="note-mark" title="You\\'ve added notes">⊝</span>' : '') +
-          (c.confidence === "estimated" ? '<span class="confidence-mark estimated">est.</span>' : '') +
-          '<button class="star-btn ' + (isStarred ? "starred" : "") + '" data-star="' + c.id + '" aria-label="Star" title="Star"><svg class="icon icon-star" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></button>' +
-        '</div>' +
-      '</article>';
+  // ------ Shared row and card pieces ------
+  const STAR_ICONS = icon("star", "icon-off") + icon("star-filled", "icon-on icon-fill");
+  function whereText(c) { return escape((c.location?.city || "TBA") + (c.location?.country ? ", " + c.location.country : "")); }
+  function fieldTags(c) {
+    return (c.fields || []).map(f => {
+      const meta = FIELDS[f] || { color: "var(--text-2)", label: f };
+      return '<span class="card-tag" style="--tag-bg:' + meta.color + '">' + escape(meta.label) + '</span>';
     }).join("");
-    el.innerHTML = toolbar + '<div class="cards-grid density-' + state.cardDensity + '">' + cardsHtml + '</div>';
-    bindCardDensity(el);
-
-    el.querySelectorAll(".card").forEach(card => {
-      card.addEventListener("click", (e) => {
+  }
+  // Spec line under a venue: type, tier, format. A value the data does not have is left out, never a dash.
+  function specLine(c) {
+    const parts = [];
+    const type = c.tier === "journal" ? "Journal" : ((c.conferenceStart || (c.location && c.location.city && c.location.city !== "N/A")) ? "Conference" : "");
+    if (type) parts.push(type);
+    if (c.tier && c.tier !== "journal") parts.push(c.tier === "industry" ? "Industry" : "Tier " + c.tier);
+    if (c.format) parts.push(c.format);
+    return parts.join(" · ");
+  }
+  function isClosed(c) { const d = daysUntil(parseDate(c.deadline)); return d !== null && d < 0; }
+  function countdownHtml(c) {
+    if (!c.deadline) return '<span class="card-countdown">no deadline</span>';
+    const days = daysUntil(parseDate(c.deadline));
+    const cls = countdownClass(days);
+    const word = cls === "urgent" ? '<span class="vh">Urgent: </span>' : (cls === "soon" ? '<span class="vh">Soon: </span>' : '');
+    return '<span class="card-countdown ' + cls + '">' + word + countdownText(days, c.deadline) + '</span>';
+  }
+  // A closed deadline already names its date in the countdown, so the date is not written twice.
+  function deadlineHtml(c) {
+    if (!c.deadline) return countdownHtml(c);
+    return (isClosed(c) ? '' : fmtDate(c.deadline) + ' ') + countdownHtml(c);
+  }
+  function starBtn(c) {
+    const on = state.starred.has(c.id);
+    return '<button type="button" class="star-btn ' + (on ? "starred" : "") + '" data-star="' + c.id + '" aria-pressed="' + on + '" aria-label="Star ' + escapeAttr(c.name) + '" title="Star">' + STAR_ICONS + '</button>';
+  }
+  function bindOpen(el, selector) {
+    el.querySelectorAll(selector).forEach(node => {
+      node.addEventListener("click", (e) => {
         if (e.target.closest("a") || e.target.closest("button")) return;
-        openDetail(card.dataset.id);
+        openDetail(node.dataset.id);
+      });
+      node.addEventListener("keydown", (e) => {
+        if (e.target !== node) return;
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDetail(node.dataset.id); }
       });
     });
     el.querySelectorAll(".star-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        toggleStar(btn.getAttribute("data-star"));
+        const id = btn.getAttribute("data-star");
+        toggleStar(id);
+        const again = document.querySelector('.star-btn[data-star="' + id + '"]');
+        if (again) again.focus();
       });
     });
+  }
+
+  // ------ Cards view ------
+  // List is pre-sorted by visibleConfs(). No local sort here.
+  function renderCards(list) {
+    const el = document.getElementById("view-cards");
+    const dn = state.cardDensity;
+    const seg = (v, label) => '<button type="button" class="view-toolbar-btn ' + (dn === v ? "active" : "") + '" data-density="' + v + '" aria-pressed="' + (dn === v) + '">' + label + '</button>';
+    const toolbar =
+      '<div class="view-toolbar">' +
+        '<span class="view-toolbar-label">Density</span>' +
+        '<div class="view-toolbar-group" id="cardDensityGroup">' + seg("compact", "Compact") + seg("comfortable", "Comfortable") + seg("spacious", "Spacious") + '</div>' +
+        '<span class="view-toolbar-spacer"></span>' +
+        '<span class="view-toolbar-hint">' + list.length + ' venue' + (list.length === 1 ? "" : "s") + ' in view</span>' +
+      '</div>';
+    if (!list.length) { setRegion(el, toolbar + noMatchHtml()); bindCardDensity(el); return; }
+
+    const cardsHtml = list.map(c => {
+      const isStarred = state.starred.has(c.id);
+      const status = state.status[c.id] || "";
+      const noteCount = (state.notes[c.id] || "").length;
+      const cls = "card" + (isStarred ? " starred" : "") + (isClosed(c) ? " closed" : "");
+
+      return '<article class="' + cls + '" data-id="' + c.id + '" tabindex="0">' +
+        '<div class="card-row">' +
+          '<h3 class="card-name">' + escape(c.name) + '<span class="year">' + escape(c.year) + '</span></h3>' +
+          '<span class="card-tier">' + escape(c.tier) + '</span>' +
+        '</div>' +
+        (specLine(c) ? '<p class="card-spec">' + escape(specLine(c)) + '</p>' : '') +
+        '<p class="card-fullname">' + escape(c.fullName) + '</p>' +
+        '<div class="card-tags">' + fieldTags(c) + '</div>' +
+        '<dl class="card-meta">' +
+          '<dt>Deadline</dt><dd>' + deadlineHtml(c) + '</dd>' +
+          '<dt>Conf</dt><dd>' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</dd>' +
+          '<dt>Where</dt><dd>' + whereText(c) + '</dd>' +
+        '</dl>' +
+        (c.fit ? '<p class="card-fit">' + escape(c.fit) + '</p>' : '') +
+        '<div class="card-actions">' +
+          '<a class="card-link" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" aria-label="CFP for ' + escapeAttr(c.name) + ', opens in a new tab" onclick="event.stopPropagation()">CFP' + icon("external-link") + '</a>' +
+          (status ? '<span class="status-pill status-' + status + '">' + escape(STATUS_LABEL[status] || status) + '</span>' : '') +
+          (noteCount ? '<span class="note-mark">Has notes</span>' : '') +
+          (c.confidence === "estimated" ? '<span class="confidence-mark estimated">est.</span>' : '') +
+          starBtn(c) +
+        '</div>' +
+      '</article>';
+    }).join("");
+    setRegion(el, toolbar + '<div class="cards-grid density-' + state.cardDensity + '">' + cardsHtml + '</div>');
+    bindCardDensity(el);
+    bindOpen(el, ".card");
   }
 
   function bindCardDensity(el) {
@@ -2056,6 +2566,8 @@ function getJS(): string {
         state.cardDensity = btn.dataset.density;
         localStorage.setItem("ct.cardDensity", state.cardDensity);
         render();
+        const again = document.querySelector('#cardDensityGroup [data-density="' + state.cardDensity + '"]');
+        if (again) again.focus();
       });
     });
   }
@@ -2065,68 +2577,70 @@ function getJS(): string {
   // to one of the central keys, then trigger render() — which re-sorts globally.
   function renderTable(list) {
     const el = document.getElementById("view-table");
-    if (!list.length) { el.innerHTML = '<div class="timeline-empty">No conferences match the current filters.</div>'; return; }
+    if (!list.length) { setRegion(el, noMatchHtml()); return; }
     const colSortMap = {
       name: "name-asc",
       tier: "tier-asc",
       deadline: "deadline-asc",
       conferenceStart: "conference-asc",
     };
+    const sortCol = { "name-asc": ["name", "ascending"], "tier-asc": ["tier", "ascending"], "deadline-asc": ["deadline", "ascending"], "deadline-desc": ["deadline", "descending"], "conference-asc": ["conferenceStart", "ascending"] }[state.sort] || [];
+    const thClass = { name: "c-venue", tier: "c-tier", deadline: "c-deadline", conferenceStart: "c-conf" };
+    const th = (key, label) => {
+      const sorted = sortCol[0] === key;
+      const dir = sorted ? sortCol[1] : "";
+      return '<th class="' + thClass[key] + '" data-sort="' + key + '"' + (sorted ? ' aria-sort="' + dir + '"' : '') + '><button type="button" class="th-btn" data-dir="' + (dir === "ascending" ? "asc" : dir === "descending" ? "desc" : "") + '">' + label + (sorted ? icon("chevron-down") : icon("arrows-sort")) + '</button></th>';
+    };
     const rows = list.map(c => {
-      const days = daysUntil(parseDate(c.deadline));
-      const cdCls = countdownClass(days);
-      const cdTxt = c.deadline ? countdownText(days) : "—";
       const isStarred = state.starred.has(c.id);
       const status = state.status[c.id] || "";
-      return '<tr data-id="' + c.id + '">' +
-        '<td><button class="star-btn ' + (isStarred ? "starred" : "") + '" data-star="' + c.id + '" aria-label="Star"><svg class="icon icon-star" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></button></td>' +
-        '<td><strong>' + escape(c.name) + '</strong> <span style="color:var(--ink-faint);font-variant-numeric: tabular-nums;font-size:var(--fs-sm);font-variant-numeric:tabular-nums">′' + String(c.year).slice(-2) + '</span>' +
+      const cls = (isStarred ? "starred " : "") + (isClosed(c) ? "closed" : "");
+      const cdCell = !c.deadline ? countdownHtml(c) : countdownHtml(c) + (isClosed(c) ? '' : '<span class="cd-date">' + fmtDate(c.deadline) + '</span>');
+      return '<tr class="' + cls + '" data-id="' + c.id + '" tabindex="0">' +
+        '<td class="c-star">' + starBtn(c) + '</td>' +
+        '<td class="c-venue"><strong>' + escape(c.name) + '</strong><span class="year">' + escape(c.year) + '</span>' +
           (status ? ' <span class="status-pill status-' + status + '">' + escape(STATUS_LABEL[status] || status) + '</span>' : '') +
+          (specLine(c) ? '<span class="spec">' + escape(specLine(c)) + '</span>' : '') +
         '</td>' +
-        '<td>' + (c.fields||[]).map(f => '<span class="card-tag" style="--tag-bg:' + ((FIELDS[f]||{}).color||"#888") + ';margin-right:3px">' + escape((FIELDS[f]||{}).label || f) + '</span>').join("") + '</td>' +
-        '<td>' + escape(c.tier || "—") + '</td>' +
-        '<td class="num">' + fmtDate(c.deadline) + ' <span class="card-countdown ' + cdCls + '" style="font-size:var(--fs-sm)">' + cdTxt + '</span></td>' +
-        '<td class="num">' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</td>' +
-        '<td>' + escape((c.location?.city || "TBA") + (c.location?.country ? ", " + c.location.country : "")) + '</td>' +
-        '<td><a href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--accent);font-variant-numeric: tabular-nums;font-size:var(--fs-sm)">↗</a></td>' +
+        '<td class="c-field">' + fieldTags(c) + '</td>' +
+        '<td class="c-tier">' + escape(c.tier || "") + '</td>' +
+        '<td class="c-deadline"><div class="cd-cell">' + cdCell + '</div></td>' +
+        '<td class="c-conf">' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</td>' +
+        '<td class="c-where">' + whereText(c) + '</td>' +
+        '<td class="c-link"><a class="link-icon" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener" aria-label="CFP for ' + escapeAttr(c.name) + ', opens in a new tab" onclick="event.stopPropagation()">' + icon("external-link") + '</a></td>' +
       '</tr>';
     }).join("");
 
-    el.innerHTML = '<div class="table-wrap"><table class="confs">' +
+    setRegion(el, '<div class="table-wrap"><table class="confs">' +
       '<thead><tr>' +
-        '<th></th>' +
-        '<th data-sort="name">Conf</th>' +
-        '<th>Field</th>' +
-        '<th data-sort="tier">Tier</th>' +
-        '<th data-sort="deadline">Deadline</th>' +
-        '<th data-sort="conferenceStart">Conference</th>' +
-        '<th>Where</th>' +
-        '<th></th>' +
+        '<th class="c-star"><span class="vh">Star</span></th>' +
+        th("name", "Conf") +
+        '<th class="c-field">Field</th>' +
+        th("tier", "Tier") +
+        th("deadline", "Deadline") +
+        th("conferenceStart", "Conference") +
+        '<th class="c-where">Where</th>' +
+        '<th class="c-link"><span class="vh">Call for papers</span></th>' +
       '</tr></thead>' +
       '<tbody>' + rows + '</tbody>' +
-    '</table></div>';
+    '</table></div>');
 
     el.querySelectorAll("th[data-sort]").forEach(th => {
       th.addEventListener("click", () => {
-        const target = colSortMap[th.dataset.sort];
+        const key = th.dataset.sort;
+        const target = colSortMap[key];
         if (target) {
           // Toggle asc/desc for deadline; everything else just sets the key.
           if (target === "deadline-asc" && state.sort === "deadline-asc") state.sort = "deadline-desc";
           else state.sort = target;
           if (sortSel) sortSel.value = state.sort;
           writeHash(); render();
+          const again = document.querySelector('th[data-sort="' + key + '"] .th-btn');
+          if (again) again.focus();
         }
       });
     });
-    el.querySelectorAll("tbody tr").forEach(tr => {
-      tr.addEventListener("click", (e) => {
-        if (e.target.closest("a") || e.target.closest("button")) return;
-        openDetail(tr.dataset.id);
-      });
-    });
-    el.querySelectorAll(".star-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => { e.stopPropagation(); toggleStar(btn.getAttribute("data-star")); });
-    });
+    bindOpen(el, "tbody tr");
   }
 
   // ------ Map view ------
@@ -2134,7 +2648,7 @@ function getJS(): string {
   // Conferences without a known city are bucketed at the bottom as "no location".
   function renderMap(list) {
     const el = document.getElementById("view-map");
-    if (!list.length) { el.innerHTML = '<div class="timeline-empty">No conferences match the current filters.</div>'; return; }
+    if (!list.length) { setRegion(el, noMatchHtml()); return; }
 
     const W = 1120, H = 560, MX = 30, MY = 30;
     const innerW = W - 2 * MX, innerH = H - 2 * MY;
@@ -2153,10 +2667,14 @@ function getJS(): string {
       if (!byCity.has(k)) byCity.set(k, { city: c.location.city, country: c.location.country, lat: g[0], lng: g[1], confs: [] });
       byCity.get(k).confs.push(c);
     }
+    if (!byCity.size) {
+      setRegion(el, emptyHtml("No venues with a known city", (loosenHint() || "These venues have no city on record yet.")));
+      return;
+    }
 
-    let svg = '<svg class="map-svg" viewBox="0 0 ' + W + ' ' + H + '" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="World map of conference locations">';
+    let svg = '<svg class="map-svg" viewBox="0 0 ' + W + ' ' + H + '" width="100%" preserveAspectRatio="xMidYMid meet" role="group" aria-label="World map of conference locations">';
     // Hairline frame
-    svg += '<rect x="' + MX + '" y="' + MY + '" width="' + innerW + '" height="' + innerH + '" fill="none" stroke="var(--rule)" stroke-width="1"/>';
+    svg += '<rect x="' + MX + '" y="' + MY + '" width="' + innerW + '" height="' + innerH + '" fill="none" stroke="var(--line)" stroke-width="1"/>';
     // Continent landmasses (simplified outlines, drawn before grid + markers)
     CONTINENTS.forEach(poly => {
       const pts = poly.map(([lat, lng]) => {
@@ -2169,20 +2687,20 @@ function getJS(): string {
     [-66.5, -23.4, 0, 23.4, 66.5].forEach(lat => {
       const y = project(lat, 0)[1];
       const dash = lat === 0 ? "" : 'stroke-dasharray="2 4"';
-      svg += '<line x1="' + MX + '" y1="' + y + '" x2="' + (W-MX) + '" y2="' + y + '" stroke="var(--rule-soft)" stroke-width="1" ' + dash + '/>';
+      svg += '<line x1="' + MX + '" y1="' + y + '" x2="' + (W-MX) + '" y2="' + y + '" stroke="var(--line)" stroke-width="1" ' + dash + '/>';
     });
     // Prime meridian
     const pmX = project(0, 0)[0];
-    svg += '<line x1="' + pmX + '" y1="' + MY + '" x2="' + pmX + '" y2="' + (H-MY) + '" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="2 4"/>';
+    svg += '<line x1="' + pmX + '" y1="' + MY + '" x2="' + pmX + '" y2="' + (H-MY) + '" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>';
     // Continent labels — minimal, faint
     const labels = [
-      ["NORTH AMERICA", 45, -100], ["SOUTH AMERICA", -15, -60],
-      ["EUROPE", 52, 18], ["AFRICA", 5, 22],
-      ["ASIA", 38, 90], ["OCEANIA", -25, 140],
+      ["North America", 45, -100], ["South America", -15, -60],
+      ["Europe", 52, 18], ["Africa", 5, 22],
+      ["Asia", 38, 90], ["Oceania", -25, 140],
     ];
     labels.forEach(([t, lat, lng]) => {
       const [x, y] = project(lat, lng);
-      svg += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-family="var(--sans)" font-size="13" fill="var(--ink-faint)"  opacity="0.62">' + t + '</text>';
+      svg += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-family="var(--sans)" font-size="13" fill="var(--text-3)"  opacity="0.62">' + t + '</text>';
     });
 
     // Plot city markers
@@ -2194,49 +2712,51 @@ function getJS(): string {
       const fieldCount = {};
       cluster.confs.forEach(cf => (cf.fields || []).forEach(f => { fieldCount[f] = (fieldCount[f] || 0) + 1; }));
       const dominantField = Object.entries(fieldCount).sort((a,b) => b[1]-a[1])[0]?.[0];
-      const color = (FIELDS[dominantField] || {}).color || "var(--ink-soft)";
+      const color = (FIELDS[dominantField] || {}).color || "var(--text-2)";
       const ids = cluster.confs.map(c => c.id).join(",");
       const tooltip = cluster.city + (cluster.country ? ", " + cluster.country : "") + "; " + n + (n === 1 ? " conference" : " conferences");
-      svg += '<g class="map-marker" data-ids="' + escapeAttr(ids) + '" data-tooltip="' + escapeAttr(tooltip) + '">' +
+      svg += '<g class="map-marker" role="graphics-symbol" aria-label="' + escapeAttr(tooltip) + '" data-ids="' + escapeAttr(ids) + '" data-tooltip="' + escapeAttr(tooltip) + '">' +
         '<circle cx="' + x + '" cy="' + y + '" r="' + (r + 4) + '" fill="' + color + '" fill-opacity="0.10"/>' +
-        '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + color + '" fill-opacity="0.78" stroke="var(--paper)" stroke-width="1.5"/>' +
-        (n > 1 ? '<text x="' + x + '" y="' + (y + 3.5) + '" text-anchor="middle" font-family="var(--sans)" font-size="13" font-weight="600" fill="#fff">' + n + '</text>' : '') +
+        '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + color + '" fill-opacity="0.78" stroke="var(--ground)" stroke-width="1.5"/>' +
+        (n > 1 ? '<text x="' + x + '" y="' + (y + 3.5) + '" text-anchor="middle" font-family="var(--sans)" font-size="13" font-weight="600" fill="var(--on-accent)">' + n + '</text>' : '') +
       '</g>';
     });
 
     svg += '</svg>';
 
     const knownCount = [...byCity.values()].reduce((a, c) => a + c.confs.length, 0);
-    el.innerHTML =
+    setRegion(el,
       '<div class="map-wrap">' +
         '<div class="map-meta">' +
           '<span><strong>' + knownCount + '</strong> with known city</span>' +
           (noLoc.length ? '<span><strong>' + noLoc.length + '</strong> TBA / virtual</span>' : '') +
-          '<span class="map-hint">Click a marker for details; circle area scales with count</span>' +
+          '<span class="map-hint">Click or focus a marker for details; circle area scales with count</span>' +
         '</div>' +
         '<div class="map-svg-wrap">' + svg + '</div>' +
         '<div class="map-tooltip" id="mapTooltip"></div>' +
-      '</div>';
+      '</div>');
 
     const tooltip = document.getElementById("mapTooltip");
-    el.querySelectorAll(".map-marker").forEach(g => {
+    const wrap = el.querySelector(".map-wrap");
+    const markers = [...el.querySelectorAll(".map-marker")];
+    const select = (g) => { markers.forEach(m => m.classList.toggle("selected", m === g)); };
+    markers.forEach(g => {
       g.addEventListener("mousemove", (ev) => {
         tooltip.textContent = g.getAttribute("data-tooltip");
-        const wrap = el.querySelector(".map-svg-wrap").getBoundingClientRect();
-        tooltip.style.left = (ev.clientX - wrap.left) + "px";
-        tooltip.style.top = (ev.clientY - wrap.top - 12) + "px";
-        tooltip.classList.add("visible");
+        const wb = wrap.getBoundingClientRect();
+        placeTip(tooltip, wrap, ev.clientX - wb.left, ev.clientY - wb.top - 12);
       });
-      g.addEventListener("mouseleave", () => tooltip.classList.remove("visible"));
+      g.addEventListener("mouseleave", () => hideTip(tooltip));
       g.addEventListener("click", () => {
+        select(g);
+        // Several venues in one city: the first opens; the rest are reachable from the list views.
         const ids = (g.getAttribute("data-ids") || "").split(",");
-        if (ids.length === 1) openDetail(ids[0]);
-        else {
-          // Multiple at one city: open the first; user can iterate.
-          openDetail(ids[0]);
-        }
+        openDetail(ids[0]);
       });
     });
+    bindRoving(markers, (n) => n.dispatchEvent(new MouseEvent("click", { bubbles: true })),
+      (g) => { tooltip.textContent = g.getAttribute("data-tooltip"); g.setAttribute("aria-describedby", "mapTooltip"); if (g.matches(":focus-visible")) tipAtNode(tooltip, wrap, g); },
+      (g) => { g.removeAttribute("aria-describedby"); hideTip(tooltip); });
   }
 
   // ------ Star / Notes / Status ------
@@ -2245,6 +2765,8 @@ function getJS(): string {
     else state.starred.add(id);
     localStorage.setItem("ct.starred", JSON.stringify([...state.starred]));
     render();
+    // Star fill: restart from the outline so the filled star eases in.
+    if (state.starred.has(id)) document.querySelectorAll('.star-btn[data-star="' + id + '"]').forEach(b => { b.classList.remove("starred"); void b.offsetWidth; b.classList.add("starred"); });
   }
   function setNote(id, text) {
     if (text) state.notes[id] = text;
@@ -2258,53 +2780,93 @@ function getJS(): string {
     render();
   }
 
-  // ------ Modal ------
+  // ------ Modals: open, closing, focus trapped, Escape closes the top one ------
   const modal = document.getElementById("detailModal");
   const modalBody = document.getElementById("modalBody");
-  let _lastFocused = null;
+  const suggestModal = document.getElementById("suggestModal");
+  function durIn() {
+    const v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--dur-in"));
+    return isNaN(v) ? 0 : v;
+  }
+  function showModal(m, focusEl) {
+    clearTimeout(m._t);
+    m._last = document.activeElement;
+    m.classList.remove("hidden");
+    m.setAttribute("aria-hidden", "false");
+    void m.offsetWidth;
+    m.classList.add("open");
+    requestAnimationFrame(() => {
+      const target = focusEl || m.querySelector(".modal-close");
+      if (target) target.focus();
+    });
+  }
+  function hideModal(m) {
+    if (m.classList.contains("hidden")) return;
+    m.classList.remove("open");
+    m.setAttribute("aria-hidden", "true");
+    const finish = () => m.classList.add("hidden");
+    const d = durIn();
+    if (d > 0) m._t = setTimeout(finish, d); else finish();
+    const back = m._last;
+    if (back && typeof back.focus === "function" && document.contains(back)) back.focus();
+  }
+  function topModal() {
+    return [suggestModal, modal].find(m => !m.classList.contains("hidden") && m.classList.contains("open")) || null;
+  }
+  [modal, suggestModal].forEach(m => m.addEventListener("click", (e) => {
+    if (e.target.closest("[data-close]")) hideModal(m);
+  }));
+  document.addEventListener("keydown", (e) => {
+    const m = topModal();
+    if (!m) return;
+    if (e.key === "Escape") { hideModal(m); return; }
+    if (e.key !== "Tab") return;
+    const items = [...m.querySelectorAll("a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled)")].filter(x => x.offsetParent !== null);
+    if (!items.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if (!m.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  function closeDetail() { hideModal(modal); }
+
   function openDetail(id) {
-    _lastFocused = document.activeElement;
     const c = CONFS.find(x => x.id === id);
     if (!c) return;
-    const days = daysUntil(parseDate(c.deadline));
-    const tags = c.fields.map(f => {
-      const meta = FIELDS[f] || { color: "#888", label: f };
-      return '<span class="card-tag" style="--tag-bg:' + meta.color + '">' + escape(meta.label) + '</span>';
-    }).join(" ");
     const status = state.status[c.id] || "";
     const notes = state.notes[c.id] || "";
     const statusOpts = STATUSES.map(s =>
       '<option value="' + s + '"' + (s === status ? ' selected' : '') + '>' + escape(STATUS_LABEL[s] || s) + '</option>'
     ).join("");
     const calIcs = "/cal.ics?ids=" + encodeURIComponent(c.id);
+    const section = (title, rows) => rows.length ? '<div class="modal-section"><h3>' + title + '</h3><dl class="modal-meta">' + rows.join("") + '</dl></div>' : '';
+    const row = (dt, dd) => '<dt>' + dt + '</dt><dd>' + dd + '</dd>';
 
     modalBody.innerHTML =
-      '<h2 class="modal-name">' + escape(c.name) + ' <span style="color:var(--ink-faint);font-variant-numeric: tabular-nums;font-size:var(--fs-base);font-weight:400;font-variant-numeric:tabular-nums">&prime;' + String(c.year).slice(-2) + '</span></h2>' +
+      '<h2 class="modal-name" id="modalTitle">' + escape(c.name) + '<span class="year">' + escape(c.year) + '</span></h2>' +
       '<p class="modal-fullname">' + escape(c.fullName) + '</p>' +
-      '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center">' + tags +
-        ' <span class="card-tier" style="font-variant-numeric:tabular-nums;">' + escape(c.tier) + '</span>' +
-        (c.confidence === "estimated" ? ' <span class="confidence-mark estimated">est.</span>' : '') +
+      '<div class="modal-tags">' + fieldTags(c) +
+        '<span class="card-tier">' + escape(c.tier) + '</span>' +
+        (c.confidence === "estimated" ? '<span class="confidence-mark estimated">est.</span>' : '') +
       '</div>' +
-      '<div class="modal-section"><h3>Schedule</h3><dl class="modal-meta">' +
-        (c.abstractDeadline ? '<dt>Abstract</dt><dd>' + fmtDate(c.abstractDeadline) + '</dd>' : '') +
-        '<dt>Paper deadline</dt><dd>' + fmtDate(c.deadline) + ' <span class="card-countdown ' + countdownClass(days) + '">' + (c.deadline ? countdownText(days) : "—") + '</span></dd>' +
-        (c.notification ? '<dt>Notification</dt><dd>' + fmtDate(c.notification) + '</dd>' : '') +
-        '<dt>Conference</dt><dd>' + fmtRange(c.conferenceStart, c.conferenceEnd) + '</dd>' +
-      '</dl></div>' +
-      '<div class="modal-section"><h3>Where</h3><dl class="modal-meta">' +
-        '<dt>Location</dt><dd>' + escape((c.location?.city || "TBA") + (c.location?.country ? ", " + c.location.country : "")) + '</dd>' +
-      '</dl></div>' +
-      '<div class="modal-section"><h3>Submission</h3><dl class="modal-meta">' +
-        '<dt>Format</dt><dd>' + escape(c.format || "—") + '</dd>' +
-        (c.pageLimit ? '<dt>Page limit</dt><dd>' + escape(c.pageLimit) + '</dd>' : '') +
-        '<dt>Blind</dt><dd>' + escape(c.blind || "—") + '</dd>' +
-        (c.acceptanceRate != null ? '<dt>Accept rate</dt><dd>' + Math.round(c.acceptanceRate * 100) + '%</dd>' : '') +
-      '</dl></div>' +
-      (c.fit ? '<div class="modal-section"><h3>Fit for you</h3><p style="margin:0;color:var(--ink-soft);font-style:italic;line-height:1.55">' + escape(c.fit) + '</p></div>' : '') +
-      '<div class="modal-section"><h3>Your tracking</h3>' +
+      section("Schedule", [
+        c.abstractDeadline ? row("Abstract", fmtDate(c.abstractDeadline)) : "",
+        row("Paper deadline", deadlineHtml(c)),
+        c.notification ? row("Notification", fmtDate(c.notification)) : "",
+        row("Conference", fmtRange(c.conferenceStart, c.conferenceEnd)),
+      ].filter(Boolean)) +
+      section("Where", [row("Location", whereText(c))]) +
+      section("Submission", [
+        c.format ? row("Format", escape(c.format)) : "",
+        c.pageLimit ? row("Page limit", escape(c.pageLimit)) : "",
+        c.blind ? row("Blind", escape(c.blind)) : "",
+        c.acceptanceRate != null ? row("Accept rate", Math.round(c.acceptanceRate * 100) + "%") : "",
+      ].filter(Boolean)) +
+      (c.fit ? '<div class="modal-section"><h3>Fit for you</h3><p class="modal-lead">' + escape(c.fit) + '</p></div>' : '') +
+      '<div class="modal-section"><div class="tracking-head"><h3>Your tracking</h3><span class="saved" id="trackSaved" role="status"></span></div>' +
         '<div class="modal-tracking">' +
           '<label class="tracking-row"><span class="tracking-label">Status</span>' +
-            '<select class="select" id="modal-status">' + statusOpts + '</select>' +
+            '<span class="select-wrap"><select class="select" id="modal-status">' + statusOpts + '</select>' + icon("chevron-down", "select-icon") + '</span>' +
           '</label>' +
           '<label class="tracking-row tracking-row-stack"><span class="tracking-label">Notes</span>' +
             '<textarea class="notes-area" id="modal-notes" rows="3" placeholder="Draft progress, co-authors, blockers…">' + escape(notes) + '</textarea>' +
@@ -2312,38 +2874,114 @@ function getJS(): string {
         '</div>' +
       '</div>' +
       '<div class="modal-actions">' +
-        '<a class="modal-link-btn" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener">Open CFP ↗</a>' +
-        '<a class="modal-link-btn modal-link-btn-secondary" href="' + escapeAttr(calIcs) + '" download="' + escape(c.id) + '.ics">+ Calendar (.ics)</a>' +
+        '<a class="modal-link-btn" href="' + escapeAttr(c.link) + '" target="_blank" rel="noopener">Open CFP' + icon("external-link") + '</a>' +
+        '<a class="modal-link-btn modal-link-btn-secondary" href="' + escapeAttr(calIcs) + '" download="' + escape(c.id) + '.ics">' + icon("calendar-down") + 'Add to calendar (.ics)</a>' +
       '</div>';
 
+    const saved = document.getElementById("trackSaved");
     const statusEl = document.getElementById("modal-status");
-    if (statusEl) statusEl.addEventListener("change", () => setStatus(c.id, statusEl.value));
+    if (statusEl) statusEl.addEventListener("change", () => { setStatus(c.id, statusEl.value); saved.textContent = "Saved"; });
     const notesEl = document.getElementById("modal-notes");
     if (notesEl) {
       let nt;
       notesEl.addEventListener("input", () => {
+        saved.textContent = "";
         clearTimeout(nt);
-        nt = setTimeout(() => setNote(c.id, notesEl.value), 300);
+        nt = setTimeout(() => { setNote(c.id, notesEl.value); saved.textContent = "Saved"; }, 300);
       });
     }
-    modal.classList.remove("hidden");
-    modal.setAttribute("aria-hidden", "false");
-    // Move focus into modal for keyboard accessibility
+    showModal(modal);
+  }
+
+  // ------ Suggest modal: default, invalid, submitting, error, sent ------
+  const sgForm = document.getElementById("suggestForm");
+  const sgStatus = document.getElementById("suggestStatus");
+  const sgSubmit = document.getElementById("suggestSubmit");
+  function sgField(id, msg) {
+    const input = document.getElementById(id);
+    const wrap = input.closest(".field");
+    const out = document.getElementById(id + "-msg");
+    if (msg) { wrap.setAttribute("data-invalid", ""); input.setAttribute("aria-invalid", "true"); }
+    else { wrap.removeAttribute("data-invalid"); input.removeAttribute("aria-invalid"); }
+    if (out) out.textContent = msg || "";
+  }
+  function sgSet(kind, html) {
+    sgStatus.className = "form-status" + (kind ? " " + kind : "");
+    sgStatus.innerHTML = html || "";
+  }
+  function openSuggest() {
+    sgForm.reset();
+    sgField("sg-name", ""); sgField("sg-link", "");
+    sgSet("", "");
+    sgSubmit.disabled = false;
+    sgSubmit.textContent = "Open draft on GitHub";
+    showModal(suggestModal, document.getElementById("sg-name"));
+  }
+  const submitBtn = document.getElementById("submitConfBtn");
+  if (submitBtn) submitBtn.addEventListener("click", openSuggest);
+  sgForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("sg-name").value.trim();
+    const link = document.getElementById("sg-link").value.trim();
+    const deadline = document.getElementById("sg-deadline").value;
+    const why = document.getElementById("sg-why").value.trim();
+    let linkMsg = "";
+    if (!link) linkMsg = "Enter the call for papers link.";
+    else if (!/^https?:[/][/][^ ]+[.][^ ]+$/i.test(link)) linkMsg = "Enter a full link that starts with https://";
+    sgField("sg-name", name ? "" : "Enter the venue name.");
+    sgField("sg-link", linkMsg);
+    const missing = [!name ? "sg-name" : "", linkMsg ? "sg-link" : ""].filter(Boolean);
+    if (missing.length) {
+      sgSet("error", "Fix " + (missing.length === 1 ? "the field" : "the " + missing.length + " fields") + " marked above, then try again.");
+      document.getElementById(missing[0]).focus();
+      return;
+    }
+    sgSubmit.disabled = true;
+    sgSubmit.textContent = "Opening GitHub…";
+    sgSet("", "Opening the draft issue…");
+    const body = [
+      "Conference name (acronym + full): " + name,
+      "",
+      "Field(s):",
+      "",
+      "Tier (A* / A / B / industry / journal):",
+      "",
+      "Deadline (YYYY-MM-DD): " + deadline,
+      "Notification (YYYY-MM-DD):",
+      "Conference dates (YYYY-MM-DD to YYYY-MM-DD):",
+      "",
+      "Location (city, country):",
+      "",
+      "Format / page limit / blind:",
+      "",
+      "CFP link: " + link,
+      "",
+      "Why it fits Doug's research (1 line): " + why,
+      "",
+      "Sources (2 or more URLs):",
+      "",
+    ].join("\\n");
+    const url = "https://github.com/douglaspmcgowan/conference-tracker/issues/new?title=" +
+      encodeURIComponent("Suggest conference: " + name) +
+      "&body=" + encodeURIComponent(body) +
+      "&labels=conference-suggestion";
     requestAnimationFrame(() => {
-      const closeBtn = modal.querySelector(".modal-close");
-      if (closeBtn) closeBtn.focus();
+      let w = null;
+      try { w = window.open(url, "_blank"); } catch (err) { w = null; }
+      sgSubmit.disabled = false;
+      if (w) {
+        try { w.opener = null; } catch (err) { /* cross-origin window, nothing to detach */ }
+        sgSubmit.textContent = "Open draft again";
+        sgSet("sent", icon("check") + "Draft issue opened on GitHub. Submit it there to finish.");
+      } else {
+        sgSubmit.textContent = "Retry";
+        sgSet("error", "Your browser blocked the new tab, so nothing was opened. Allow pop-ups for this site, then select Retry.");
+      }
     });
-  }
-  modal.addEventListener("click", (e) => {
-    if (e.target.matches("[data-close]")) closeDetail();
   });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDetail(); });
-  function closeDetail() {
-    modal.classList.add("hidden");
-    modal.setAttribute("aria-hidden", "true");
-    // Restore focus to the element that triggered the modal
-    if (_lastFocused && typeof _lastFocused.focus === "function") _lastFocused.focus();
-  }
+  [["sg-name", "Enter the venue name."], ["sg-link", ""]].forEach(([id]) => {
+    document.getElementById(id).addEventListener("input", () => { sgField(id, ""); if (sgStatus.classList.contains("error")) sgSet("", ""); });
+  });
 
   // ------ Helpers ------
   function escape(s) { return String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
