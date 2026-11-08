@@ -24,9 +24,9 @@ Target: polished
 
 | item | statement | verify | state | last run |
 | --- | --- | --- | --- | --- |
-| B2.1 | A control reacts within 0.1 s. | agent | rerun-due | 2026-11-08 |
-| B2.2 | Any wait over 1 s shows progress. | agent | rerun-due | 2026-11-08 |
-| B2.3 | Work over 10 s can be left running or cancelled. | agent | rerun-due | 2026-11-08 |
+| B2.1 | A control reacts within 0.1 s. | agent | met | 2026-11-08 |
+| B2.2 | Any wait over 1 s shows progress. | agent | met | 2026-11-08 |
+| B2.3 | Work over 10 s can be left running or cancelled. | agent | met | 2026-11-08 |
 
 ## B3 States
 
@@ -47,8 +47,8 @@ Target: polished
 
 | item | statement | verify | state | last run |
 | --- | --- | --- | --- | --- |
-| B5.1 | Nothing typed is lost on reload, back or crash. | agent | rerun-due | 2026-11-08 |
-| B5.2 | Reversible actions can be undone; only irreversible ones ask to confirm. | agent | rerun-due | 2026-11-08 |
+| B5.1 | Nothing typed is lost on reload, back or crash. | agent | met | 2026-11-08 |
+| B5.2 | Reversible actions can be undone; only irreversible ones ask to confirm. | agent | met | 2026-11-08 |
 
 ## B6 Navigation
 
@@ -100,9 +100,9 @@ Target: polished
 
 | item | statement | verify | state | last run |
 | --- | --- | --- | --- | --- |
-| B12.1 | A transient app is ready the moment it opens, with no setup step. | agent | rerun-due | 2026-11-08 |
-| B12.2 | A newcomer gets first-run guidance. | judge | rerun-due | 2026-11-08 |
-| B12.3 | A first-time user reaches a useful result without help. | agent | rerun-due | 2026-11-08 |
+| B12.1 | A transient app is ready the moment it opens, with no setup step. | agent | met | 2026-11-08 |
+| B12.2 | A newcomer gets first-run guidance. | judge | met | 2026-11-08 |
+| B12.3 | A first-time user reaches a useful result without help. | agent | met | 2026-11-08 |
 
 ## B13 Copy
 
@@ -121,7 +121,7 @@ Target: polished
 
 | item | statement | verify | state | last run |
 | --- | --- | --- | --- | --- |
-| LB1.1 | A result list appears within 1 s of the last keystroke in the search field. | agent | rerun-due | 2026-11-08 |
+| LB1.1 | A result list appears within 1 s of the last keystroke in the search field. | agent | met | 2026-11-08 |
 | LB1.2 | Search matches title, tags and text, and each result says which field matched. | agent | failing | 2026-11-08 |
 
 ## LB2 Facets and sort
@@ -130,7 +130,7 @@ Target: polished
 | --- | --- | --- | --- | --- |
 | LB2.1 | Each facet value shows its count under the current filters. | auto | no-check | never |
 | LB2.2 | Each active facet is listed and removed with one action. | agent | failing | 2026-11-08 |
-| LB2.3 | The sort control names its field and direction and keeps the active filters. | agent | rerun-due | 2026-11-08 |
+| LB2.3 | The sort control names its field and direction and keeps the active filters. | agent | met | 2026-11-08 |
 | LB2.4 | Items with equal sort keys keep a fixed order, so paging never repeats or skips one. | auto | no-check | never |
 
 ## LB3 Detail
@@ -154,7 +154,7 @@ Target: polished
 | item | statement | verify | state | last run |
 | --- | --- | --- | --- | --- |
 | LB5.1 | An import report lists rows accepted and rejected, with a reason for each rejection, before any change is committed. | agent | failing | 2026-11-08 |
-| LB5.2 | An export contains exactly the items in the current filtered view, or states that it exports all. | agent | rerun-due | 2026-11-08 |
+| LB5.2 | An export contains exactly the items in the current filtered view, or states that it exports all. | agent | met | 2026-11-08 |
 | LB5.3 | Importing an item that duplicates an existing one asks to skip, replace or keep both. | agent | failing | 2026-11-08 |
 
 ## runtime Browser runtime errors
@@ -164,13 +164,13 @@ Target: polished
 | S-WEB.1 | A window error listener is registered before app code runs, and each uncaught error it receives reaches the error sink. | agent | failing | 2026-11-08 |
 | S-WEB.2 | An unhandled promise rejection has its own listener and reaches the error sink. | agent | failing | 2026-11-08 |
 | S-WEB.3 | Each route sits inside an error boundary that shows that route's fallback and reports the caught error, and the other routes stay usable. | agent | failing | 2026-11-08 |
-| S-WEB.4 | A chunk that fails to load after a deploy shows a reload prompt, not a blank page. | agent | rerun-due | 2026-11-08 |
+| S-WEB.4 | A chunk that fails to load after a deploy shows a reload prompt, not a blank page. | agent | met | 2026-11-08 |
 
 Generated from `.agents/work/readiness.json` by `Test-ProductReadiness.ps1 -Write`; do not edit. States derive from receipts.
 
 `met` means the app's own command reported success. It does not mean the app is correct or good.
 
-Kind: conference-tracker | Generated: 2026-11-08T03:31:21.0597729Z | Input hash: e45f6bb36e6c
+Kind: conference-tracker | Generated: 2026-11-08T03:35:48.3636915Z | Input hash: e45f6bb36e6c
 
 ## Next (checks, detail)
 
@@ -200,9 +200,9 @@ Stage: works
 
 | check | state | last run | exit | note |
 | --- | --- | --- | --- | --- |
-| typecheck | met | 2026-11-08T03:30:34.5200131Z | 0 |  |
-| tests | could-not-tell | 2026-11-08T03:30:52.8069958Z | 0 | no evidence that any test ran |
-| console-clean | met | 2026-11-08T03:30:56.5593666Z | 0 |  |
+| typecheck | met | 2026-11-08T03:35:02.5415129Z | 0 |  |
+| tests | could-not-tell | 2026-11-08T03:35:20.8292951Z | 0 | no evidence that any test ran |
+| console-clean | met | 2026-11-08T03:35:24.3499998Z | 0 |  |
 
 - build: package.json declares no build script; the app is build-free
 
@@ -210,15 +210,15 @@ Stage: works
 
 | check | state | last run | exit | note |
 | --- | --- | --- | --- | --- |
-| loading-state | could-not-tell | 2026-11-08T03:30:57.6635781Z | 2 | \{"check":"loading-state","outcome":"could-not-tell","reason":"no .agents/app-selectors.json selector map","findings":\[\]\} |
-| empty-state | could-not-tell | 2026-11-08T03:30:59.2720446Z | 2 | \{"check":"empty-state","outcome":"could-not-tell","reason":"no .agents/app-selectors.json selector map","findings":\[\]\} |
-| error-state | could-not-tell | 2026-11-08T03:31:00.9422163Z | 2 | \{"check":"error-state","outcome":"could-not-tell","reason":"no .agents/app-selectors.json selector map","findings":\[\]\} |
-| not-found-state | could-not-tell | 2026-11-08T03:31:02.4421333Z | 2 | \{"check":"not-found-state","outcome":"could-not-tell","reason":"no .agents/app-selectors.json selector map","findings":\[\]\} |
-| keyboard-focus | failing | 2026-11-08T03:31:05.507815Z | 1 | child exited 1 |
-| error-capture | failing | 2026-11-08T03:31:07.3072405Z | 1 | child exited 1 |
-| structured-logs | failing | 2026-11-08T03:31:08.3042574Z | 1 | child exited 1 |
-| viewport-320-1280 | met | 2026-11-08T03:31:12.5127261Z | 0 |  |
-| not-found-page | failing | 2026-11-08T03:31:13.9484851Z | 1 | child exited 1 |
+| loading-state | could-not-tell | 2026-11-08T03:35:25.4234638Z | 2 | \{"check":"loading-state","outcome":"could-not-tell","reason":"no .agents/app-selectors.json selector map","findings":\[\]\} |
+| empty-state | could-not-tell | 2026-11-08T03:35:26.9545622Z | 2 | \{"check":"empty-state","outcome":"could-not-tell","reason":"no .agents/app-selectors.json selector map","findings":\[\]\} |
+| error-state | could-not-tell | 2026-11-08T03:35:27.901429Z | 2 | \{"check":"error-state","outcome":"could-not-tell","reason":"no .agents/app-selectors.json selector map","findings":\[\]\} |
+| not-found-state | could-not-tell | 2026-11-08T03:35:28.9710221Z | 2 | \{"check":"not-found-state","outcome":"could-not-tell","reason":"no .agents/app-selectors.json selector map","findings":\[\]\} |
+| keyboard-focus | failing | 2026-11-08T03:35:31.6303802Z | 1 | child exited 1 |
+| error-capture | failing | 2026-11-08T03:35:33.5090663Z | 1 | child exited 1 |
+| structured-logs | failing | 2026-11-08T03:35:34.6593283Z | 1 | child exited 1 |
+| viewport-320-1280 | met | 2026-11-08T03:35:38.8198974Z | 0 |  |
+| not-found-page | failing | 2026-11-08T03:35:40.4457762Z | 1 | child exited 1 |
 
 Not applicable: cli-conformance, game-playable
 
@@ -226,15 +226,15 @@ Not applicable: cli-conformance, game-playable
 
 | check | state | last run | exit | note |
 | --- | --- | --- | --- | --- |
-| design-banned-patterns | met | 2026-11-08T03:31:15.26816Z | 0 |  |
+| design-banned-patterns | met | 2026-11-08T03:35:41.6748295Z | 0 |  |
 | design-review-dated | never-run |  |  | no design-review receipt; run Write-DesignReviewReceipt.ps1 |
 
 ### production
 
 | check | state | last run | exit | note |
 | --- | --- | --- | --- | --- |
-| seo-tags | failing | 2026-11-08T03:31:17.2316792Z | 1 | child exited 1 |
-| axe | met | 2026-11-08T03:31:20.2512538Z | 0 |  |
+| seo-tags | failing | 2026-11-08T03:35:43.9777539Z | 1 | child exited 1 |
+| axe | met | 2026-11-08T03:35:47.2449196Z | 0 |  |
 
 Not applicable: privacy-terms, security-headers, core-web-vitals, log-personal-data
 

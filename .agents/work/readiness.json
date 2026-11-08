@@ -2,7 +2,7 @@
   "schema": "app-readiness/v1",
   "app": "conference-tracker",
   "kind": "conference-tracker",
-  "generated_at": "2026-11-08T03:31:21.0597729Z",
+  "generated_at": "2026-11-08T03:35:48.3636915Z",
   "generated_by": "Test-ProductReadiness.ps1",
   "catalog": "app-readiness.json",
   "input_hash": "e45f6bb36e6c51f7325046106e4c003d6134bf20c2c2474235bdf4a90ddb6c8d",
@@ -32,9 +32,9 @@
       "command": "npm run build",
       "state": "not-applicable",
       "exit_code": null,
-      "ran_at": "2026-11-08T03:30:32.2025746Z",
+      "ran_at": "2026-11-08T03:35:00.6037898Z",
       "input_hash": "22d77b0d2d2ee546e8bf37e994d1fdca3eefa2d67e407fc10188388518a00bf9",
-      "receipt_id": "e32d33ac-0e36-4bdf-b503-3add254a6dd8",
+      "receipt_id": "5c632e2f-4607-4af0-96d4-73687ed5a198",
       "waiver": null,
       "waiver_expired": null,
       "note": "package.json declares no build script; the app is build-free"
@@ -47,9 +47,9 @@
       "command": "npm run typecheck",
       "state": "met",
       "exit_code": 0,
-      "ran_at": "2026-11-08T03:30:34.5200131Z",
+      "ran_at": "2026-11-08T03:35:02.5415129Z",
       "input_hash": "b66666008a813a051222ecb7d793a4a4101cf9dddf9a92dcddb4980fc447cb97",
-      "receipt_id": "bd497a46-16e0-493a-8f8c-5a135c89dfcd",
+      "receipt_id": "e4c9268a-efdc-4891-a098-ee873a52a5f1",
       "waiver": null,
       "waiver_expired": null,
       "note": null
@@ -62,9 +62,9 @@
       "command": "npm test",
       "state": "could-not-tell",
       "exit_code": 0,
-      "ran_at": "2026-11-08T03:30:52.8069958Z",
+      "ran_at": "2026-11-08T03:35:20.8292951Z",
       "input_hash": "5e05e77a07e8967f27290986dc7fd62db46464c9835b0282c1b3d8dd3c35ff5d",
-      "receipt_id": "54b51745-7485-4b78-8113-96991329155e",
+      "receipt_id": "f9086614-9f3d-4a47-b135-78fef0610ad3",
       "waiver": null,
       "waiver_expired": null,
       "note": "no evidence that any test ran"
@@ -77,9 +77,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/app-checks/Test-ConsoleClean.ps1 -Path . -Url 'https://conference-tracker-rho.vercel.app/'",
       "state": "met",
       "exit_code": 0,
-      "ran_at": "2026-11-08T03:30:56.5593666Z",
+      "ran_at": "2026-11-08T03:35:24.3499998Z",
       "input_hash": "a7c7a4751f4804343c83dc6125239596c16da04539a2a98e17de8b7ef0b3cefe",
-      "receipt_id": "714bfa80-ebf9-45b7-9b96-5c708ec03c59",
+      "receipt_id": "cd12bd20-e4af-49e0-88a2-5aab91abaa3e",
       "waiver": null,
       "waiver_expired": null,
       "note": null
@@ -92,9 +92,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/app-checks/Test-StateProbe.ps1 -Path . -State loading -Url 'https://conference-tracker-rho.vercel.app/'",
       "state": "could-not-tell",
       "exit_code": 2,
-      "ran_at": "2026-11-08T03:30:57.6635781Z",
+      "ran_at": "2026-11-08T03:35:25.4234638Z",
       "input_hash": "d82d3fb52f1da7344a6acfab25f0100fe4fd029a79609e20e2c2e8028d8db92f",
-      "receipt_id": "bd5c35fd-fb7c-43b1-b4f4-4f8258434905",
+      "receipt_id": "7ed9b4af-613f-4f10-ac57-8901edec28c8",
       "waiver": null,
       "waiver_expired": null,
       "note": "{\"check\":\"loading-state\",\"outcome\":\"could-not-tell\",\"reason\":\"no .agents/app-selectors.json selector map\",\"findings\":[]}"
@@ -107,9 +107,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/app-checks/Test-StateProbe.ps1 -Path . -State empty -Url 'https://conference-tracker-rho.vercel.app/'",
       "state": "could-not-tell",
       "exit_code": 2,
-      "ran_at": "2026-11-08T03:30:59.2720446Z",
+      "ran_at": "2026-11-08T03:35:26.9545622Z",
       "input_hash": "d8f15709b15766735b24b74fcf762213d254c70518afbe359a384c4f6c7a00b8",
-      "receipt_id": "93bc8c72-fa4c-42b8-8088-6f0ba7b795b2",
+      "receipt_id": "55656171-a477-4170-abfb-8cfe2a1663b0",
       "waiver": null,
       "waiver_expired": null,
       "note": "{\"check\":\"empty-state\",\"outcome\":\"could-not-tell\",\"reason\":\"no .agents/app-selectors.json selector map\",\"findings\":[]}"
@@ -122,9 +122,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/app-checks/Test-StateProbe.ps1 -Path . -State error -Url 'https://conference-tracker-rho.vercel.app/'",
       "state": "could-not-tell",
       "exit_code": 2,
-      "ran_at": "2026-11-08T03:31:00.9422163Z",
+      "ran_at": "2026-11-08T03:35:27.901429Z",
       "input_hash": "38f33c8d0d2f7a802c147dd41e1ad6979278162401ff5f22ddfa8f9bb29b3c8b",
-      "receipt_id": "c5871477-d068-4a1d-bcb8-c27fc5b98f17",
+      "receipt_id": "388bfa56-9c68-4752-9daa-515d1608035d",
       "waiver": null,
       "waiver_expired": null,
       "note": "{\"check\":\"error-state\",\"outcome\":\"could-not-tell\",\"reason\":\"no .agents/app-selectors.json selector map\",\"findings\":[]}"
@@ -137,9 +137,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/app-checks/Test-StateProbe.ps1 -Path . -State not-found -Url 'https://conference-tracker-rho.vercel.app/'",
       "state": "could-not-tell",
       "exit_code": 2,
-      "ran_at": "2026-11-08T03:31:02.4421333Z",
+      "ran_at": "2026-11-08T03:35:28.9710221Z",
       "input_hash": "3707e1a082696f263f89c96cbd453e630d4ea5ff836a17da15ce48adfe6ad69f",
-      "receipt_id": "8545ad38-caa3-498b-800e-30515e80afdf",
+      "receipt_id": "aab8d36b-686d-4b3f-90db-5e6977899e89",
       "waiver": null,
       "waiver_expired": null,
       "note": "{\"check\":\"not-found-state\",\"outcome\":\"could-not-tell\",\"reason\":\"no .agents/app-selectors.json selector map\",\"findings\":[]}"
@@ -152,9 +152,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/app-checks/Test-KeyboardFocus.ps1 -Path . -Url 'https://conference-tracker-rho.vercel.app/'",
       "state": "failing",
       "exit_code": 1,
-      "ran_at": "2026-11-08T03:31:05.507815Z",
+      "ran_at": "2026-11-08T03:35:31.6303802Z",
       "input_hash": "3c7cf5b5d8fa477214106ab7b24df86842ec41f96a723ad938b4b60599b29060",
-      "receipt_id": "bb3ae161-bbc2-42fa-8357-936e17c2bff1",
+      "receipt_id": "8f98bb63-a57c-483d-882f-80f62749e553",
       "waiver": null,
       "waiver_expired": null,
       "note": "child exited 1"
@@ -167,9 +167,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/app-checks/Test-ErrorCapture.ps1 -Path .",
       "state": "failing",
       "exit_code": 1,
-      "ran_at": "2026-11-08T03:31:07.3072405Z",
+      "ran_at": "2026-11-08T03:35:33.5090663Z",
       "input_hash": "eb37638058551b7e9343f1ed483ec182e2ff755a805b4ffdcc2edfd887f2fdf1",
-      "receipt_id": "cc0d5988-9578-43b5-8f09-9395c9dd42aa",
+      "receipt_id": "26f22d64-9372-4b38-931c-2e8711f8a6b0",
       "waiver": null,
       "waiver_expired": null,
       "note": "child exited 1"
@@ -182,9 +182,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/app-checks/Test-StructuredLogs.ps1 -Path .",
       "state": "failing",
       "exit_code": 1,
-      "ran_at": "2026-11-08T03:31:08.3042574Z",
+      "ran_at": "2026-11-08T03:35:34.6593283Z",
       "input_hash": "95759955c91f09600168b9347675633e4eea084d7097bde0a06f45f46b241591",
-      "receipt_id": "d5e1a990-50a4-40bf-8c2f-2967888433a6",
+      "receipt_id": "89a30fc3-5caf-457d-afa0-5c980b8341c7",
       "waiver": null,
       "waiver_expired": null,
       "note": "child exited 1"
@@ -212,9 +212,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/app-checks/Test-NoHorizontalScroll.ps1 -Path . -Url 'https://conference-tracker-rho.vercel.app/' -Width 320,768,1440",
       "state": "met",
       "exit_code": 0,
-      "ran_at": "2026-11-08T03:31:12.5127261Z",
+      "ran_at": "2026-11-08T03:35:38.8198974Z",
       "input_hash": "bf9b37b4c03bbaca02446c918f1ebc612898fe6fb70201a3de7e6c6b142007c7",
-      "receipt_id": "83cc9e0c-0ab6-4e3f-8e82-5cfe7606cefc",
+      "receipt_id": "f6e1e568-dc9c-45cc-8367-cbe88942f8a4",
       "waiver": null,
       "waiver_expired": null,
       "note": null
@@ -227,9 +227,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/Test-SiteReadiness.ps1 -Check not-found-page -Url 'https://conference-tracker-rho.vercel.app/'",
       "state": "failing",
       "exit_code": 1,
-      "ran_at": "2026-11-08T03:31:13.9484851Z",
+      "ran_at": "2026-11-08T03:35:40.4457762Z",
       "input_hash": "f2d8dc7f3c160324ae7c040dcf17b411a0e304a537bc12517689412a972e35dd",
-      "receipt_id": "697ff623-2aa2-432b-b68e-da5efd3aafb9",
+      "receipt_id": "b310460b-4e92-47a5-a58b-a22c6352fb22",
       "waiver": null,
       "waiver_expired": null,
       "note": "child exited 1"
@@ -257,9 +257,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/Test-DesignBannedPatterns.ps1 -Path .",
       "state": "met",
       "exit_code": 0,
-      "ran_at": "2026-11-08T03:31:15.26816Z",
+      "ran_at": "2026-11-08T03:35:41.6748295Z",
       "input_hash": "c11788587868a622f5054209de3868f52541098093b10e76efc445f27bcb5357",
-      "receipt_id": "0777f823-22f7-4349-9935-35230c4a770f",
+      "receipt_id": "3c30dd91-90d5-4c8d-a855-c81aad858d7e",
       "waiver": null,
       "waiver_expired": null,
       "note": null
@@ -302,9 +302,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/Test-SiteReadiness.ps1 -Check seo-tags -Url 'https://conference-tracker-rho.vercel.app/'",
       "state": "failing",
       "exit_code": 1,
-      "ran_at": "2026-11-08T03:31:17.2316792Z",
+      "ran_at": "2026-11-08T03:35:43.9777539Z",
       "input_hash": "8ba0881fa8798b21df7c9559cff42cec00e9b788f0cc0208e37321ffcb24ecc3",
-      "receipt_id": "970097cc-b7d2-4343-a648-a4f967cc7422",
+      "receipt_id": "33f91a19-b6ca-461d-8dc2-177055888253",
       "waiver": null,
       "waiver_expired": null,
       "note": "child exited 1"
@@ -332,9 +332,9 @@
       "command": "pwsh -NoProfile -NonInteractive -File ~/.agents/tools/Test-SiteReadiness.ps1 -Check axe -Url 'https://conference-tracker-rho.vercel.app/'",
       "state": "met",
       "exit_code": 0,
-      "ran_at": "2026-11-08T03:31:20.2512538Z",
+      "ran_at": "2026-11-08T03:35:47.2449196Z",
       "input_hash": "0b7b0b795d654d9e28a0aa26f28d37fd3194592de1a2923cd5aa7c165dab3fd5",
-      "receipt_id": "a5863883-a07d-4d95-9959-3ff2b9b3c158",
+      "receipt_id": "de76acc3-4d39-4c8d-8ff2-64420ab585df",
       "waiver": null,
       "waiver_expired": null,
       "note": null
@@ -436,19 +436,19 @@
   ],
   "refresh": "& 'C:\\Program Files\\PowerShell\\7\\pwsh.exe' -NoProfile -NonInteractive -File ~/.agents/tools/Test-ProductReadiness.ps1 -ProductPath . -Profile .agents/app-profile.json -Check all -Write",
   "profile": {
-    "access": "anonymous",
+    "name": "conference-tracker",
+    "audience": "self",
+    "stakes": "daily-tool",
+    "data": "local",
     "surfaces": [
       "web"
     ],
-    "sensitivity": "none",
-    "stakes": "daily-tool",
-    "name": "conference-tracker",
-    "ai": "none",
-    "expertise": "intermediate",
-    "audience": "self",
     "archetype": "library",
-    "posture": "transient",
-    "data": "local"
+    "ai": "none",
+    "access": "anonymous",
+    "sensitivity": "none",
+    "expertise": "intermediate",
+    "posture": "transient"
   },
   "preset": null,
   "target_stage": "polished",
@@ -462,9 +462,9 @@
       "stage": "works",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:16:26.3959503Z",
+      "last_run": "2026-11-08T03:32:29.0147010Z",
       "checks": [],
-      "receipt_id": "b018703a-14ac-49bf-9e73-83421b631362",
+      "receipt_id": "bb1de929-8031-4138-ab1a-f9cc2b3202ad",
       "note": "No SPEC.md exists, so no core flows are named (feature absent). The README flows (timeline, cards, table, map views, filter, search, sort, open an item, notes and status, iCal) all ran with no console errors; write SPEC.md to name them"
     },
     {
@@ -475,9 +475,9 @@
       "stage": "polished",
       "verify": "judge",
       "state": "could-not-tell",
-      "last_run": "2026-11-08T03:30:24.3102130Z",
+      "last_run": "2026-11-08T03:34:41.7490733Z",
       "checks": [],
-      "receipt_id": "0c584db2-97ba-458d-841f-a11583339470",
+      "receipt_id": "3055a5e6-ced2-4d67-9fd5-5c2ac2be8924",
       "note": "PRODUCT.md blank, SPEC.md absent"
     },
     {
@@ -500,11 +500,11 @@
       "statement": "A control reacts within 0.1 s.",
       "stage": "usable",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:16:40.0896241Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:32:34.2376181Z",
       "checks": [],
-      "receipt_id": "89ef21a1-f736-4d36-b947-9a1a3946dc1b",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "3c31dfbf-05c7-4409-a379-25f51ac9a3f7",
+      "note": null
     },
     {
       "id": "B2.2",
@@ -513,11 +513,11 @@
       "statement": "Any wait over 1 s shows progress.",
       "stage": "usable",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:16:46.7869015Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:32:36.7035500Z",
       "checks": [],
-      "receipt_id": "1d2e3fcb-8e12-4812-950b-05d670b8af79",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "f73bd6c9-2a32-4c87-a91c-eb837bd2734c",
+      "note": null
     },
     {
       "id": "B2.3",
@@ -526,11 +526,11 @@
       "statement": "Work over 10 s can be left running or cancelled.",
       "stage": "usable",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:16:52.1704630Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:32:39.3119994Z",
       "checks": [],
-      "receipt_id": "5ad5ccbf-7809-4464-9160-a3ef31508720",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "1d3b419b-5a79-4105-8197-908c967a56bc",
+      "note": null
     },
     {
       "id": "B3.1",
@@ -540,14 +540,14 @@
       "stage": "usable",
       "verify": "auto",
       "state": "could-not-tell",
-      "last_run": "2026-11-08T03:31:02.4421333Z",
+      "last_run": "2026-11-08T03:35:28.9710221Z",
       "checks": [
         "loading-state",
         "empty-state",
         "error-state",
         "not-found-state"
       ],
-      "receipt_id": "bd5c35fd-fb7c-43b1-b4f4-4f8258434905",
+      "receipt_id": "7ed9b4af-613f-4f10-ac57-8901edec28c8",
       "note": "{\"check\":\"loading-state\",\"outcome\":\"could-not-tell\",\"reason\":\"no .agents/app-selectors.json selector map\",\"findings\":[]}"
     },
     {
@@ -558,10 +558,10 @@
       "stage": "polished",
       "verify": "judge",
       "state": "failing",
-      "last_run": "2026-11-08T03:21:25.5846760Z",
+      "last_run": "2026-11-08T03:34:33.2677148Z",
       "checks": [],
-      "receipt_id": "d3e78341-34cd-4b0c-bade-1e1deabc42c6",
-      "note": "Empty state says what is wrong (No conferences match the current filters.) but offers no action: no clear-filters button"
+      "receipt_id": "740ec993-3307-4863-9826-7e2046673477",
+      "note": "Empty state says what is wrong but offers no action: no clear-filters button"
     },
     {
       "id": "B4.1",
@@ -571,11 +571,11 @@
       "stage": "works",
       "verify": "auto",
       "state": "met",
-      "last_run": "2026-11-08T03:30:56.5593666Z",
+      "last_run": "2026-11-08T03:35:24.3499998Z",
       "checks": [
         "console-clean"
       ],
-      "receipt_id": "714bfa80-ebf9-45b7-9b96-5c708ec03c59",
+      "receipt_id": "cd12bd20-e4af-49e0-88a2-5aab91abaa3e",
       "note": null
     },
     {
@@ -586,9 +586,9 @@
       "stage": "usable",
       "verify": "judge",
       "state": "could-not-tell",
-      "last_run": "2026-11-08T03:17:04.2038538Z",
+      "last_run": "2026-11-08T03:32:44.3587351Z",
       "checks": [],
-      "receipt_id": "362905e1-ef48-4a57-a8fb-37f518edb40e",
+      "receipt_id": "cbc6c4ad-814a-4650-9fb6-711b76b439f5",
       "note": "No user-facing error message could be provoked: all data is inlined in the page and no request can fail from the UI"
     },
     {
@@ -599,9 +599,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "could-not-tell",
-      "last_run": "2026-11-08T03:17:10.4699472Z",
+      "last_run": "2026-11-08T03:32:46.6453336Z",
       "checks": [],
-      "receipt_id": "575d687d-8311-43d6-93ea-08caf86e43cb",
+      "receipt_id": "dc1a44a6-0cb7-430f-be86-bad1505a04e9",
       "note": "No action can fail from the UI (no network writes, notes saved to localStorage), so retry could not be observed"
     },
     {
@@ -611,11 +611,11 @@
       "statement": "Nothing typed is lost on reload, back or crash.",
       "stage": "usable",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:17:15.7633425Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:32:49.1025431Z",
       "checks": [],
-      "receipt_id": "b5e61722-860c-4d33-badf-83e454b05df1",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "023ea578-76a4-43f5-9e69-5f32724dddee",
+      "note": null
     },
     {
       "id": "B5.2",
@@ -624,11 +624,11 @@
       "statement": "Reversible actions can be undone; only irreversible ones ask to confirm.",
       "stage": "polished",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:17:21.1475164Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:32:51.3250694Z",
       "checks": [],
-      "receipt_id": "bbe46a56-1969-4942-b394-954b289659a7",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "ec3893ff-c068-454e-880c-0fbc36758eaa",
+      "note": null
     },
     {
       "id": "B6.1",
@@ -638,9 +638,9 @@
       "stage": "usable",
       "verify": "judge",
       "state": "failing",
-      "last_run": "2026-11-08T03:17:27.3397649Z",
+      "last_run": "2026-11-08T03:32:53.8788790Z",
       "checks": [],
-      "receipt_id": "965486ce-9148-4d89-9bf1-c6fef169f9ec",
+      "receipt_id": "dcba7e56-e0dc-4b50-b48f-37a511e87569",
       "note": "Detail modal has no next or previous and the active view is not in the URL, so a shared or reloaded link loses the view: URL hash holds only f, t and sort (observed #f=HCI&t=A*&sort=name-asc while on Cards)"
     },
     {
@@ -664,9 +664,9 @@
       "stage": "polished",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:17:32.8281479Z",
+      "last_run": "2026-11-08T03:32:56.4250811Z",
       "checks": [],
-      "receipt_id": "71f4b5c1-a63a-47e2-abc2-825a95dfa065",
+      "receipt_id": "62789f98-6b72-4151-8dfc-e7ba0de42c82",
       "note": "Feature absent: pressing slash, question mark, t, 1 to 4 and j did nothing (slash did not focus search; no shortcut help dialog)"
     },
     {
@@ -677,11 +677,11 @@
       "stage": "usable",
       "verify": "auto",
       "state": "failing",
-      "last_run": "2026-11-08T03:31:05.5078150Z",
+      "last_run": "2026-11-08T03:35:31.6303802Z",
       "checks": [
         "keyboard-focus"
       ],
-      "receipt_id": "bb3ae161-bbc2-42fa-8357-936e17c2bff1",
+      "receipt_id": "8f98bb63-a57c-483d-882f-80f62749e553",
       "note": "child exited 1"
     },
     {
@@ -692,11 +692,11 @@
       "stage": "usable",
       "verify": "auto",
       "state": "met",
-      "last_run": "2026-11-08T03:31:20.2512538Z",
+      "last_run": "2026-11-08T03:35:47.2449196Z",
       "checks": [
         "axe"
       ],
-      "receipt_id": "a5863883-a07d-4d95-9959-3ff2b9b3c158",
+      "receipt_id": "de76acc3-4d39-4c8d-8ff2-64420ab585df",
       "note": null
     },
     {
@@ -720,11 +720,11 @@
       "stage": "polished",
       "verify": "auto",
       "state": "met",
-      "last_run": "2026-11-08T03:31:20.2512538Z",
+      "last_run": "2026-11-08T03:35:47.2449196Z",
       "checks": [
         "axe"
       ],
-      "receipt_id": "a5863883-a07d-4d95-9959-3ff2b9b3c158",
+      "receipt_id": "de76acc3-4d39-4c8d-8ff2-64420ab585df",
       "note": null
     },
     {
@@ -748,11 +748,11 @@
       "stage": "usable",
       "verify": "auto",
       "state": "met",
-      "last_run": "2026-11-08T03:31:20.2512538Z",
+      "last_run": "2026-11-08T03:35:47.2449196Z",
       "checks": [
         "axe"
       ],
-      "receipt_id": "a5863883-a07d-4d95-9959-3ff2b9b3c158",
+      "receipt_id": "de76acc3-4d39-4c8d-8ff2-64420ab585df",
       "note": null
     },
     {
@@ -763,11 +763,11 @@
       "stage": "usable",
       "verify": "auto",
       "state": "met",
-      "last_run": "2026-11-08T03:31:12.5127261Z",
+      "last_run": "2026-11-08T03:35:38.8198974Z",
       "checks": [
         "viewport-320-1280"
       ],
-      "receipt_id": "83cc9e0c-0ab6-4e3f-8e82-5cfe7606cefc",
+      "receipt_id": "f6e1e568-dc9c-45cc-8367-cbe88942f8a4",
       "note": null
     },
     {
@@ -778,11 +778,11 @@
       "stage": "usable",
       "verify": "auto",
       "state": "met",
-      "last_run": "2026-11-08T03:31:12.5127261Z",
+      "last_run": "2026-11-08T03:35:38.8198974Z",
       "checks": [
         "viewport-320-1280"
       ],
-      "receipt_id": "83cc9e0c-0ab6-4e3f-8e82-5cfe7606cefc",
+      "receipt_id": "f6e1e568-dc9c-45cc-8367-cbe88942f8a4",
       "note": null
     },
     {
@@ -806,9 +806,9 @@
       "stage": "polished",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:30:19.0095542Z",
+      "last_run": "2026-11-08T03:34:36.1775567Z",
       "checks": [],
-      "receipt_id": "1421baa6-16f0-4f4b-902f-0b698b1f78d0",
+      "receipt_id": "bd2e1e87-21f0-4b6f-b2a6-2da4f28b29fb",
       "note": "Deployed CLS is 0.373 at 1440 and 0.393 at 390, over the 0.1 limit, with shifts from MAIN, .filters, .colophon, .viewbar and .masthead-lede"
     },
     {
@@ -819,11 +819,11 @@
       "stage": "usable",
       "verify": "auto",
       "state": "failing",
-      "last_run": "2026-11-08T03:31:07.3072405Z",
+      "last_run": "2026-11-08T03:35:33.5090663Z",
       "checks": [
         "error-capture"
       ],
-      "receipt_id": "cc0d5988-9578-43b5-8f09-9395c9dd42aa",
+      "receipt_id": "26f22d64-9372-4b38-931c-2e8711f8a6b0",
       "note": "child exited 1"
     },
     {
@@ -834,11 +834,11 @@
       "stage": "usable",
       "verify": "auto",
       "state": "failing",
-      "last_run": "2026-11-08T03:31:08.3042574Z",
+      "last_run": "2026-11-08T03:35:34.6593283Z",
       "checks": [
         "structured-logs"
       ],
-      "receipt_id": "d5e1a990-50a4-40bf-8c2f-2967888433a6",
+      "receipt_id": "89a30fc3-5caf-457d-afa0-5c980b8341c7",
       "note": "child exited 1"
     },
     {
@@ -861,11 +861,11 @@
       "statement": "A transient app is ready the moment it opens, with no setup step.",
       "stage": "usable",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:17:44.5946182Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:33:01.4338681Z",
       "checks": [],
-      "receipt_id": "ff339e9a-39db-451c-853a-2dad57429ed5",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "98c570c1-56c3-47de-8ea2-b018483e7c20",
+      "note": null
     },
     {
       "id": "B12.2",
@@ -874,11 +874,11 @@
       "statement": "A newcomer gets first-run guidance.",
       "stage": "usable",
       "verify": "judge",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:17:51.2445595Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:33:03.9490100Z",
       "checks": [],
-      "receipt_id": "5fc1e7f5-b1e0-40b2-bc48-a188c2b6d8e5",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "15b42d14-32fb-419e-bc42-295b78511aac",
+      "note": null
     },
     {
       "id": "B12.3",
@@ -887,11 +887,11 @@
       "statement": "A first-time user reaches a useful result without help.",
       "stage": "polished",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:17:57.9338984Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:33:07.0382490Z",
       "checks": [],
-      "receipt_id": "3cfc61e5-f532-44f6-8824-1986d36c60f7",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "a855c9cf-f8ca-44d5-9b02-d67b45622367",
+      "note": null
     },
     {
       "id": "B13.1",
@@ -901,9 +901,9 @@
       "stage": "polished",
       "verify": "judge",
       "state": "failing",
-      "last_run": "2026-11-08T03:18:03.8347408Z",
+      "last_run": "2026-11-08T03:33:09.7744463Z",
       "checks": [],
-      "receipt_id": "62f9bcf9-0c02-4540-92ee-d120e811d29e",
+      "receipt_id": "a5c652e8-eeab-4c5d-a014-768dd85b925e",
       "note": "Machine vocabulary remains: the iCal button is labelled just .ics (file extension), sort option reads Conf date, Knowledge & Info and Cognitive Sci are clipped, and the suggest button is + suggest"
     },
     {
@@ -914,11 +914,11 @@
       "stage": "polished",
       "verify": "judge",
       "state": "failing",
-      "last_run": "2026-11-08T03:30:26.8209231Z",
+      "last_run": "2026-11-08T03:34:44.6431117Z",
       "checks": [
         "design-review-dated"
       ],
-      "receipt_id": "68544ae2-5231-4a0e-af9f-bb16cc4e8854",
+      "receipt_id": "3ab7815e-e5eb-423e-a1ef-9bf3094c92e7",
       "note": "DESIGN.md promises :focus-visible rings but 25 buttons show none; the active view tab uses a 2px bottom bar and no aria-selected, against the DESIGN.md 2026-10-28 ruling (no bar under a selected tab, keep aria-selected)"
     },
     {
@@ -941,11 +941,11 @@
       "statement": "A result list appears within 1 s of the last keystroke in the search field.",
       "stage": "usable",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:18:17.2550743Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:33:15.0828711Z",
       "checks": [],
-      "receipt_id": "1af3c6bc-d6bf-4afd-8296-aec630a2d7af",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "60a40940-d5a7-40eb-a3f4-3d71f5fb7221",
+      "note": null
     },
     {
       "id": "LB1.2",
@@ -955,9 +955,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:18:25.6524662Z",
+      "last_run": "2026-11-08T03:33:17.9204753Z",
       "checks": [],
-      "receipt_id": "eeae769a-910e-4362-bd51-ebfbcaa4c806",
+      "receipt_id": "b619112a-5675-4299-b170-ed1f9368349c",
       "note": "Feature absent as specified: search narrows by name, city and text (Salt Lake returned 2 cards) but no result says which field matched (no mark or match label on any card)"
     },
     {
@@ -981,9 +981,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:30:21.7317251Z",
+      "last_run": "2026-11-08T03:34:39.2556417Z",
       "checks": [],
-      "receipt_id": "cd78461e-23c7-4caa-8b66-a1c9c8fcf8be",
+      "receipt_id": "c02e4730-b6bf-4126-bf96-e37692604b0e",
       "note": "No active-facet list: active chips only change colour in the filter rows, and there is no summary of active filters or clear-all"
     },
     {
@@ -993,11 +993,11 @@
       "statement": "The sort control names its field and direction and keeps the active filters.",
       "stage": "usable",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:18:40.6251576Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:33:25.7380887Z",
       "checks": [],
-      "receipt_id": "eff37e02-9ec4-4a80-9e4d-641f5976e093",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "c5897e78-e0fd-4ba6-bd04-49be7a0a1297",
+      "note": null
     },
     {
       "id": "LB2.4",
@@ -1033,9 +1033,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:18:46.7363628Z",
+      "last_run": "2026-11-08T03:33:29.7134686Z",
       "checks": [],
-      "receipt_id": "3ddfdeab-0796-4760-8dea-d137b3344366",
+      "receipt_id": "6cafe9e1-1dcc-49b2-bad2-3164cb0b5309",
       "note": "Feature absent: the detail modal has only Close, Open CFP and Calendar buttons, no next or previous through the result list"
     },
     {
@@ -1046,9 +1046,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:30:29.8199681Z",
+      "last_run": "2026-11-08T03:34:48.0961725Z",
       "checks": [],
-      "receipt_id": "363e0734-928d-4698-8e13-933956027e66",
+      "receipt_id": "c616c3ef-8dc2-4120-b647-af0ac2dbf3af",
       "note": "After opening an item the search query is behind the blurred modal overlay and is not readable; the input keeps its value but the user cannot see it"
     },
     {
@@ -1059,9 +1059,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:19:00.9430327Z",
+      "last_run": "2026-11-08T03:33:37.2442435Z",
       "checks": [],
-      "receipt_id": "1f3743e1-a297-44ba-b94c-807c61f92866",
+      "receipt_id": "fb67ef7e-2dcb-4358-8265-73589f2f6747",
       "note": "Feature absent: no way to select several conferences and no selection count (library archetype requires it; building it is a product decision)"
     },
     {
@@ -1072,9 +1072,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:19:10.3254794Z",
+      "last_run": "2026-11-08T03:33:40.9418832Z",
       "checks": [],
-      "receipt_id": "9255dc09-e35b-4099-afc4-fd57ba0a9731",
+      "receipt_id": "ac868150-33d7-443a-a4db-d968e8d8966a",
       "note": "Feature absent: no bulk edit exists (product decision whether a read-only dataset needs one)"
     },
     {
@@ -1098,9 +1098,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:19:20.1840218Z",
+      "last_run": "2026-11-08T03:33:44.3717330Z",
       "checks": [],
-      "receipt_id": "d0f9da7a-1846-4ee1-90da-2574d574cd30",
+      "receipt_id": "b31f5d07-cda7-4a9e-96af-4091c4ea60af",
       "note": "Feature absent: no import exists; data comes only from scripts/refresh-data.ts (product decision)"
     },
     {
@@ -1110,11 +1110,11 @@
       "statement": "An export contains exactly the items in the current filtered view, or states that it exports all.",
       "stage": "usable",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:19:29.7585484Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:33:48.8055840Z",
       "checks": [],
-      "receipt_id": "c1c99ea2-6037-4319-a6ab-2ae852e5a73c",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "cbf9d5ce-36ff-4c7f-b75d-622c4ae50e49",
+      "note": null
     },
     {
       "id": "LB5.3",
@@ -1124,9 +1124,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:19:39.5431462Z",
+      "last_run": "2026-11-08T03:33:53.4152890Z",
       "checks": [],
-      "receipt_id": "de88a70b-867b-40b3-ba9d-bd74802f6ce7",
+      "receipt_id": "65eb4c1c-d1a6-481e-a756-c6499341593d",
       "note": "Feature absent: no import, so no duplicate handling (product decision)"
     },
     {
@@ -1137,9 +1137,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:19:48.1879338Z",
+      "last_run": "2026-11-08T03:33:56.9698810Z",
       "checks": [],
-      "receipt_id": "54fc5136-b988-4d48-897b-fb01baa1393f",
+      "receipt_id": "88c337f2-9d8a-44a6-b194-4cd48e807f27",
       "note": "No window error listener exists: the error-capture check found no window error or unhandledrejection listener and no Sentry init on the web surface"
     },
     {
@@ -1150,9 +1150,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:19:58.1985218Z",
+      "last_run": "2026-11-08T03:34:01.2537432Z",
       "checks": [],
-      "receipt_id": "3a86943e-cda2-4db6-8dd7-b5f72827c840",
+      "receipt_id": "4cda0c6c-b008-40d2-aff0-5878a52e4b70",
       "note": "No unhandledrejection listener exists (same static scan)"
     },
     {
@@ -1163,9 +1163,9 @@
       "stage": "usable",
       "verify": "agent",
       "state": "failing",
-      "last_run": "2026-11-08T03:20:07.8389631Z",
+      "last_run": "2026-11-08T03:34:03.8628314Z",
       "checks": [],
-      "receipt_id": "73aef9f7-4626-4716-ad94-bf65cb33b913",
+      "receipt_id": "b847bc54-3335-437a-96e5-0365348333ab",
       "note": "Feature absent: one inline page with no routes or error boundary; a throw in one view is not contained"
     },
     {
@@ -1175,11 +1175,11 @@
       "statement": "A chunk that fails to load after a deploy shows a reload prompt, not a blank page.",
       "stage": "usable",
       "verify": "agent",
-      "state": "rerun-due",
-      "last_run": "2026-11-08T03:20:18.1208752Z",
+      "state": "met",
+      "last_run": "2026-11-08T03:34:07.0238742Z",
       "checks": [],
-      "receipt_id": "4cc7b6f5-517b-4314-b7bf-d4a1d1bd6f13",
-      "note": "the receipt was recorded on a different input hash than the app has now; verify again"
+      "receipt_id": "b434388c-ef90-4835-a603-08eb6303d78e",
+      "note": null
     }
   ],
   "item_stages": {
@@ -1206,7 +1206,7 @@
       "statement": "Type check passes. Not applicable only when package.json has no typecheck script and the app has no tsconfig.json.",
       "state": "met",
       "note": null,
-      "receipt_id": "bd497a46-16e0-493a-8f8c-5a135c89dfcd"
+      "receipt_id": "e4c9268a-efdc-4891-a098-ee873a52a5f1"
     },
     {
       "id": "tests",
@@ -1214,7 +1214,7 @@
       "statement": "Test suite passes and runs at least one test.",
       "state": "could-not-tell",
       "note": "no evidence that any test ran",
-      "receipt_id": "54b51745-7485-4b78-8113-96991329155e"
+      "receipt_id": "f9086614-9f3d-4a47-b135-78fef0610ad3"
     },
     {
       "id": "not-found-page",
@@ -1222,7 +1222,7 @@
       "statement": "The home page answers 200 (otherwise could-not-tell), and an unknown path returns 404 with a non-empty page.",
       "state": "failing",
       "note": "child exited 1",
-      "receipt_id": "697ff623-2aa2-432b-b68e-da5efd3aafb9"
+      "receipt_id": "b310460b-4e92-47a5-a58b-a22c6352fb22"
     },
     {
       "id": "design-banned-patterns",
@@ -1230,7 +1230,7 @@
       "statement": "Scans built interface files (.html .htm .css .scss .jsx .tsx .vue .svelte) for the two copy and layout patterns DESIGN.md bans outright (eyebrow labels and kicker titles; the middle dot or bullet as an inline divider), and warns on all-caps text. It does not check design rules in general. Cannot detect: an app with none of the scanned file types passes with 0 files scanned.",
       "state": "met",
       "note": null,
-      "receipt_id": "0777f823-22f7-4349-9935-35230c4a770f"
+      "receipt_id": "3c30dd91-90d5-4c8d-a855-c81aad858d7e"
     }
   ],
   "item_next_stage": "works",
