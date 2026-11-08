@@ -1,0 +1,14 @@
+{
+  "name": "conference-tracker",
+  "archetype": "library",
+  "surfaces": ["web"],
+  "posture": "transient",
+  "audience": "self",
+  "expertise": "intermediate",
+  "access": "anonymous",
+  "data": "local",
+  "sensitivity": "none",
+  "stakes": "daily-tool",
+  "ai": "none",
+  "notes": "Single-page tracker of 131 conference and journal deadlines (README). Archetype is library: browse, filter, sort and search a collection, with Timeline, Cards, Table and Map as views of one dataset. Posture is transient: opened for a moment to check a deadline. Audience is self because it is Douglas's research tool (fit-for-you notes) even though it is deployed publicly at conference-tracker-rho.vercel.app. data=local because per-conference notes, stars and submission status live in localStorage. All server endpoints (/health, /api/conferences, /favicon.*, /cal.ics, catch-all page) are unauthenticated GET only: no writes, no CORS headers, so the deployment is read-only. No preset: no preset matches, so facets are set explicitly and equal the facets.json defaults except archetype, surfaces, posture and data."
+}
